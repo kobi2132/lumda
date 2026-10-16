@@ -1,6 +1,6 @@
 // Offline support: serve from cache right away, refresh the cache from the network in the background.
-const CACHE = 'lumda-v2';
-const FILES = ['./', 'index.html', 'apps/catalog.js', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
+const CACHE = 'lumda-v3';
+const FILES = ['./', 'index.html', 'apps/catalog.js', 'kids.js', 'assets/kids/melody.webp', 'assets/kids/yam.webp', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));
