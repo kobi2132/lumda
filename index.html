@@ -25,12 +25,13 @@ h1{margin:12px 0 18px;text-align:center;font-family:var(--display);font-size:cla
 button{font:inherit;color:inherit}
 
 /* Picker */
-.kids{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,4vw,40px);align-items:end;max-width:760px;width:100%;margin:0 auto}
-.kid{border:0;background:none;padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:10px}
-.kid .fig{width:100%;height:min(52vh,520px);display:flex;align-items:flex-end;justify-content:center;
+#pick:not([hidden]){flex:1;display:flex;flex-direction:column}
+.kids{flex:1;display:grid;grid-template-columns:1fr 1fr;align-content:center;padding-bottom:8vh;gap:clamp(12px,4vw,40px);align-items:end;max-width:760px;width:100%;margin:0 auto}
+.kid{border:0;background:none;padding:0;cursor:pointer;min-width:0;display:flex;flex-direction:column;align-items:center;gap:10px}
+.kid .fig{width:100%;height:min(52vh,72vw,520px);display:flex;align-items:flex-end;justify-content:center;
   animation:idle 3.4s ease-in-out infinite}
 .kid:nth-child(2) .fig{animation-delay:-1.7s}
-.kid img{max-height:100%;max-width:100%;object-fit:contain;filter:drop-shadow(0 10px 14px rgba(40,10,60,.3));-webkit-user-drag:none}
+.kid img{height:100%;width:auto;max-width:none;filter:drop-shadow(0 10px 14px rgba(40,10,60,.3));-webkit-user-drag:none}
 .kid .name{font-family:var(--display);font-weight:700;font-size:clamp(28px,8vw,48px);color:#fff;border-radius:999px;padding:6px 30px;
   border:4px solid #fff;box-shadow:0 6px 0 rgba(40,10,60,.25)}
 .kid[data-k="melody"] .name{background:linear-gradient(180deg,#ff8fc0,#e0307f)}
