@@ -274,7 +274,11 @@ button:focus-visible{outline:4px solid var(--gold);outline-offset:3px}
 .party .pm.big{height:min(36vh,270px)}
 .pm.big.won{animation:pop .9s}
 main{position:relative;z-index:1}
-.buddy-bar{--bh:clamp(92px,16vh,132px);position:relative;height:var(--bh);flex:none;z-index:0}
+/* the companion's bar is as tall as the whole figure and sits above the scrolling page, so her crown / his hair is never hidden behind the tiles */
+.buddy-bar{--bh:clamp(92px,16vh,132px);position:relative;height:calc(var(--bh)*1.08 + 6px);flex:none;z-index:2;pointer-events:none}
+.buddy{pointer-events:auto}
+/* a scrolling page fades out at the bottom instead of being sliced */
+main.scrollable{-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 34px),transparent);mask-image:linear-gradient(to bottom,#000 calc(100% - 34px),transparent)}
 .buddy{position:absolute;bottom:0;inset-inline-start:0;height:calc(var(--bh)*1.08);aspect-ratio:300/328;border:0;background:none;padding:0;cursor:pointer;animation:pmIdle 3.4s ease-in-out infinite}
 .buddy .pm{width:100%;height:100%}
 
@@ -406,6 +410,54 @@ html[data-kid="yam"] .parent-note{color:#1f2550}
 html[data-kid="yam"] .pm.big{aspect-ratio:401/758}
 html[data-kid="yam"] #homeBtn svg{stroke:#24358f}
 html[data-kid="yam"] .buddy{aspect-ratio:320/350}
+/* the topic she was in the middle of */
+.cat.last{box-shadow:0 0 0 5px var(--gold),0 6px 0 rgba(78,31,99,.18);animation:breathe 1.8s ease-in-out infinite}
+/* Letters (ABC), emoji pictures, and the new games */
+.ltr{font-family:var(--display);font-weight:700;color:var(--rose-deep);line-height:1;direction:ltr;display:inline-flex;align-items:baseline;gap:.04em}
+.ltr small{font-size:.72em;color:#9566f2}
+.lcard{display:flex;align-items:center;justify-content:center;gap:4%;height:100%;width:100%}
+.lcard .ltr{font-size:min(22vh,130px)}
+.card .visual .lcard .art{height:82%;width:auto;max-width:50%}
+.lcard .emoji{font-size:min(17vh,104px)}
+.word-en .hl{color:#ff9c3a;text-decoration:underline;text-decoration-thickness:5px;text-underline-offset:6px}
+.opt .ltr,.mcard .face .ltr,.balloon .face .ltr,.lvl .ltr{font-size:40cqw}
+.whats .visual .ltr{font-size:min(26vh,160px)}
+.cat .pic .ltr{font-size:clamp(28px,8vw,44px);color:#fff;text-shadow:0 3px 0 rgba(78,31,99,.35)}
+.cat .pic .emoji{font-size:clamp(38px,11vw,60px)}
+.chip-pic .ltr{font-size:15px}.chip-pic .emoji{font-size:24px}
+.opt .emoji{font-size:52cqw}
+.game-btn .pic .emo{font-size:clamp(46px,14vw,72px);line-height:1;display:flex;align-items:center}
+.picker.many{grid-template-columns:repeat(3,minmax(0,1fr));max-width:560px;gap:10px}
+.picker.many .game-btn{padding:12px 4px;border-radius:24px}
+.picker.many .game-btn .pic{height:clamp(46px,13vw,66px)}.picker.many .game-btn .pic .emo{font-size:clamp(38px,11vw,58px)}
+.picker.many .game-btn .en{font-size:clamp(15px,4.3vw,22px)}
+.bubbles{display:flex;gap:14px;justify-content:center;width:100%;max-width:560px}
+.bub{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;gap:8px;border:4px solid #fff;border-radius:999px;padding:14px 10px;cursor:pointer;
+  font-family:var(--display);font-weight:700;font-size:clamp(24px,7vw,38px);color:#fff;text-shadow:0 2px 0 rgba(78,31,99,.3);box-shadow:0 6px 0 rgba(78,31,99,.25);transition:transform .2s}
+.bub svg{width:30px;height:30px;flex:none}
+.bub span{direction:ltr;text-align:center;line-height:1.05;overflow-wrap:anywhere}
+.bub span.long{font-size:.72em}
+@media (max-width:440px){.bub svg{display:none}.bub{padding:12px 8px}}
+.bub:nth-child(1){background:linear-gradient(180deg,#ff8fc0,#e0307f)}
+.bub:nth-child(2){background:linear-gradient(180deg,#8fb0ff,#4a6fe0)}
+.bub.on{transform:scale(1.1);box-shadow:0 0 0 6px var(--gold),0 6px 0 rgba(78,31,99,.25)}
+.bub.right{background:linear-gradient(180deg,#7fe3c4,#29b98d);animation:pop .6s}
+.bub.wrong{animation:shake .45s;opacity:.55}
+.mic{width:clamp(110px,30vw,150px);aspect-ratio:1;border-radius:50%;border:6px solid #fff;cursor:pointer;display:grid;place-items:center;padding:0;
+  background:linear-gradient(180deg,#ff8fc0,var(--rose-deep));box-shadow:0 8px 0 #b81f63}
+.mic svg{width:52%;height:52%}
+.mic:active{transform:translateY(4px);box-shadow:0 3px 0 #b81f63}
+.mic.listen{animation:listen 1s ease-in-out infinite}
+@keyframes listen{50%{box-shadow:0 0 0 18px rgba(255,79,154,.35),0 8px 0 #b81f63;transform:scale(1.06)}}
+.mic.done{background:linear-gradient(180deg,#7fe3c4,#29b98d);box-shadow:0 8px 0 #1f8f6c}
+.heard{min-height:1.4em;font-size:20px;color:var(--plum);direction:ltr;text-align:center}
+.say-note{font-size:14px;color:#7a4a8c;text-align:center;max-width:34ch;line-height:1.45}
+.doit .visual .emoji{animation:doit .9s ease-in-out infinite}
+@keyframes doit{50%{transform:translateY(-16px) scale(1.06)}}
+html[data-kid="yam"] .mic{background:linear-gradient(180deg,#7fa0ff,#3f6fd8);box-shadow:0 8px 0 #24358f}
+html[data-kid="yam"] .ltr{color:#24358f}
+@media (max-height:700px){ .bub{padding:10px 8px} .mic{width:clamp(96px,24vh,130px)} .lcard .ltr{font-size:min(19vh,110px)} }
+@media (min-width:700px) and (min-height:700px){ .bub{font-size:44px;padding:18px 14px} .bubbles{max-width:760px} .picker.many{max-width:760px;gap:18px} .lcard .ltr{font-size:min(26vh,220px)} }
 @media (prefers-reduced-motion:reduce){*{animation:none!important}.balloon{top:var(--rt)!important}.air.calm .balloon{top:14%!important}.mcard .in{transition:none}}
 </style>
 
@@ -433,7 +485,9 @@ document.documentElement.dataset.kid = KID.id;
 const MASC = {"שלום מלודי! בואי נלמד אנגלית!":"שלום ים! בוא נלמד אנגלית!","עכשיו נשחק! תקשיבי טוב.":"עכשיו נשחק! תקשיב טוב.","בחרי משחק":"בחר משחק",
   "תלחצי על":"תלחץ על","תפוצצי את הבלון הנכון!":"תפוצץ את הבלון הנכון!","תפוצצי את הבלון של":"תפוצץ את הבלון של","מצאי שני קלפים זהים":"מצא שני קלפים זהים",
   "נסי שוב!":"נסה שוב!","כל הכבוד מלודי!":"כל הכבוד ים!","איזו חכמה!":"איזה חכם!","את אלופה!":"אתה אלוף!","את נסיכה חכמה!":"אתה אביר חכם!",
-  "אספי עוד כוכבים כדי לקבל אותה":"אסוף עוד כוכבים כדי לקבל אותה","בואי נצבע שמלה לנסיכה":"בוא נצבע שריון לאביר"};
+  "אספי עוד כוכבים כדי לקבל אותה":"אסוף עוד כוכבים כדי לקבל אותה","בואי נצבע שמלה לנסיכה":"בוא נצבע שריון לאביר",
+  "שמעי שוב":"שמע שוב","מה זה? תבחרי את המילה הנכונה":"מה זה? תבחר את המילה הנכונה","תקשיבי ותגידי אחריי":"תקשיב ותגיד אחריי",
+  "לא שמעתי. נסי שוב!":"לא שמעתי. נסה שוב!","תקשיבי ותעשי מה שאני אומרת!":"תקשיב ותעשה מה שאני אומר!","כמעט! תקשיבי שוב":"כמעט! תקשיב שוב","עבדת יפה! הגיע הזמן להפסקה קטנה":"עבדת יפה!! הגיע הזמן להפסקה קטנה"};
 const HE_SAY_M = {"שלום ים! בוא נלמד אנגלית!":"שָׁלוֹם יָם! בּוֹא נִלְמַד אַנְגְּלִית!","עכשיו נשחק! תקשיב טוב.":"עַכְשָׁו נְשַׂחֵק! תַּקְשִׁיב טוֹב.",
   "בחר משחק":"בְּחַר מִשְׂחָק","תלחץ על":"תִּלְחַץ עַל","תפוצץ את הבלון הנכון!":"תְּפוֹצֵץ אֶת הַבָּלוֹן הַנָּכוֹן!","תפוצץ את הבלון של":"תְּפוֹצֵץ אֶת הַבָּלוֹן שֶׁל",
   "מצא שני קלפים זהים":"מְצָא שְׁנֵי קְלָפִים זֵהִים","נסה שוב!":"נַסֵּה שׁוּב!","כל הכבוד ים!":"כֹּל הַכָּבוֹד יָם!","איזה חכם!":"אֵיזֶה חָכָם!",
@@ -501,6 +555,18 @@ const CATS = [
   {id:'home', en:'Home', he:'בבית', pic:'🏠', items:[
     {en:'House',he:'בית',e:'🏠'},{en:'Bed',he:'מיטה',e:'🛏️'},{en:'Chair',he:'כיסא',e:'🪑'},{en:'Door',he:'דלת',e:'🚪'},
     {en:'Bath',he:'אמבטיה',e:'🛁'},{en:'Clock',he:'שעון',e:'⏰'},{en:'Key',he:'מפתח',e:'🔑'},{en:'Phone',he:'טלפון',e:'📱'},{en:'Book',he:'ספר',e:'📖'}]},
+  {id:'actions', en:'Actions', he:'פעלים', items:[
+    {en:'Run',he:'לרוץ',e:'🏃',ph:'I can run!'},{en:'Jump',he:'לקפוץ',e:'🦘',ph:'I can jump!'},{en:'Clap',he:'למחוא כפיים',e:'👏',ph:'Clap your hands!'},
+    {en:'Wave',he:'לנופף',e:'👋',ph:'Wave hello!'},{en:'Dance',he:'לרקוד',e:'💃',ph:'I can dance!'},{en:'Sing',he:'לשיר',e:'🎤',ph:'I can sing!'},
+    {en:'Swim',he:'לשחות',e:'🏊',ph:'I can swim!'},{en:'Sleep',he:'לישון',e:'😴',ph:'Time to sleep!'},{en:'Eat',he:'לאכול',e:'🍽️',ph:"Let's eat!"},{en:'Drink',he:'לשתות',e:'🥤',ph:"Let's drink!"}]},
+  {id:'feelings', en:'Feelings', he:'רגשות', items:[
+    {en:'Happy',he:'שמחה',hem:'שמח',e:'😀',ph:"I'm happy!"},{en:'Sad',he:'עצובה',hem:'עצוב',e:'😢',ph:"I'm sad."},{en:'Angry',he:'כועסת',hem:'כועס',e:'😠',ph:"I'm angry!"},
+    {en:'Scared',he:'מפחדת',hem:'מפחד',e:'😨',ph:"I'm scared!"},{en:'Tired',he:'עייפה',hem:'עייף',e:'🥱',ph:"I'm tired."},{en:'Hungry',he:'רעבה',hem:'רעב',e:'😋',ph:"I'm hungry!"},
+    {en:'Silly',he:'שובבה',hem:'שובב',e:'🤪',ph:"I'm silly!"},{en:'Surprised',he:'מופתעת',hem:'מופתע',e:'😮',ph:"I'm surprised!"}]},
+  {id:'talk', en:"Let's Talk", he:'משפטים', items:[
+    {en:'Hello',he:'שלום',e:'🙋',ph:'Hello, Melody!'},{en:'Goodbye',he:'להתראות',e:'👋',ph:'Goodbye, Melody!'},{en:'Thank you',he:'תודה',e:'🙏',ph:'Thank you!'},
+    {en:'Please',he:'בבקשה',e:'🥺',ph:'Please!'},{en:'Yes',he:'כן',e:'👍',ph:'Yes!'},{en:'No',he:'לא',e:'👎',ph:'No!'},
+    {en:'I love you',he:'אני אוהבת אותך',hem:'אני אוהב אותך',e:'🥰',ph:'I love you!'},{en:'Good night',he:'לילה טוב',e:'🌙',ph:'Good night, Melody!'}]},
 ];
 const ART={"kingdom": ["img/3988cc43c380.webp", "img/7b43096d45f2.webp", "img/cd59e07113b6.webp", "img/b3534e2c8154.webp", "img/0b5a28b5e323.webp", "img/b09ac5e0c543.webp", "img/300b4ea4817a.webp", "img/25eb20481cdb.webp", "img/21d3db7e3352.webp", "img/b17283c8632d.webp"], "fruits": ["img/e684a949b66f.webp", "img/5593a9235d05.webp", "img/75fd08602ba7.webp", "img/a3942a755334.webp", "img/13e1e0e97eb9.webp", "img/1eeec2e9606c.webp", "img/07041d0c88bb.webp", "img/1980c81535bc.webp"], "toys": ["img/838ea034abb1.webp", "img/bdb295161f83.webp", "img/d9197f4c388a.webp", "img/af6811f0726b.webp", "img/b4c39880bbbe.webp", "img/e9e2f3efe01a.webp", "img/8fb49c86df3b.webp", "img/61f91c6eb610.webp", "img/c78625fd7263.webp"], "home": ["img/32bc62ac2cbf.webp", "img/28f70d904560.webp", "img/d03cd749ed38.webp", "img/369124e94fa8.webp", "img/7460c06d1d55.webp", "img/57f2a6a9c32f.webp", "img/fef1eb201627.webp", "img/2debe46b280c.webp", "img/5b848b7eb943.webp"], "clothes": ["img/e1d5078a029f.webp", "img/6aab66ec31fe.webp", "img/40f92b4419b4.webp", "img/48ac39ac7ccd.webp", "img/3038cb58b52f.webp", "img/9742e2e6a1b2.webp", "img/a4ae8f2ceb32.webp", "img/fd04b9f1f7b5.webp", "img/d0cdcc57843f.webp", "img/4af41564c2bb.webp"], "food": ["img/e3c04d76f9cd.webp", "img/d5447d16278d.webp", "img/c12c84414dce.webp", "img/6b5effa85f32.webp", "img/507d1e1be789.webp", "img/b2c5c70dfa6a.webp", "img/d0574293a8e7.webp", "img/2f3a67ab45a5.webp", "img/230cff89b897.webp", "img/947f89dc398d.webp"], "vehicles": ["img/7a16c3de7349.webp", "img/1cc1397d8d7e.webp", "img/f9a86308a47d.webp", "img/c5810834785d.webp", "img/702f7c01630d.webp", "img/5910aa2110ec.webp", "img/a07938d09fbf.webp", "img/5b038668198b.webp", "img/da4cb5e38825.webp"], "sea": ["img/ca1e57f9fed7.webp", "img/42239e3886c9.webp", "img/2549a0f00551.webp", "img/2e6c06271e91.webp", "img/9c4eda821a35.webp", "img/04e7befba9d2.webp", "img/c43cbf513c21.webp", "img/e0a3d5151c39.webp"], "nature": ["img/f35c29bdf611.webp", "img/7b8b05047406.webp", "img/cea737d08fb6.webp", "img/36e3061ba412.webp", "img/55ffd321e5ad.webp", "img/f5ef11513425.webp", "img/201da08035e1.webp", "img/865efab139ef.webp", "img/d8b7a07e7877.webp"], "body": ["img/735744862368.webp", "img/523a687643c8.webp", "img/66cd86076a97.webp", "img/516e236f661b.webp", "img/e4d4e4037a7c.webp", "img/4ae4fba1918d.webp", "img/b08699a793f3.webp", "img/1ccc68a9256e.webp"], "animals": ["img/6b1c91111b73.webp", "img/228c2459551c.webp", "img/217ffb720348.webp", "img/875cf92026a6.webp", "img/c4681e86e7c0.webp", "img/1ca9fbb745c1.webp", "img/c34aeebc431c.webp", "img/a550b585d56f.webp", "img/85f1ffd0c123.webp", "img/9e541886d742.webp"]};
 const FAMFIG=["img/22a85324bfa5.webp", "img/8aa1da1198bd.webp", "img/d9e0a0298501.webp", "img/5f5f3d5c6743.webp", "img/3be6b872e3e5.webp", "img/0ec512d5ee82.webp", "img/47a30145970f.webp"];
@@ -511,15 +577,26 @@ for(const c of CATS){ if(ART[c.id]) c.items.forEach((it,i)=>{ it.img=ART[c.id][i
 { const FAM_ORDER=['Grandpa','Grandma','Dad','Mom','Brother','Sister','Baby'];
   CATS.find(c=>c.id==='family').items.forEach(it=>{ const k=FAM_ORDER.indexOf(it.en); it.fam=k<0?'all':k }); }
 const findItem=(cat,en)=>CATS.find(c=>c.id===cat).items.find(i=>i.en===en);
+/* ABC: every letter with a word the kids already know (its picture comes from that topic); letters without one get an emoji */
+const LETTER_WORDS=[['A','Apple','fruits'],['B','Ball','toys'],['C','Cat','animals'],['D','Dog','animals'],['E','Egg','food'],['F','Fish','animals'],['G','Grapes','fruits'],
+  ['H','Horse','animals'],['I','Ice cream','food'],['J','Juice',null,'🧃','מיץ'],['K','Kite','toys'],['L','Lion','animals'],['M','Moon','nature'],['N','Nose','body'],
+  ['O','Octopus','sea'],['P','Pizza','food'],['Q','Queen',null,'👸','מלכה'],['R','Rainbow','kingdom'],['S','Sun','nature'],['T','Train','vehicles'],['U','Umbrella',null,'☂️','מטרייה'],
+  ['V','Violin',null,'🎻','כינור'],['W','Whale','sea'],['X','Fox',null,'🦊','שועל'],['Y','Yo-yo',null,'🪀','יו־יו'],['Z','Zebra',null,'🦓','זברה']];
+CATS.push({id:'abc',en:'ABC',he:'אותיות',items:LETTER_WORDS.map(([L,w,c,e,he])=>{ const src=c&&findItem(c,w); return src?{en:L,L,w,he:src.he,img:src.img}:{en:L,L,w,he,e} })});
+// how the voice says each letter's name (a lone "A" is otherwise read as the word "a")
+const LETTER_NAME={A:'ay',B:'bee',C:'see',D:'dee',E:'ee',F:'eff',G:'gee',H:'aitch',I:'eye',J:'jay',K:'kay',L:'el',M:'em',N:'en',O:'oh',P:'pee',Q:'cue',R:'ar',S:'ess',T:'tee',U:'you',V:'vee',W:'double you',X:'ex',Y:'why',Z:'zee'};
+const ltrHTML=L=>`<span class="ltr">${L}<small>${L.toLowerCase()}</small></span>`;
+const heOf=it=>(BOY&&it.hem)||it.he;
 // the picture on each topic tile
 const TILE={kingdom:['kingdom','Crown'],colors:['kingdom','Rainbow'],clothes:['clothes','Dress'],toys:['toys','Teddy bear'],animals:['animals','Bunny'],
   fruits:['fruits','Strawberry'],food:['food','Ice cream'],family:['family','Family'],body:['body','Hand'],numbers:null,shapes:['shapes','Heart'],
-  nature:['nature','Sun'],vehicles:['vehicles','Car'],sea:['sea','Whale'],home:['home','House']};
+  nature:['nature','Sun'],vehicles:['vehicles','Car'],sea:['sea','Whale'],home:['home','House'],
+  actions:['actions','Jump'],feelings:['feelings','Happy'],talk:['talk','Hello']};
 const ICON={crown:()=>findItem('kingdom','Crown').img,book:()=>findItem('home','Book').img,gift:()=>findItem('toys','Gift').img};
-const tileVisual=c=>{ const t=TILE[c.id]; return t?visual(findItem(t[0],t[1]),true):visual({n:3},true) };
+const tileVisual=c=>{ if(c.id==='abc') return '<span class="ltr">ABC</span>'; const t=TILE[c.id]; return t?visual(findItem(t[0],t[1]),true):visual({n:3},true) };
 /* Home grid order and tile colors */
-const ORDER=['kingdom','colors','clothes','toys','animals','fruits','food','family','body','numbers','shapes','nature','vehicles','sea','home'];
-if(BOY) ORDER.splice(0,ORDER.length,'animals','vehicles','colors','numbers','toys','sea','fruits','food','family','body','shapes','nature','clothes','home','kingdom');
+const ORDER=['kingdom','colors','abc','clothes','toys','animals','fruits','food','feelings','actions','talk','family','body','numbers','shapes','nature','vehicles','sea','home'];
+if(BOY) ORDER.splice(0,ORDER.length,'animals','vehicles','abc','colors','numbers','actions','toys','sea','fruits','food','feelings','talk','family','body','shapes','nature','clothes','home','kingdom');
 CATS.sort((a,b)=>ORDER.indexOf(a.id)-ORDER.indexOf(b.id));
 const GRADS=['#ff9ac9,#ff4f9a','#c6a4ff,#9566f2','#ffcf6b,#ff9c3a','#7fe3c4,#29b98d','#8fd0ff,#5b8dff','#ffb2e0,#d46cff'];
 const CHEER=['כל הכבוד מלודי!','מצוין!','איזו חכמה!','וואו, נכון!','את אלופה!'].map(G);
@@ -551,7 +628,7 @@ function saveStars(){ try{ localStorage.setItem(KEY+'stars',String(stars)) }catc
 let prog={levels:{},weak:{}};
 try{ const raw=JSON.parse(localStorage.getItem(KEY+'progress')||'null'); if(raw&&raw.levels&&raw.weak) prog=raw }catch(e){}
 function saveProg(){ try{ localStorage.setItem(KEY+'progress',JSON.stringify(prog)) }catch(e){} }
-let settings={voice:true,rate:1};
+let settings={voice:true,rate:1,heHelp:true,mic:true,breakMin:20};
 try{ Object.assign(settings,JSON.parse(localStorage.getItem(KEY+'settings')||'{}')) }catch(e){}
 function saveSettings(){ try{ localStorage.setItem(KEY+'settings',JSON.stringify(settings)) }catch(e){} }
 
@@ -591,9 +668,19 @@ if(synth){ pickVoices(); synth.onvoiceschanged = pickVoices; }
 
 /* How each Hebrew text is spoken (chosen on the phone in the pronunciation check); the screen keeps the plain spelling */
 const HE_SAY={"שלום מלודי! בואי נלמד אנגלית!": "שָׁלוֹם מֶלוֹדִי! בּוֹאִי נִלְמַד אַנְגְּלִית!", "עכשיו נשחק! תקשיבי טוב.": "עַכְשָׁו נְשַׂחֵק! תַּקְשִׁיבִי טוֹב.", "בחרי משחק": "בַּחֲרִי מִשְׂחָק", "תלחצי על": "תִּלְחֲצִי עַל", "תפוצצי את הבלון הנכון!": "תְּפוֹצְצִי אֶת הַבָּלוֹן הַנָּכוֹן!", "תפוצצי את הבלון של": "תְּפוֹצְצִי אֶת הַבָּלוֹן שֶׁל", "מצאי שני קלפים זהים": "מִצְאִי שְׁנֵי קְלָפִים זֵהִים", "בואי נצבע שמלה לנסיכה": "בּוֹאִי נִצְבַּע שִׂמְלָה לַנְּסִיכָה", "צבעי את החולצה": "צִבְעִי אֶת הַחֻלְצָה", "צבעי את החצאית": "צִבְעִי אֶת הַחֲצָאִית", "צבעי את הפפיון": "צִבְעִי אֶת הַפַּפְּיוֹן", "צבעי את הנעליים": "צִבְעִי אֶת הַנַּעֲלַיִם", "צבעי את הכתר": "צִבְעִי אֶת הַכֶּתֶר", "זה": "זֶה", "הנה, זה": "הִנֵּה, זֶה", "נסי שוב!": "נַסִּי שׁוּב!", "קודם נשחק בשלב הזה": "קֹדֶם נְשַׂחֵק בַּשָּׁלָב הַזֶּה", "מצוין!": "מְצֻיָּן!", "איזו חכמה!": "אֵיזוֹ חֲכָמָה!", "את אלופה!": "אַתְּ אַלּוּפָה!", "את נסיכה חכמה!": "אַתְּ נְסִיכָה חֲכָמָה!", "קיבלת מדבקה!": "קִבַּלְתְּ מַדְבֵּקָה!", "פתחת שלב חדש!": "פָּתַחְתְּ שָׁלָב חָדָשׁ!", "קיבלת כתר בנושא הזה!": "קִבַּלְתְּ כֶּתֶר בַּנּוֹשֵׂא הַזֶּה!", "אספי עוד כוכבים כדי לקבל אותה": "אִסְפִי עוֹד כּוֹכָבִים כְּדֵי לְקַבֵּל אוֹתָהּ", "עוד כוכב אחד למדבקה הבאה": "עוֹד כּוֹכָב אֶחָד לַמַּדְבֵּקָה הַבָּאָה", "עוד שני כוכבים למדבקה הבאה": "עוֹד שְׁנֵי כּוֹכָבִים לַמַּדְבֵּקָה הַבָּאָה", "עוד שלושה כוכבים למדבקה הבאה": "עוֹד שְׁלוֹשָׁה כּוֹכָבִים לַמַּדְבֵּקָה הַבָּאָה", "עוד ארבעה כוכבים למדבקה הבאה": "עוֹד אַרְבָּעָה כּוֹכָבִים לַמַּדְבֵּקָה הַבָּאָה", "עוד חמישה כוכבים למדבקה הבאה": "עוֹד חֲמִשָּׁה כּוֹכָבִים לַמַּדְבֵּקָה הַבָּאָה", "נסיכות": "נְסִיכוֹת", "צבעים": "צְבָעִים", "בגדים": "בְּגָדִים", "צעצועים": "צַעֲצוּעִים", "חיות": "חַיּוֹת", "פירות": "פֵּרוֹת", "אוכל": "אֹכֶל", "משפחה": "מִשְׁפָּחָה", "הגוף שלי": "הַגּוּף שֶׁלִּי", "מספרים": "מִסְפָּרִים", "צורות": "צוּרוֹת", "טבע": "טֶבַע", "תחבורה": "תַּחְבּוּרָה", "ים": "יָם", "בבית": "בַּבַּיִת", "כתר": "כֶּתֶר", "נסיכה": "נְסִיכָה", "ארמון": "אַרְמוֹן", "שמלה": "שִׂמְלָה", "חד־קרן": "חַד־קֶרֶן", "לב": "לֵב", "כוכב": "כּוֹכָב", "קשת": "קֶשֶׁת", "טבעת": "טַבַּעַת", "פרח": "פֶּרַח", "ורוד": "וָרֹד", "אדום": "אָדֹם", "כחול": "כָּחֹל", "צהוב": "צָהֹב", "ירוק": "יָרֹק", "סגול": "סָגֹל", "כתום": "כָּתֹם", "שחור": "שָׁחֹר", "לבן": "לָבָן", "חולצה": "חֻלְצָה", "מכנסיים": "מִכְנָסַיִם", "נעליים": "נַעֲלַיִם", "כובע": "כּוֹבַע", "גרביים": "גַּרְבַּיִם", "תיק": "תִּיק", "מעיל": "מְעִיל", "משקפיים": "מִשְׁקָפַיִם", "כפפות": "כְּפָפוֹת", "דובי": "דֻּבִּי", "כדור": "כַּדּוּר", "בובה": "בֻּבָּה", "בלון": "בָּלוֹן", "עפיפון": "עֲפִיפוֹן", "פאזל": "פָּאזֶל", "תוף": "תֹּף", "מתנה": "מַתָּנָה", "צבע": "צֶבַע", "חתול": "חָתוּל", "כלב": "כֶּלֶב", "ארנב": "אַרְנָב", "סוס": "סוּס", "ציפור": "צִפּוֹר", "דג": "דָּג", "פרפר": "פַּרְפַּר", "דוב": "דֹּב", "ברווז": "בַּרְוָז", "אריה": "אַרְיֵה", "תפוח": "תַּפּוּחַ", "בננה": "בָּנָנָה", "תות": "תּוּת", "ענבים": "עֲנָבִים", "אבטיח": "אֲבַטִּיחַ", "דובדבן": "דֻּבְדְּבָן", "לימון": "לִימוֹן", "אגס": "אַגָּס", "חלב": "חָלָב", "לחם": "לֶחֶם", "ביצה": "בֵּיצָה", "גבינה": "גְּבִינָה", "פיצה": "פִּיצָה", "עוגה": "עוּגָה", "גלידה": "גְּלִידָה", "עוגייה": "עוּגִיָּה", "מים": "מַיִם", "סוכרייה": "סֻכָּרִיָּה", "אמא": "אִמָּא", "אבא": "אַבָּא", "תינוק": "תִּינוֹק", "אחות": "אָחוֹת", "אח": "אָח", "סבתא": "סַבְתָּא", "סבא": "סַבָּא", "עיניים": "עֵינַיִם", "אף": "אַף", "פה": "פֶּה", "אוזן": "אֹזֶן", "יד": "יָד", "רגל": "רֶגֶל", "שיער": "שֵׂעָר", "שיניים": "שִׁנַּיִם", "אחת": "אַחַת", "שתיים": "שְׁתַּיִם", "שלוש": "שָׁלוֹשׁ", "ארבע": "אַרְבַּע", "חמש": "חָמֵשׁ", "שש": "שֵׁשׁ", "שבע": "שֶׁבַע", "שמונה": "שְׁמוֹנֶה", "תשע": "תֵּשַׁע", "עשר": "עֶשֶׂר", "עיגול": "עִגּוּל", "ריבוע": "רִבּוּעַ", "משולש": "מְשֻׁלָּשׁ", "יהלום": "יַהֲלוֹם", "מלבן": "מַלְבֵּן", "אליפסה": "אֶלִיפְּסָה", "שמש": "שֶׁמֶשׁ", "ירח": "יָרֵחַ", "ענן": "עָנָן", "גשם": "גֶּשֶׁם", "שלג": "שֶׁלֶג", "עץ": "עֵץ", "עלה": "עָלֶה", "צבעוני": "צִבְעוֹנִי", "הר": "הַר", "מכונית": "מְכוֹנִית", "אוטובוס": "אוֹטוֹבּוּס", "רכבת": "רַכֶּבֶת", "מטוס": "מָטוֹס", "סירה": "סִירָה", "אופניים": "אוֹפַנַּיִם", "מסוק": "מַסּוֹק", "משאית": "מַשָּׂאִית", "חללית": "חֲלָלִית", "לווייתן": "לִוְיָתָן", "דולפין": "דּוֹלְפִין", "סרטן": "סַרְטָן", "צדף": "צֶדֶף", "צב": "צָב", "כריש": "כָּרִישׁ", "בית": "בַּיִת", "מיטה": "מִטָּה", "כיסא": "כִּסֵּא", "דלת": "דֶּלֶת", "אמבטיה": "אַמְבַּטְיָה", "שעון": "שָׁעוֹן", "מפתח": "מַפְתֵּחַ", "טלפון": "טֶלֶפוֹן", "ספר": "סֵפֶר", "כל הכבוד מלודי!": "כֹּל הַכָּבוֹד מֶלוֹדִי!", "וואו, נכון!": "wow, נָכוֹן!", "סיימת את כל השלבים!": "עָשִׂית אֶת כֹּל הַשְּׁלַבִּים!", "סיימת את כל השלבים וקיבלת כתר!": "עָשִׂית אֶת כֹּל הַשְּׁלַבִּים, וְקִבַּלְתְּ כֶּתֶר!", "אספת את כל המדבקות!": "יֵשׁ לָךְ אֶת כֹּל הַמַּדְבֵּקוֹת!", "תמנון": "תָּמְנוּן"};
+Object.assign(HE_SAY,{"מה זה? תבחרי את המילה הנכונה":"מַה זֶּה? תִּבְחֲרִי אֶת הַמִּלָּה הַנְּכוֹנָה","מה זה? תבחר את המילה הנכונה":"מַה זֶּה? תִּבְחַר אֶת הַמִּלָּה הַנְּכוֹנָה",
+  "תקשיבי ותגידי אחריי":"תַּקְשִׁיבִי וְתַגִּידִי אַחֲרַי","תקשיב ותגיד אחריי":"תַּקְשִׁיב וְתַגִּיד אַחֲרַי","לא שמעתי. נסי שוב!":"לֹא שָׁמַעְתִּי. נַסִּי שׁוּב!","לא שמעתי. נסה שוב!":"לֹא שָׁמַעְתִּי. נַסֵּה שׁוּב!",
+  "כמעט! תקשיבי שוב":"כִּמְעַט! תַּקְשִׁיבִי שׁוּב","כמעט! תקשיב שוב":"כִּמְעַט! תַּקְשִׁיב שׁוּב","עבדת יפה! הגיע הזמן להפסקה קטנה":"עָבַדְתְּ יָפֶה! הִגִּיעַ הַזְּמַן לְהַפְסָקָה קְטַנָּה","עבדת יפה!! הגיע הזמן להפסקה קטנה":"עָבַדְתָּ יָפֶה! הִגִּיעַ הַזְּמַן לְהַפְסָקָה קְטַנָּה",
+  "תקשיבי ותעשי מה שאני אומרת!":"תַּקְשִׁיבִי וְתַעֲשִׂי מָה שֶׁאֲנִי אוֹמֶרֶת!","תקשיב ותעשה מה שאני אומר!":"תַּקְשִׁיב וְתַעֲשֶׂה מָה שֶׁאֲנִי אוֹמֵר!",
+  "אותיות":"אוֹתִיּוֹת","פעלים":"פְּעָלִים","רגשות":"רְגָשׁוֹת","משפטים":"מִשְׁפָּטִים",
+  "מיץ":"מִיץ","מלכה":"מַלְכָּה","מטרייה":"מִטְרִיָּה","כינור":"כִּנּוֹר","שועל":"שׁוּעָל","יו־יו":"יוֹ־יוֹ","זברה":"זֶבְּרָה",
+  "לרוץ":"לָרוּץ","לקפוץ":"לִקְפֹּץ","למחוא כפיים":"לִמְחֹא כַּפַּיִם","לנופף":"לְנוֹפֵף","לרקוד":"לִרְקֹד","לשיר":"לָשִׁיר","לשחות":"לִשְׂחוֹת","לישון":"לִישׁוֹן","לאכול":"לֶאֱכֹל","לשתות":"לִשְׁתּוֹת",
+  "שמחה":"שְׂמֵחָה","שמח":"שָׂמֵחַ","עצובה":"עֲצוּבָה","עצוב":"עָצוּב","כועסת":"כּוֹעֶסֶת","כועס":"כּוֹעֵס","מפחדת":"מְפַחֶדֶת","מפחד":"מְפַחֵד","עייפה":"עֲיֵפָה","עייף":"עָיֵף",
+  "רעבה":"רְעֵבָה","רעב":"רָעֵב","שובבה":"שׁוֹבָבָה","שובב":"שׁוֹבָב","מופתעת":"מֻפְתַּעַת","מופתע":"מֻפְתָּע",
+  "שלום":"שָׁלוֹם","להתראות":"לְהִתְרָאוֹת","תודה":"תּוֹדָה","בבקשה":"בְּבַקָּשָׁה","כן":"כֵּן","לא":"לֹא","אני אוהבת אותך":"אֲנִי אוֹהֶבֶת אוֹתְךָ","אני אוהב אותך":"אֲנִי אוֹהֵב אוֹתְךָ","לילה טוב":"לַיְלָה טוֹב"});
 let liveUtts=[], talkId=0, lastSay=null;   // keep references so the browser doesn't drop the end event
 function say(parts){
-  parts = parts.map(([l,t])=>[l, l==='he'?G(t):t.replace(/Melody/g,NAME_EN).replace(new RegExp('\\b'+NAME_EN+'\\b','g'),KID.nameEnSay||NAME_EN)]);
+  parts = parts.map(([l,t])=>[l, l==='he'?G(t):t.replace(/Melody/g,NAME_EN).replace(new RegExp('\\b'+NAME_EN+'\\b','g'),KID.nameEnSay||NAME_EN).replace(/\b([A-Z])(?=[!?.,]|$)/g,m=>LETTER_NAME[m])]);
   const list = settings.voice ? parts.filter(([lang])=>!(lang==='he' && !heVoice && voices.length)) : [];
   if(list.length) lastSay=parts;
   const myTalk=++talkId;
@@ -687,6 +774,7 @@ const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(M
 const art=(src,cls)=>`<img class="art ${cls||''}" src="${src}" alt="" draggable="false">`;
 const starRow=(on,total)=>Array.from({length:total},(_,k)=>art(UI.star,k<on?'':'off')).join('');
 function visual(item,small){
+  if(item.L) return small ? ltrHTML(item.L) : `<div class="lcard">${ltrHTML(item.L)}${item.img?art(item.img):`<div class="emoji">${item.e}</div>`}</div>`;
   if(item.fam!==undefined){
     if(item.fam==='all') return art(FAMROW.all,'famrow');
     return small ? art(FAMFIG[item.fam]) : art(FAMROW[item.fam],'famrow');
@@ -723,16 +811,40 @@ function showStart(){
     say([['en','Hello Melody!'],['he','שלום מלודי! בואי נלמד אנגלית!']]); showCats() };
 }
 
+/* Screen time: after a while (set in the parent corner) the companion suggests a break, at the next natural stop */
+let playMs=0, seenAt=Date.now();
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){ playMs+=Date.now()-seenAt }
+  else { if(Date.now()-seenAt>30*60000) playMs=0; seenAt=Date.now() }   // back after a long time away: a fresh start
+});
+const played=()=>playMs+(document.hidden?0:Date.now()-seenAt);
+const breakDue=()=>settings.breakMin>0 && played()>=settings.breakMin*60000;
+function showBreak(then){
+  playMs=0; seenAt=Date.now(); screenId++; homeTo=null; $home.hidden=false;
+  $main.innerHTML=`<div class="screen party">
+    ${charHTML('big')}
+    <h2 dir="ltr">Great job today!</h2>
+    <p>עבדת יפה! הגיע הזמן להפסקה קטנה</p>
+    <div class="row"><button class="wand" id="more"><span dir="ltr">OK</span></button></div>
+  </div>`;
+  chime(); say([['en','Great job today!'],['he','עבדת יפה! הגיע הזמן להפסקה קטנה']]);
+  document.getElementById('more').onclick=()=>{ tick(); then() };
+}
+let lastCat=null; try{ lastCat=localStorage.getItem(KEY+'last') }catch(e){}
 function showCats(){
+  if(breakDue()) return showBreak(showCats);
   screenId++; homeTo=null;
   $home.hidden=true; atStart=false;
+  const lc=CATS.find(c=>c.id===lastCat);
+  const glow=lc&&!catDone(lc)?lc:CATS.find(c=>!catDone(c));
   const got=Math.min(Math.floor(stars/PER_REWARD),REWARDS.length);
   const mini=REWARDS.slice(Math.max(0,got-3),got).map(r=>art(r.img)).join('');
   $main.innerHTML=`<div class="screen scrolls">
     <button class="album-btn" id="albumBtn">${art(UI.album,'ico')} <span dir="ltr">Stickers</span><span class="mini">${mini}</span></button>
     <div class="cats">${CATS.map((c,i)=>{
       const lv=levelsOf(c);
-      return `<button class="cat" data-i="${i}" style="background:linear-gradient(160deg,${GRADS[i%GRADS.length]})">
+      const here=c===glow;   // the topic she was in the middle of (or the next unfinished one) glows
+      return `<button class="cat${here?' last':''}" data-i="${i}" style="background:linear-gradient(160deg,${GRADS[i%GRADS.length]})">
         ${catDone(c)?`<span class="won">${art(ICON.crown())}</span>`:''}
         <span class="pic">${tileVisual(c)}</span><span class="en" dir="ltr">${c.en}</span><span class="he">${c.he}</span>
         <span class="lvdots">${lv.map((_,l)=>`<i class="${isDone(c,l)?'on':''}"></i>`).join('')}</span></button>`}).join('')}</div>
@@ -744,6 +856,7 @@ function showCats(){
 /* Topic: a short path of levels, a crown at the end */
 function showTopic(cat,announce){
   screenId++; homeTo=null;
+  lastCat=cat.id; try{ localStorage.setItem(KEY+'last',cat.id) }catch(e){}
   $home.hidden=false;
   const lv=levelsOf(cat);
   const now=lv.findIndex((_,l)=>!isDone(cat,l));
@@ -775,11 +888,11 @@ function learn(cat,level,i){
   const items=levelsOf(cat)[level];
   const it=items[i], last=i===items.length-1;
   $main.innerHTML=`<div class="screen">
-    <div class="card enter" id="card" role="button" aria-label="שמעי שוב">
+    <div class="card enter" id="card" role="button" aria-label="${G('שמעי שוב')}">
       <div class="speaker">${SPEAKER}</div>
       <div class="visual">${visual(it)}</div>
-      <div class="word-en">${it.en}</div>
-      <div class="word-he">${it.he}</div>
+      <div class="word-en">${it.L?hlWord(it):it.en}</div>
+      <div class="word-he">${settings.heHelp?heOf(it):''}</div>
     </div>
     <div class="progress">${items.map((_,k)=>`<span class="dot${k<=i?' on':''}"></span>`).join('')}</div>
     <div class="nav">
@@ -788,7 +901,7 @@ function learn(cat,level,i){
       <button class="arrow next" id="next" aria-label="הבא">${CHEV_L}</button>
     </div>
   </div>`;
-  const speakIt=()=>say([['en',it.en],['he',it.he],['en',it.en]]);
+  const speakIt=()=>say(learnLines(it));
   speakIt();
   const card=document.getElementById('card');
   card.onclick=()=>{ burstAt(card,18); speakIt() };
@@ -796,6 +909,14 @@ function learn(cat,level,i){
   document.getElementById('next').onclick=()=>{ tick(); last ? pickGame(cat,level) : learn(cat,level,i+1) };
   document.getElementById('game').onclick=()=>{ tick(); pickGame(cat,level) };
 }
+
+// what the voice says on a word card: a letter and its word, a word and its little sentence, or the word twice
+function learnLines(it){
+  if(it.L) return [['en',it.L+'!'],['en',it.L+', '+it.w+'!']].concat(settings.heHelp?[['he',heOf(it)]]:[]);
+  return settings.heHelp ? [['en',it.en],['he',heOf(it)],['en',it.ph||it.en]] : [['en',it.en],['en',it.ph||it.en]];
+}
+// "Apple" with its letter marked (X is marked inside "Fox")
+function hlWord(it){ const k=it.w.toLowerCase().indexOf(it.L.toLowerCase()); return it.w.slice(0,k)+'<span class="hl">'+it.w[k]+'</span>'+it.w.slice(k+1) }
 
 /* ---------- Game context: this level's words + a few earlier ones, weak words first ---------- */
 function makeCtx(cat,level){
@@ -842,6 +963,7 @@ function miss(g,target,chosen,wrongs,showHint){
 }
 
 function pickGame(cat,level){
+  if(breakDue()) return showBreak(()=>pickGame(cat,level));
   screenId++; homeTo=()=>showTopic(cat);
   $home.hidden=false;
   const g=()=>makeCtx(cat,level);
@@ -850,11 +972,13 @@ function pickGame(cat,level){
     {en:'Balloons',pic:UI.balloons,g:GRADS[0],run:()=>startBalloons(g())},
     {en:'Memory',pic:UI.memory,g:GRADS[1],run:()=>startMemory(g())},
   ];
+  games.push({en:"What's this?",emo:'❓',g:GRADS[3],run:()=>startWhats(g())},{en:'Say it!',emo:'🎤',g:GRADS[2],run:()=>startSay(g())});
   if(cat.id==='colors') games.push({en:BOY?'Magic Armor':'Magic Dress',pic:UI.palette,g:GRADS[5],run:()=>startDress(g())});
+  if(cat.id==='actions') games.push({en:'Do it!',emo:'🤸',g:GRADS[5],run:()=>startDo(g())});
   $main.innerHTML=`<div class="screen">
     <div class="cat-chip"><span class="chip-pic">${tileVisual(cat)}</span><span dir="ltr">${cat.en}</span></div>
     <div class="picker-title" dir="ltr">Let's play!</div>
-    <div class="picker">${games.map((x,k)=>`<button class="game-btn" data-k="${k}" style="background:linear-gradient(160deg,${x.g})"><span class="pic">${art(x.pic)}</span><span class="en" dir="ltr">${x.en}</span></button>`).join('')}</div>
+    <div class="picker${games.length>4?' many':''}">${games.map((x,k)=>`<button class="game-btn" data-k="${k}" style="background:linear-gradient(160deg,${x.g})"><span class="pic">${x.pic?art(x.pic):`<span class="emo">${x.emo}</span>`}</span><span class="en" dir="ltr">${x.en}</span></button>`).join('')}</div>
     <button class="wand" id="cards">${art(ICON.book(),'ico')} <span dir="ltr">Words</span></button>
   </div>`;
   say([['en',"Let's play!"],['he','בחרי משחק']]);
@@ -1058,6 +1182,139 @@ function dressRound(g,colors,plan,r){
   });
 }
 
+/* ---------- Game 5: What's this? (a picture, two spoken words, pick the one that names it) ---------- */
+function startWhats(g){ screenId++; whatsRound(g,pickTargets(g,ROUNDS),0) }
+function whatsRound(g,targets,r){
+  screenId++; homeTo=()=>pickGame(g.cat,g.level);
+  $home.hidden=false;
+  const target=targets[r], opts=shuffle([target,distractors(g,target,1)[0]]);
+  $main.innerHTML=`<div class="screen whats">
+    ${roundBar(r)}
+    <div class="card enter" id="card" role="button" aria-label="${G('שמעי שוב')}"><div class="speaker">${SPEAKER}</div><div class="visual">${target.L?ltrHTML(target.L):visual(target)}</div></div>
+    <div class="bubbles">${opts.map((o,k)=>`<button class="bub" data-k="${k}" aria-label="${o.en}">${SPEAKER}<span${o.en.length>7?' class="long"':''}>${o.en}</span></button>`).join('')}</div>
+  </div>`;
+  const btns=[...$main.querySelectorAll('.bub')];
+  let done=false, wrongs=0, asking=0; const sid=screenId;
+  // "What's this? Cat? Or dog?" with each bubble lighting up as its word is said
+  const ask=async()=>{
+    const me=++asking, still=()=>me===asking&&!done&&sid===screenId;
+    const lit=k=>btns.forEach((b,j)=>b.classList.toggle('on',j===k));
+    await say(r===0&&!wrongs?[['en',"What's this?"],['he','מה זה? תבחרי את המילה הנכונה']]:[['en',"What's this?"]]);
+    if(!still()) return; lit(0); await say([['en',opts[0].en+'?']]);
+    if(!still()) return; lit(1); await say([['en','Or '+opts[1].en+'?']]);
+    if(still()) lit(-1);
+  };
+  ask();
+  const card=document.getElementById('card');
+  card.onclick=()=>{ burstAt(card,14); ask() };
+  btns.forEach(b=>b.onclick=()=>{
+    if(done) return;
+    asking++; btns.forEach(x=>x.classList.remove('on'));
+    const o=opts[+b.dataset.k];
+    if(o===target){
+      done=true; b.classList.remove('hint'); b.classList.add('right');
+      if(!wrongs) gotIt(g.cat,target);
+      win(b,target.en,()=> r+1<ROUNDS ? whatsRound(g,targets,r+1) : party(g,()=>startWhats(g)));
+    } else {
+      wrongs++; b.classList.remove('wrong'); void b.offsetWidth; b.classList.add('wrong');
+      miss(g,target,o,wrongs,()=>btns[opts.indexOf(target)].classList.add('hint'));
+    }
+  });
+}
+
+/* ---------- Game 6: Say it! (she hears the word, says it, and the phone listens; without speech recognition she says it and taps the star) ---------- */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let srOff=false;   // the microphone was refused or speech recognition failed: tap mode for the rest of this visit
+const MIC='<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3" fill="#fff"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0"/><path d="M12 17.5V21"/></svg>';
+const CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>';
+// what a child's "A" may come back as from the recognizer
+const LETTER_HEAR={A:['a','ay','hey','eh','eight'],B:['b','be','bee','bea'],C:['c','see','sea','she'],D:['d','dee','the','de'],E:['e','ee','he'],F:['f','ef','eff','if'],
+  G:['g','gee','ji','jeep'],H:['h','age','each','itch','eight'],I:['i','eye','hi','aye'],J:['j','jay','jae'],K:['k','kay','ok','okay','cay'],L:['l','el','elle','ell','al'],
+  M:['m','em','am','um'],N:['n','en','and','in'],O:['o','oh','owe','all'],P:['p','pee','pea','pe'],Q:['q','cue','queue','cute','kyu'],R:['r','are','our','ar','or'],
+  S:['s','es','ess','yes'],T:['t','tea','tee','ti'],U:['u','you','yu','who'],V:['v','vee','we','be'],W:['w','double you','double u','dub'],X:['x','ex','eggs','axe','ax'],
+  Y:['y','why','wine','wise'],Z:['z','zee','zed','zeta']};
+function lev(a,b){ const d=Array.from({length:a.length+1},(_,i)=>[i]); for(let j=1;j<=b.length;j++) d[0][j]=j;
+  for(let i=1;i<=a.length;i++) for(let j=1;j<=b.length;j++) d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1)); return d[a.length][b.length] }
+const DIGIT=['zero','one','two','three','four','five','six','seven','eight','nine','ten'];
+// the recognizer often writes numbers as digits: "2" -> "two"
+const plain=t=>t.toLowerCase().replace(/\b(10|\d)\b/g,d=>' '+DIGIT[+d]+' ').replace(/[^a-z ]/g,'').replace(/\s+/g,' ').trim();
+// lenient on purpose: little children's English is not a native adult's
+function heardIt(heard,t){
+  const h=plain(heard); if(!h) return false;
+  const want=t.L?LETTER_HEAR[t.L].concat(plain(t.w)):[plain(t.en)];
+  return want.some(w=> h===w || (' '+h+' ').includes(' '+w+' ') || (w.length>2 && lev(h,w)<=Math.max(1,Math.floor(w.length/3)))
+    || (w.length>3 && h.split(' ').some(x=>lev(x,w)<=Math.floor(w.length/4))));
+}
+function startSay(g){ screenId++; sayRound(g,pickTargets(g,ROUNDS),0,0) }
+function sayRound(g,targets,r,tries){
+  const id=++screenId; homeTo=()=>pickGame(g.cat,g.level);
+  $home.hidden=false;
+  const target=targets[r], live=settings.mic&&!!SR&&!srOff&&navigator.onLine!==false;
+  $main.innerHTML=`<div class="screen">
+    ${roundBar(r)}
+    <div class="card enter" id="card" role="button" aria-label="${G('שמעי שוב')}"><div class="speaker">${SPEAKER}</div>
+      <div class="visual">${visual(target)}</div><div class="word-en">${target.L?hlWord(target):target.en}</div></div>
+    <button class="mic" id="mic" aria-label="${live?'מיקרופון':'אמרתי'}">${live?MIC:CHECK}</button>
+    <div class="heard" id="heard"></div>
+    ${live?'':`<div class="say-note">אומרים את המילה בקול ולוחצים על הכפתור.${!settings.mic||SR?'':' (בטלפון הזה אין זיהוי דיבור.)'}</div>`}
+  </div>`;
+  const mic=document.getElementById('mic'), heard=document.getElementById('heard'), card=document.getElementById('card');
+  const model=()=>say(target.L?[['en',target.L+'!'],['en',target.L+', '+target.w+'!']]:[['en',target.en+'!']]);
+  const intro=()=>say((r===0&&!tries?[['he','תקשיבי ותגידי אחריי']]:[]).concat(target.L?[['en',target.L+'!']]:[['en',target.en+'!']]))
+    .then(()=>{ if(id===screenId&&!busy&&!done) mic.classList.add('hint') });
+  intro();
+  card.onclick=()=>{ if(busy) return; burstAt(card,14); model() };
+  const next=()=> r+1<ROUNDS ? sayRound(g,targets,r+1,0) : party(g,()=>startSay(g));
+  let busy=false, done=false;
+  const good=extra=>{ done=true; mic.classList.remove('hint','listen'); mic.classList.add('done'); mic.innerHTML=CHECK; win(mic,target.en,next,extra) };
+  if(!live){ mic.onclick=()=>{ if(!done){ tick(); good([['en',target.en+'!']]) } }; return }
+  mic.onclick=()=>{
+    if(busy||done) return; busy=true; mic.classList.remove('hint');
+    try{ synth&&synth.cancel() }catch(e){}
+    const rec=new SR(); rec.lang='en-US'; rec.interimResults=false; rec.maxAlternatives=5;
+    let got=false;
+    rec.onresult=e=>{
+      got=true; if(id!==screenId) return;
+      if(!e.results.length||!e.results[0].length){ got=false; return }
+      const alts=[...e.results[0]].map(a=>a.transcript);
+      heard.textContent='“'+alts[0]+'”';
+      if(alts.some(a=>heardIt(a,target))){ gotIt(g.cat,target); good() }
+      else if(++tries>=2) good([['en','Good try! '+target.en+'!']]);   // never stuck: after two tries it counts, with the word modeled again
+      else { boop(); react('oops'); say([['he','כמעט! תקשיבי שוב'],['en',target.en+'!']]).then(()=>{ if(id===screenId&&!done&&!busy) mic.classList.add('hint') }) }
+    };
+    rec.onerror=e=>{ if(['not-allowed','service-not-allowed','network','audio-capture','language-not-supported'].includes(e.error)) srOff=true };
+    rec.onend=()=>{
+      busy=false; mic.classList.remove('listen'); if(id!==screenId||got||done) return;
+      if(srOff) sayRound(g,targets,r,tries);   // redraw in tap mode
+      else if(++tries>=2) good([['en','Good try! '+target.en+'!']]);   // a quiet child is never stuck either
+      else { say([['he','לא שמעתי. נסי שוב!']]); mic.classList.add('hint') }
+    };
+    try{ rec.start() }catch(e){ busy=false; srOff=true; sayRound(g,targets,r,tries); return }
+    mic.classList.add('listen');
+  };
+}
+
+/* ---------- Game 7: Do it! (actions: hear the word and do it with your body) ---------- */
+function startDo(g){ screenId++; const t=pickTargets(g,ROUNDS); sayThen([['he','תקשיבי ותעשי מה שאני אומרת!']],()=>doRound(g,t,0),300) }
+function doRound(g,targets,r){
+  const id=++screenId; homeTo=()=>pickGame(g.cat,g.level);
+  $home.hidden=false;
+  const target=targets[r];
+  $main.innerHTML=`<div class="screen doit">
+    ${roundBar(r)}
+    <div class="card enter" id="card"><div class="visual">${visual(target)}</div><div class="word-en">${target.en}!</div><div class="word-he">${settings.heHelp?heOf(target):''}</div></div>
+    <div class="round" id="beat">${starRow(0,5)}</div>
+  </div>`;
+  const card=document.getElementById('card');
+  say([['en',target.en+'!'],['en',target.en+'! '+target.en+'!']]).then(()=>{
+    // five beats of moving together, then a star
+    let k=0; const beat=()=>{ if(id!==screenId) return;
+      if(k===5){ win(card,target.en,()=> r+1<ROUNDS ? doRound(g,targets,r+1) : party(g,()=>startDo(g)),[['en','Great job!']]); return }
+      k++; document.getElementById('beat').innerHTML=starRow(k,5); tick(); react('happy'); setTimeout(beat,850) };
+    setTimeout(beat,300);
+  });
+}
+
 /* ---------- End of a game: level done, maybe a crown ---------- */
 function party(g,again,hero){
   screenId++; homeTo=()=>showTopic(g.cat);
@@ -1088,7 +1345,7 @@ function party(g,again,hero){
 
 /* ---------- Sticker album ---------- */
 function showAlbum(){
-  screenId++; homeTo=null;
+  screenId++; homeTo=null; atStart=false;
   $home.hidden=false;
   const got=Math.min(Math.floor(stars/PER_REWARD),REWARDS.length);
   const full=got===REWARDS.length;
@@ -1111,6 +1368,7 @@ function showAlbum(){
 
 /* ---------- Parent corner (hold the title for 2 seconds) ---------- */
 function showParents(){
+  keepTop=$main.querySelector('.parents')?$main.scrollTop:null;
   screenId++; homeTo=null; atStart=false;
   $home.hidden=false;
   try{ synth&&synth.cancel() }catch(e){}
@@ -1127,6 +1385,13 @@ function showParents(){
       <div class="pbtns"><button class="pbtn ${settings.voice?'on':''}" data-voice="1">דיבור פועל</button><button class="pbtn ${settings.voice?'':'on'}" data-voice="0">בלי דיבור</button></div>
       <div class="pbtns" style="margin-top:8px"><button class="pbtn ${settings.rate<1?'on':''}" data-rate=".8">איטי</button><button class="pbtn ${settings.rate===1?'on':''}" data-rate="1">רגיל</button></div>
       <div class="pnote" style="margin-top:6px">${voices.length?(heVoice?'יש בטלפון קול עברי.':(BOY?'אין בטלפון קול עברי, ולכן הוא שומע רק אנגלית.':'אין בטלפון קול עברי, ולכן היא שומעת רק אנגלית.')):''}</div></div>
+    <div class="pbox"><h3>למידה</h3>
+      <div class="pnote">תרגום לעברית בכרטיסי המילים. כשהמילים כבר מוכרות, אפשר לכבות ולתת לאנגלית לעמוד לבד.</div>
+      <div class="pbtns" style="margin-top:6px"><button class="pbtn ${settings.heHelp?'on':''}" data-he="1">עם עברית</button><button class="pbtn ${settings.heHelp?'':'on'}" data-he="0">רק אנגלית</button></div>
+      <div class="pnote" style="margin-top:12px">משחק "Say it!" משתמש במיקרופון. הזיהוי נעשה בשרתים של גוגל, ובלי מיקרופון הילד אומר את המילה ולוחץ על כפתור.</div>
+      <div class="pbtns" style="margin-top:6px"><button class="pbtn ${settings.mic?'on':''}" data-mic="1">עם מיקרופון</button><button class="pbtn ${settings.mic?'':'on'}" data-mic="0">בלי מיקרופון</button></div>
+      <div class="pnote" style="margin-top:12px">תזכורת להפסקה אחרי:</div>
+      <div class="pbtns" style="margin-top:6px">${[15,20,30,0].map(m=>`<button class="pbtn ${settings.breakMin===m?'on':''}" data-break="${m}">${m?m+' דקות':'בלי תזכורת'}</button>`).join('')}</div></div>
     <div class="pbox"><h3>גיבוי</h3>
       <div class="pnote">ההתקדמות נשמרת רק בטלפון הזה, וניקוי נתונים של הדפדפן מוחק אותה. כדאי לשמור גיבוי מדי פעם.</div>
       <div class="pbtns" style="margin-top:8px"><button class="pbtn" id="pExport">שמירת גיבוי לקובץ</button><button class="pbtn" id="pImport">שחזור מקובץ</button></div>
@@ -1135,6 +1400,9 @@ function showParents(){
       <div class="pbtns"><button class="pbtn danger" id="pReset">מחיקת כל ההתקדמות</button></div></div>
   </div></div>`;
   $main.querySelectorAll('[data-voice]').forEach(b=>b.onclick=()=>{ settings.voice=b.dataset.voice==='1'; saveSettings(); showParents() });
+  $main.querySelectorAll('[data-he]').forEach(b=>b.onclick=()=>{ settings.heHelp=b.dataset.he==='1'; saveSettings(); showParents() });
+  $main.querySelectorAll('[data-mic]').forEach(b=>b.onclick=()=>{ settings.mic=b.dataset.mic==='1'; srOff=false; saveSettings(); showParents() });
+  $main.querySelectorAll('[data-break]').forEach(b=>b.onclick=()=>{ settings.breakMin=+b.dataset.break; saveSettings(); showParents() });
   $main.querySelectorAll('[data-rate]').forEach(b=>b.onclick=()=>{ settings.rate=+b.dataset.rate; saveSettings(); showParents(); say([['en','Hello '+NAME_EN+'!']]) });
   document.getElementById('pExport').onclick=()=>{
     let seen=0; try{ seen=+(localStorage.getItem(KEY+'seen')||0) }catch(e){}
@@ -1148,6 +1416,7 @@ function showParents(){
     try{
       const d=JSON.parse(await file.files[0].text());
       if(d.app!=='melody-english'||(d.kid||'melody')!==KID.id||!d.prog||!d.prog.levels) throw 0;
+      d.prog.weak=d.prog.weak||{};
       if(!confirm('לשחזר את הגיבוי? ההתקדמות הנוכחית תוחלף.')) return;
       stars=+d.stars||0; prog=d.prog; saveStars(); saveProg();
       try{ localStorage.setItem(KEY+'seen',String(+d.seen||0)) }catch(e){}
@@ -1158,7 +1427,7 @@ function showParents(){
   document.getElementById('pReset').onclick=()=>{
     if(!confirm('למחוק את כל הכוכבים, המדבקות והשלבים?')) return;
     stars=0; prog={levels:{},weak:{}}; saveStars(); saveProg();
-    try{ localStorage.removeItem(KEY+'seen') }catch(e){}
+    try{ localStorage.removeItem(KEY+'seen'); localStorage.removeItem(KEY+'last') }catch(e){} lastCat=null;
     $count.textContent=stars; showParents();
   };
 }
@@ -1179,8 +1448,11 @@ function fitScreen(){
   const need=scr.offsetHeight;
   if(need>avail+1) scr.style.zoom=String(Math.max(.45,(avail-2)/need));
 }
-new MutationObserver(()=>{ $buddyBar.hidden=!!$main.querySelector('.pm.big'); $main.scrollTop=0; fitScreen(); requestAnimationFrame(fitScreen) }).observe($main,{childList:true});
-addEventListener('resize',()=>requestAnimationFrame(fitScreen));
+function markScroll(){ $main.classList.toggle('scrollable', $main.scrollHeight-$main.clientHeight>4 && $main.scrollTop+$main.clientHeight<$main.scrollHeight-4) }
+$main.addEventListener('scroll',markScroll,{passive:true});
+let keepTop=null;
+new MutationObserver(()=>{ $buddyBar.hidden=!!$main.querySelector('.pm.big'); $main.scrollTop=keepTop||0; keepTop=null; fitScreen(); requestAnimationFrame(()=>{ fitScreen(); markScroll() }) }).observe($main,{childList:true});
+addEventListener('resize',()=>requestAnimationFrame(()=>{ fitScreen(); markScroll() }));
 addEventListener('load',fitScreen);
 $buddy.onclick=()=>{ react('happy'); burstAt($buddy,16); if(lastSay) say(lastSay) };
 showStart();
