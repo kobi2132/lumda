@@ -452,7 +452,7 @@ html[data-kid="yam"] .buddy{aspect-ratio:320/350}
 .mic.done{background:linear-gradient(180deg,#7fe3c4,#29b98d);box-shadow:0 8px 0 #1f8f6c}
 .heard{min-height:1.4em;font-size:20px;color:var(--plum);direction:ltr;text-align:center}
 .say-note{font-size:14px;color:#7a4a8c;text-align:center;max-width:34ch;line-height:1.45}
-.doit .visual .emoji{animation:doit .9s ease-in-out infinite}
+.doit .visual .emoji,.doit .visual .art{animation:doit .9s ease-in-out infinite}
 @keyframes doit{50%{transform:translateY(-16px) scale(1.06)}}
 html[data-kid="yam"] .mic{background:linear-gradient(180deg,#7fa0ff,#3f6fd8);box-shadow:0 8px 0 #24358f}
 html[data-kid="yam"] .ltr{color:#24358f}
@@ -572,6 +572,7 @@ const ART={"kingdom": ["img/3988cc43c380.webp", "img/7b43096d45f2.webp", "img/cd
 const FAMFIG=["img/22a85324bfa5.webp", "img/8aa1da1198bd.webp", "img/d9e0a0298501.webp", "img/5f5f3d5c6743.webp", "img/3be6b872e3e5.webp", "img/0ec512d5ee82.webp", "img/47a30145970f.webp"];
 const FAMROW={"0": "img/12e55e869da8.webp", "1": "img/4110f6446dbe.webp", "2": "img/74880c679f28.webp", "3": "img/023703b102bb.webp", "4": "img/ab0372a29711.webp", "5": "img/d73b961e1948.webp", "6": "img/e54a14b39fcb.webp", "all": "img/7eb19a4ceb8c.webp"};
 const UI={"find": "img/5067d6fb4a77.webp", "balloons": "img/5f5d93026508.webp", "memory": "img/cbdd99576def.webp", "palette": "img/7b91dcc7d034.webp", "album": "img/d75a3c60d27b.webp", "wand": "img/cab09c362948.webp", "lock": "img/4429e2564f83.webp", "star": "img/27857b18d3d8.webp"};
+Object.assign(ART,{"actions": ["img/e314b9ef7151.webp", "img/72fbe08ac718.webp", "img/44cc9c54ca87.webp", "img/e9d4aa46d641.webp", "img/80a8afa9c461.webp", "img/9dfb67b6c024.webp", "img/900907d548d2.webp", "img/409fc01044a7.webp", "img/a1914494986e.webp", "img/bb92d0c5d116.webp"], "feelings": ["img/1dd69cd33b49.webp", "img/29596a8a6db1.webp", "img/af4430180d20.webp", "img/7e8956ceb9bc.webp", "img/4ca4d2c8f78e.webp", "img/ab880e8c34e3.webp", "img/ac51cd360c20.webp", "img/b1ad2529505d.webp"], "talk": ["img/959f328754f0.webp", "img/d6c0b7cea810.webp", "img/38435b84375e.webp", "img/9708ab842bcb.webp", "img/db8ee46fad7d.webp", "img/82e4188c58d3.webp", "img/bd7c7852aca4.webp", "img/1483c9eb8ab8.webp"]});   // actions, feelings, talk
 /* Attach the illustrations to the words (same order as the sheets) */
 for(const c of CATS){ if(ART[c.id]) c.items.forEach((it,i)=>{ it.img=ART[c.id][i] }) }
 { const FAM_ORDER=['Grandpa','Grandma','Dad','Mom','Brother','Sister','Baby'];
@@ -585,6 +586,8 @@ const LETTER_WORDS=[['A','Apple','fruits'],['B','Ball','toys'],['C','Cat','anima
 CATS.push({id:'abc',en:'ABC',he:'אותיות',items:LETTER_WORDS.map(([L,w,c,e,he])=>{ const src=c&&findItem(c,w); return src?{en:L,L,w,he:src.he,img:src.img}:{en:L,L,w,he,e} })});
 // how the voice says each letter's name (a lone "A" is otherwise read as the word "a")
 const LETTER_NAME={A:'ay',B:'bee',C:'see',D:'dee',E:'ee',F:'eff',G:'gee',H:'aitch',I:'eye',J:'jay',K:'kay',L:'el',M:'em',N:'en',O:'oh',P:'pee',Q:'cue',R:'ar',S:'ess',T:'tee',U:'you',V:'vee',W:'double you',X:'ex',Y:'why',Z:'zee'};
+const ABC_ART={"Juice": "img/603387fcff3f.webp", "Queen": "img/5cb175302c1a.webp", "Umbrella": "img/73da1ec03dc5.webp", "Violin": "img/03627703144d.webp", "Fox": "img/977e533f3bea.webp", "Yo-yo": "img/ae1e2b96fcbc.webp", "Zebra": "img/100b1ba03d9b.webp"};
+CATS.find(c=>c.id==='abc').items.forEach(it=>{ if(ABC_ART[it.w]) it.img=ABC_ART[it.w] });
 const ltrHTML=L=>`<span class="ltr">${L}<small>${L.toLowerCase()}</small></span>`;
 const heOf=it=>(BOY&&it.hem)||it.he;
 // the picture on each topic tile
@@ -1022,6 +1025,8 @@ function gameRound(g,targets,r){
 }
 
 /* ---------- Game 2: Balloons ---------- */
+// "Pop the cat", but phrases and letters are named on their own: "Pop: Thank you"
+const popLine=(cat,t)=>cat.id==='talk'||cat.id==='abc'?'Pop: '+t.en:'Pop the '+t.en;
 const BALLOON_COLORS=[['#ff4f9a','#ff9ac9'],['#9566f2','#c6a4ff'],['#ffbf2e','#ffe08a'],['#29b98d','#7fe3c4'],['#5b8dff','#9cc0ff']];
 function startBalloons(g){
   screenId++;
@@ -1040,12 +1045,12 @@ function balloonRound(g,targets,r){
   const others=shuffle([.02,.5,.7]);
   $main.innerHTML=`<div class="screen fill">
     ${roundBar(r)}
-    ${askBtn('Pop the '+target.en)}
+    ${askBtn(popLine(g.cat,target))}
     <div class="air" id="air" style="--bw:${nb===3?'28%':'24%'}">${items.map((it,k)=>{
       const d=14+Math.random()*3, f=it===target?.2:others.pop(), delay=-(d*f);
       return `<button class="balloon" data-k="${k}" aria-label="${it.he}" style="left:${lanes[k]}%;--d:${d.toFixed(1)}s;--delay:${delay.toFixed(1)}s;--b:${cols[k][0]};--b2:${cols[k][1]};--rt:${20+(k%2)*30}%"><span class="skin"><span class="face">${visual(it,true)}</span></span></button>`}).join('')}</div>
   </div>`;
-  const ask=()=>say([['en','Pop the '+target.en+'!'],['he','תפוצצי את הבלון של'],['en',target.en]]);
+  const ask=()=>say([['en',popLine(g.cat,target)+'!'],['he','תפוצצי את הבלון של'],['en',target.en]]);
   ask();
   document.getElementById('ask').onclick=ask;
   let done=false, wrongs=0;
