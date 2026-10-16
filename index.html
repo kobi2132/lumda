@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>הלומדות שלי</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap">
+<style>
+/* Hub: a catalogue of learning apps, filtered by age and subject. Content comes from apps/catalog.js. */
+:root{--plum:#4e1f63;--rose:#ff4f9a;--gold:#ffbf2e;--card:#fff;--font:"Varela Round",system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:var(--font);color:var(--plum);
+  background:linear-gradient(170deg,#ffc6e3 0%,#f3c4ff 55%,#d7c0ff 100%);background-color:#f6c7ec;
+  -webkit-tap-highlight-color:transparent}
+.wrap{max-width:900px;margin:0 auto;padding:20px 16px 40px}
+h1{margin:8px 0 4px;text-align:center;font-size:clamp(32px,9vw,52px);color:#fff;text-shadow:0 3px 0 #e0307f}
+.sub{text-align:center;margin:0 0 18px;font-size:17px}
+.filters{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip{font:inherit;font-size:18px;color:var(--plum);background:rgba(255,255,255,.6);border:3px solid #fff;border-radius:999px;
+  padding:8px 16px;cursor:pointer}
+.chip[aria-pressed="true"]{background:#fff;border-color:var(--gold);box-shadow:0 4px 0 #f2c35a}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.app{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;text-decoration:none;color:var(--plum);
+  background:var(--card);border:5px solid #fff;border-radius:28px;padding:18px 14px 16px;box-shadow:0 7px 0 rgba(78,31,99,.18)}
+.app:active{transform:translateY(4px);box-shadow:0 3px 0 rgba(78,31,99,.18)}
+.app .icon{font-size:72px;line-height:1.1}
+.app h2{margin:0;font-size:24px}
+.app p{margin:0;font-size:15px;line-height:1.45;opacity:.85}
+.tags{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:4px}
+.tag{font-size:14px;color:#fff;border-radius:999px;padding:3px 10px}
+.tag.age{background:#7a4a8c}
+.empty{text-align:center;font-size:18px;padding:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>הלומדות שלי</h1>
+  <p class="sub">בוחרים גיל ונושא, ומתחילים לשחק</p>
+  <div class="filters">
+    <div class="row" id="ages"></div>
+    <div class="row" id="subjects"></div>
+  </div>
+  <div class="grid" id="grid"></div>
+</div>
+<script src="apps/catalog.js"></script>
+<script>
+const APPS = window.LUMDA_APPS || [], SUBJ = window.LUMDA_SUBJECTS || {};
+const AGES = [{id:'all',he:'כל הגילאים'},{id:'3-4',he:'גיל 3–4',r:[3,4]},{id:'5-6',he:'גיל 5–6',r:[5,6]},{id:'7-9',he:'גיל 7–9',r:[7,9]}];
+let pick = { age:'all', subject:'all' };
+try { Object.assign(pick, JSON.parse(localStorage.getItem('lumda-filter')||'{}')) } catch(e){}
+
+const usedSubjects = [...new Set(APPS.map(a=>a.subject))];
+function chips(el, items, key){
+  el.innerHTML = '';
+  items.forEach(it=>{
+    const b = document.createElement('button');
+    b.className = 'chip'; b.textContent = it.he; b.setAttribute('aria-pressed', pick[key]===it.id);
+    b.onclick = ()=>{ pick[key]=it.id; try{localStorage.setItem('lumda-filter',JSON.stringify(pick))}catch(e){}; render() };
+    el.appendChild(b);
+  });
+}
+function render(){
+  chips(document.getElementById('ages'), AGES, 'age');
+  chips(document.getElementById('subjects'),
+    [{id:'all',he:'כל הנושאים'}, ...usedSubjects.map(s=>({id:s, he:(SUBJ[s]?.icon||'')+' '+(SUBJ[s]?.he||s)}))], 'subject');
+  const age = AGES.find(a=>a.id===pick.age);
+  const list = APPS.filter(a =>
+    (pick.subject==='all' || a.subject===pick.subject) &&
+    (!age || !age.r || (a.ages[0] <= age.r[1] && a.ages[1] >= age.r[0])));
+  const grid = document.getElementById('grid');
+  grid.innerHTML = list.length ? '' : '<div class="empty">אין עדיין לומדה לבחירה הזאת</div>';
+  list.forEach(a=>{
+    const s = SUBJ[a.subject] || {he:a.subject,color:'#888'};
+    const el = document.createElement('a');
+    el.className = 'app'; el.href = a.path;
+    el.innerHTML = `<div class="icon"></div><h2></h2><p></p>
+      <div class="tags"><span class="tag" style="background:${s.color}"></span><span class="tag age"></span></div>`;
+    el.querySelector('.icon').textContent = a.icon;
+    el.querySelector('h2').textContent = a.title;
+    el.querySelector('p').textContent = a.description;
+    el.querySelectorAll('.tag')[0].textContent = s.he;
+    el.querySelectorAll('.tag')[1].textContent = `גיל ${a.ages[0]}–${a.ages[1]}`;
+    grid.appendChild(el);
+  });
+}
+render();
+</script>
+</body>
+</html>
