@@ -369,6 +369,12 @@ main.scrollable{-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 34
 .weak{display:flex;flex-wrap:wrap;gap:6px}
 .weak span{background:var(--blush);border-radius:999px;padding:3px 10px;direction:ltr}
 .pnote{font-size:13px;color:#7a4a8c}
+.hrow{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #f3e6f6}
+.hrow .ht{flex:1;text-align:right;cursor:pointer}
+.hrow .hen{font-size:13px;color:#7a4a8c;direction:ltr}
+.hrow button{font:inherit;border:2px solid var(--lilac);background:#fff;border-radius:999px;min-width:44px;height:40px;cursor:pointer;padding:0 8px}
+.hrow.bad{background:#ffe9ec}.hrow.bad .hflag{background:#e0475f;border-color:#e0475f;color:#fff}
+.hrow.hplay .ht{color:var(--rose-deep);font-weight:700}
 /* Tablets: use the room */
 @media (min-width:700px) and (min-height:700px){
   .app{max-width:1000px}
@@ -1413,6 +1419,48 @@ function showAlbum(){
 }
 
 /* ---------- Parent corner (hold the title for 2 seconds) ---------- */
+/* Parent check of the Hebrew voice: every Hebrew word and sentence the child hears, with a play button and a "sounds wrong" mark */
+function heCheckList(){
+  const words=new Set(), out=[];
+  CATS.forEach(c=>{ const it=[{he:c.he,en:'('+c.en+')'}].concat(c.items.map(i=>({he:heOf(i),en:i.en}))).filter(x=>x.he);
+    it.forEach(x=>words.add(x.he)); out.push({title:c.he,rows:it}) });
+  const sent=Object.keys(HE_SAY).map(G).filter((t,i,a)=>!words.has(t)&&a.indexOf(t)===i);
+  out.push({title:'משפטים',rows:sent.map(t=>({he:t}))});
+  return out;
+}
+let heBad={}; try{ heBad=JSON.parse(localStorage.getItem('lumda-he-bad')||'{}') }catch(e){}
+function showHeCheck(){
+  screenId++; homeTo=showParents; atStart=false; $home.hidden=false; hush();
+  const groups=heCheckList();
+  $main.innerHTML=`<div class="screen scrolls"><div class="parents">
+    <h2>בדיקת העברית</h2>
+    <div class="pbox"><div class="pnote">לוחצים על מילה כדי לשמוע אותה. אם משהו נשמע לא טוב, מסמנים אותו ב־✗. בסוף לוחצים "העתקת המסומנים" ושולחים לי את הרשימה.</div>
+      <div class="pbtns" style="margin-top:8px"><button class="pbtn" id="hCopy">העתקת המסומנים (<span id="hN">0</span>)</button><button class="pbtn" id="hStop">עצירה</button></div>
+      <div class="pnote" id="hMsg" style="margin-top:6px">${voices.length&&!heVoice?'שימו לב: אין בטלפון הזה קול עברי.':''}</div></div>
+    ${groups.map((g,gi)=>`<div class="pbox"><h3>${g.title}</h3>
+      <div class="pbtns" style="margin-bottom:6px"><button class="pbtn" data-all="${gi}">השמעת הכול ▶</button></div>
+      ${g.rows.map((r,ri)=>`<div class="hrow${heBad[r.he]?' bad':''}" data-g="${gi}" data-r="${ri}"><span class="ht">${r.he}${r.en?` <span class="hen">${r.en}</span>`:''}</span><button class="hsay" aria-label="השמעה">🔊</button><button class="hflag" aria-label="נשמע לא טוב">✗</button></div>`).join('')}</div>`).join('')}
+  </div></div>`;
+  let runId=0; const my=screenId, cnt=()=>{ document.getElementById('hN').textContent=Object.keys(heBad).length };
+  const row=(gi,ri)=>$main.querySelector(`.hrow[data-g="${gi}"][data-r="${ri}"]`);
+  const mark=el=>{ $main.querySelectorAll('.hrow.hplay').forEach(e=>e.classList.remove('hplay')); el&&el.classList.add('hplay') };
+  const one=el=>{ const r=groups[el.dataset.g].rows[el.dataset.r]; mark(el); talkScreen=screenId; return say([['he',r.he]]) };
+  $main.querySelectorAll('.hrow').forEach(el=>{
+    el.querySelector('.ht').onclick=el.querySelector('.hsay').onclick=()=>{ runId++; hush(); one(el) };
+    el.querySelector('.hflag').onclick=()=>{ const t=groups[el.dataset.g].rows[el.dataset.r].he;
+      if(heBad[t]) delete heBad[t]; else heBad[t]=1; el.classList.toggle('bad',!!heBad[t]);
+      try{ localStorage.setItem('lumda-he-bad',JSON.stringify(heBad)) }catch(e){} cnt() };
+  });
+  $main.querySelectorAll('[data-all]').forEach(b=>b.onclick=async()=>{ hush(); const gi=b.dataset.all, run=++runId;
+    for(let ri=0;ri<groups[gi].rows.length;ri++){ const el=row(gi,ri); if(!el||screenId!==my||runId!==run) return; el.scrollIntoView({block:'center',behavior:'smooth'}); await one(el);
+      if(screenId!==my||runId!==run) return; await new Promise(r=>setTimeout(r,350)) } mark(null) });
+  document.getElementById('hStop').onclick=()=>{ runId++; hush(); mark(null) };
+  document.getElementById('hCopy').onclick=async()=>{ const t=Object.keys(heBad).join('\n'), msg=document.getElementById('hMsg');
+    if(!t){ msg.textContent='עדיין לא סומן כלום.'; return }
+    try{ await navigator.clipboard.writeText('עברית שנשמעת לא טוב:\n'+t); msg.textContent='הועתק! אפשר להדביק לי בשיחה.' }
+    catch(e){ msg.textContent='לא הצלחתי להעתיק. אפשר לצלם מסך של השורות האדומות.' } };
+  cnt();
+}
 function showParents(){
   keepTop=$main.querySelector('.parents')?$main.scrollTop:null;
   screenId++; homeTo=null; atStart=false;
@@ -1430,7 +1478,7 @@ function showParents(){
     <div class="pbox"><h3>קול</h3>
       <div class="pbtns"><button class="pbtn ${settings.voice?'on':''}" data-voice="1">דיבור פועל</button><button class="pbtn ${settings.voice?'':'on'}" data-voice="0">בלי דיבור</button></div>
       <div class="pbtns" style="margin-top:8px"><button class="pbtn ${settings.rate<1?'on':''}" data-rate=".8">איטי</button><button class="pbtn ${settings.rate===1?'on':''}" data-rate="1">רגיל</button></div>
-      <div class="pbtns" style="margin-top:8px"><button class="pbtn" id="pLetters">השמעת כל האותיות</button></div>
+      <div class="pbtns" style="margin-top:8px"><button class="pbtn" id="pLetters">השמעת כל האותיות</button><button class="pbtn" id="pHeCheck">בדיקת העברית</button></div>
       <div class="pnote" style="margin-top:6px">${voices.length?(heVoice?'יש בטלפון קול עברי.':(BOY?'אין בטלפון קול עברי, ולכן הוא שומע רק אנגלית.':'אין בטלפון קול עברי, ולכן היא שומעת רק אנגלית.')):''}</div></div>
     <div class="pbox"><h3>למידה</h3>
       <div class="pnote">תרגום לעברית בכרטיסי המילים. כשהמילים כבר מוכרות, אפשר לכבות ולתת לאנגלית לעמוד לבד.</div>
@@ -1450,6 +1498,7 @@ function showParents(){
   $main.querySelectorAll('[data-he]').forEach(b=>b.onclick=()=>{ settings.heHelp=b.dataset.he==='1'; saveSettings(); showParents() });
   $main.querySelectorAll('[data-mic]').forEach(b=>b.onclick=()=>{ settings.mic=b.dataset.mic==='1'; srOff=false; saveSettings(); showParents() });
   $main.querySelectorAll('[data-break]').forEach(b=>b.onclick=()=>{ settings.breakMin=+b.dataset.break; saveSettings(); showParents() });
+  document.getElementById('pHeCheck').onclick=()=>showHeCheck();
   document.getElementById('pLetters').onclick=()=>{ talkScreen=screenId; say('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(L=>['en',L+'!'])) };
   $main.querySelectorAll('[data-rate]').forEach(b=>b.onclick=()=>{ settings.rate=+b.dataset.rate; saveSettings(); showParents(); say([['en','Hello '+NAME_EN+'!']]) });
   document.getElementById('pExport').onclick=()=>{
