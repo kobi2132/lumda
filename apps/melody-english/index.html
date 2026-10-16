@@ -1430,7 +1430,7 @@ function heCheckList(){
 }
 let heBad={}; try{ heBad=JSON.parse(localStorage.getItem('lumda-he-bad')||'{}') }catch(e){}
 function showHeCheck(){
-  screenId++; homeTo=showParents; atStart=false; $home.hidden=false; hush();
+  screenId++; homeTo=showDev; atStart=false; $home.hidden=false; hush();
   const groups=heCheckList();
   $main.innerHTML=`<div class="screen scrolls"><div class="parents">
     <h2>בדיקת העברית</h2>
@@ -1461,6 +1461,33 @@ function showHeCheck(){
     catch(e){ msg.textContent='לא הצלחתי להעתיק. אפשר לצלם מסך של השורות האדומות.' } };
   cnt();
 }
+/* Developer page (behind a code): checks that are for Jacob, not for parents */
+function showDevCode(){
+  screenId++; homeTo=showParents; atStart=false; $home.hidden=false; hush();
+  $main.innerHTML=`<div class="screen scrolls"><div class="parents">
+    <h2>כניסת מפתח</h2>
+    <div class="pbox"><div class="pnote">הקלידו קוד:</div>
+      <input id="dCode" type="password" inputmode="numeric" autocomplete="off" maxlength="8" style="font:inherit;font-size:24px;letter-spacing:6px;text-align:center;width:100%;margin-top:8px;padding:8px;border:2px solid var(--lilac);border-radius:14px">
+      <div class="pbtns" style="margin-top:10px"><button class="pbtn" id="dGo">כניסה</button></div>
+      <div class="pnote" id="dMsg" style="margin-top:6px"></div></div>
+  </div></div>`;
+  const inp=document.getElementById('dCode'), go=()=>{ if(inp.value==='2132'){ try{ sessionStorage.setItem('lumda-dev','1') }catch(e){} showDev() } else { document.getElementById('dMsg').textContent='קוד שגוי'; inp.value=''; inp.focus() } };
+  document.getElementById('dGo').onclick=go; inp.onkeydown=e=>{ if(e.key==='Enter') go() }; inp.focus();
+}
+function showDev(){
+  screenId++; homeTo=showParents; atStart=false; $home.hidden=false; hush();
+  const he=voices.filter(v=>/^he|^iw/i.test(v.lang)), en=voices.filter(v=>/^en/i.test(v.lang));
+  $main.innerHTML=`<div class="screen scrolls"><div class="parents">
+    <h2>עמוד מפתח</h2>
+    <div class="pbox"><h3>בדיקות קול</h3>
+      <div class="pbtns"><button class="pbtn" id="dHe">בדיקת העברית</button><button class="pbtn" id="dLetters">השמעת כל האותיות</button></div></div>
+    <div class="pbox"><h3>קולות בטלפון</h3>
+      <div class="pnote">עברית: ${he.length?he.map(v=>v.name+(v===heVoice?' ✓':'')).join(', '):'אין'}</div>
+      <div class="pnote">אנגלית: ${en.length} קולות${enVoice?', בשימוש: '+enVoice.name:''}</div></div>
+  </div></div>`;
+  document.getElementById('dHe').onclick=()=>showHeCheck();
+  document.getElementById('dLetters').onclick=()=>{ talkScreen=screenId; say('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(L=>['en',L+'!'])) };
+}
 function showParents(){
   keepTop=$main.querySelector('.parents')?$main.scrollTop:null;
   screenId++; homeTo=null; atStart=false;
@@ -1478,7 +1505,6 @@ function showParents(){
     <div class="pbox"><h3>קול</h3>
       <div class="pbtns"><button class="pbtn ${settings.voice?'on':''}" data-voice="1">דיבור פועל</button><button class="pbtn ${settings.voice?'':'on'}" data-voice="0">בלי דיבור</button></div>
       <div class="pbtns" style="margin-top:8px"><button class="pbtn ${settings.rate<1?'on':''}" data-rate=".8">איטי</button><button class="pbtn ${settings.rate===1?'on':''}" data-rate="1">רגיל</button></div>
-      <div class="pbtns" style="margin-top:8px"><button class="pbtn" id="pLetters">השמעת כל האותיות</button><button class="pbtn" id="pHeCheck">בדיקת העברית</button></div>
       <div class="pnote" style="margin-top:6px">${voices.length?(heVoice?'יש בטלפון קול עברי.':(BOY?'אין בטלפון קול עברי, ולכן הוא שומע רק אנגלית.':'אין בטלפון קול עברי, ולכן היא שומעת רק אנגלית.')):''}</div></div>
     <div class="pbox"><h3>למידה</h3>
       <div class="pnote">תרגום לעברית בכרטיסי המילים. כשהמילים כבר מוכרות, אפשר לכבות ולתת לאנגלית לעמוד לבד.</div>
@@ -1493,13 +1519,13 @@ function showParents(){
       <input type="file" id="pFile" accept="application/json,.json" hidden></div>
     <div class="pbox"><h3>איפוס</h3>
       <div class="pbtns"><button class="pbtn danger" id="pReset">מחיקת כל ההתקדמות</button></div></div>
+    <div class="pbtns" style="justify-content:center"><button class="pbtn" id="pDev">🔧 מפתח</button></div>
   </div></div>`;
   $main.querySelectorAll('[data-voice]').forEach(b=>b.onclick=()=>{ settings.voice=b.dataset.voice==='1'; saveSettings(); showParents() });
   $main.querySelectorAll('[data-he]').forEach(b=>b.onclick=()=>{ settings.heHelp=b.dataset.he==='1'; saveSettings(); showParents() });
   $main.querySelectorAll('[data-mic]').forEach(b=>b.onclick=()=>{ settings.mic=b.dataset.mic==='1'; srOff=false; saveSettings(); showParents() });
   $main.querySelectorAll('[data-break]').forEach(b=>b.onclick=()=>{ settings.breakMin=+b.dataset.break; saveSettings(); showParents() });
-  document.getElementById('pHeCheck').onclick=()=>showHeCheck();
-  document.getElementById('pLetters').onclick=()=>{ talkScreen=screenId; say('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(L=>['en',L+'!'])) };
+  document.getElementById('pDev').onclick=()=>{ let ok=false; try{ ok=sessionStorage.getItem('lumda-dev')==='1' }catch(e){} ok?showDev():showDevCode() };
   $main.querySelectorAll('[data-rate]').forEach(b=>b.onclick=()=>{ settings.rate=+b.dataset.rate; saveSettings(); showParents(); say([['en','Hello '+NAME_EN+'!']]) });
   document.getElementById('pExport').onclick=()=>{
     let seen=0; try{ seen=+(localStorage.getItem(KEY+'seen')||0) }catch(e){}
