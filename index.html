@@ -137,7 +137,7 @@ function showList(kid){
     el.className = 'app'; el.href = a.path;
     el.innerHTML = '<div class="icon"></div><h2></h2><p></p>';
     el.querySelector('.icon').textContent = a.icon;
-    el.querySelector('h2').textContent = a.title;
+    el.querySelector('h2').textContent = (a.titles && a.titles[kid.id]) || a.title;
     el.querySelector('p').textContent = a.description;
     grid.appendChild(el);
   });

@@ -392,6 +392,20 @@ main{position:relative;z-index:1}
   .cats{max-width:960px;gap:16px}.cat{border-radius:28px;padding:14px 6px 10px}.cat .pic{height:clamp(70px,9vw,100px)}.cat .en{font-size:24px}.cat .he{font-size:16px}
   .album-btn{font-size:26px}
 }
+/* Yam: knights and dragons */
+html[data-kid="yam"]{--rose:#3f6fd8;--rose-deep:#24358f;--blush:#dfe7ff;--lilac:#7f9cff;--plum:#1f2550;--pearl:#f6f8ff;--gold:#f2b632}
+html[data-kid="yam"] body{background:radial-gradient(120% 70% at 85% 0%,#e3ebff 0%,transparent 60%),radial-gradient(90% 60% at 0% 100%,#d6dcff 0%,transparent 65%),linear-gradient(170deg,#b9c9ff 0%,#a6b2f2 55%,#8f9be6 100%);background-color:#a9b6f0}
+html[data-kid="yam"] .play{background:linear-gradient(180deg,#6f95ff 0%,#3f6fd8 50%,#24358f 100%);box-shadow:0 7px 0 #172466,0 12px 26px rgba(23,36,102,.35)}
+html[data-kid="yam"] .play:active{box-shadow:0 2px 0 #172466}
+html[data-kid="yam"] .arrow.next{background:linear-gradient(180deg,#7fa0ff,#3f6fd8);box-shadow:0 6px 0 #24358f}
+html[data-kid="yam"] .round-btn{box-shadow:0 4px 0 #9fb2ee,0 6px 14px rgba(31,37,80,.18)}
+html[data-kid="yam"] .mcard .back{background:repeating-linear-gradient(45deg,#5b82ea 0 12px,#3f6fd8 12px 24px);box-shadow:0 6px 0 #24358f}
+html[data-kid="yam"] .opt,html[data-kid="yam"] .lvl,html[data-kid="yam"] .mcard .face{box-shadow:0 7px 0 #9fb2ee}
+html[data-kid="yam"] .hello h1,html[data-kid="yam"] .party h2,html[data-kid="yam"] .picker-title{text-shadow:0 3px 0 #24358f,0 6px 18px rgba(36,53,143,.4)}
+html[data-kid="yam"] .parent-note{color:#1f2550}
+html[data-kid="yam"] .pm.big{aspect-ratio:401/758}
+html[data-kid="yam"] #homeBtn svg{stroke:#24358f}
+html[data-kid="yam"] .buddy{aspect-ratio:320/350}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}.balloon{top:var(--rt)!important}.air.calm .balloon{top:14%!important}.mcard .in{transition:none}}
 </style>
 
@@ -401,7 +415,7 @@ main{position:relative;z-index:1}
     <button class="round-btn" id="homeBtn" aria-label="לבית" hidden>
       <svg viewBox="0 0 24 24" fill="none" stroke="#e0307f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg>
     </button>
-    <div class="title">מלודי לומדת אנגלית</div>
+    <div class="title" id="appTitle">מלודי לומדת אנגלית</div>
     <button class="stars" id="stars" aria-label="המדבקות שלי"><span class="s" id="hdrStar"></span><span id="starCount">0</span><span class="s" id="hdrAlbum"></span></button>
   </header>
   <main id="main"></main>
@@ -409,7 +423,30 @@ main{position:relative;z-index:1}
 </div>
 <canvas id="fx"></canvas>
 
+<script src="../../kids.js"></script>
 <script>
+/* ---------- Who is playing ---------- */
+const KID = (window.LUMDA_KID && window.LUMDA_KID()) || (window.LUMDA_KIDS && window.LUMDA_KIDS.melody) || {id:'melody',name:'מלודי',nameEn:'Melody',gender:'f'};
+const BOY = KID.gender==='m';
+document.documentElement.dataset.kid = KID.id;
+// Hebrew lines are written for Melody; for a boy they switch to the masculine form
+const MASC = {"שלום מלודי! בואי נלמד אנגלית!":"שלום ים! בוא נלמד אנגלית!","עכשיו נשחק! תקשיבי טוב.":"עכשיו נשחק! תקשיב טוב.","בחרי משחק":"בחר משחק",
+  "תלחצי על":"תלחץ על","תפוצצי את הבלון הנכון!":"תפוצץ את הבלון הנכון!","תפוצצי את הבלון של":"תפוצץ את הבלון של","מצאי שני קלפים זהים":"מצא שני קלפים זהים",
+  "נסי שוב!":"נסה שוב!","כל הכבוד מלודי!":"כל הכבוד ים!","איזו חכמה!":"איזה חכם!","את אלופה!":"אתה אלוף!","את נסיכה חכמה!":"אתה אביר חכם!",
+  "אספי עוד כוכבים כדי לקבל אותה":"אסוף עוד כוכבים כדי לקבל אותה","בואי נצבע שמלה לנסיכה":"בוא נצבע שריון לאביר"};
+const HE_SAY_M = {"שלום ים! בוא נלמד אנגלית!":"שָׁלוֹם יָם! בּוֹא נִלְמַד אַנְגְּלִית!","עכשיו נשחק! תקשיב טוב.":"עַכְשָׁו נְשַׂחֵק! תַּקְשִׁיב טוֹב.",
+  "בחר משחק":"בְּחַר מִשְׂחָק","תלחץ על":"תִּלְחַץ עַל","תפוצץ את הבלון הנכון!":"תְּפוֹצֵץ אֶת הַבָּלוֹן הַנָּכוֹן!","תפוצץ את הבלון של":"תְּפוֹצֵץ אֶת הַבָּלוֹן שֶׁל",
+  "מצא שני קלפים זהים":"מְצָא שְׁנֵי קְלָפִים זֵהִים","נסה שוב!":"נַסֵּה שׁוּב!","כל הכבוד ים!":"כֹּל הַכָּבוֹד יָם!","איזה חכם!":"אֵיזֶה חָכָם!",
+  "אתה אלוף!":"אַתָּה אַלּוּף!","אתה אביר חכם!":"אַתָּה אַבִּיר חָכָם!","קיבלת מדבקה!":"קִבַּלְתָּ מַדְבֵּקָה!","פתחת שלב חדש!":"פָּתַחְתָּ שָׁלָב חָדָשׁ!",
+  "קיבלת כתר בנושא הזה!":"קִבַּלְתָּ כֶּתֶר בַּנּוֹשֵׂא הַזֶּה!","אסוף עוד כוכבים כדי לקבל אותה":"אֱסֹף עוֹד כּוֹכָבִים כְּדֵי לְקַבֵּל אוֹתָהּ",
+  "סיימת את כל השלבים!":"עָשִׂיתָ אֶת כֹּל הַשְּׁלַבִּים!","סיימת את כל השלבים וקיבלת כתר!":"עָשִׂיתָ אֶת כֹּל הַשְּׁלַבִּים, וְקִבַּלְתָּ כֶּתֶר!",
+  "אספת את כל המדבקות!":"יֵשׁ לְךָ אֶת כֹּל הַמַּדְבֵּקוֹת!","בוא נצבע שריון לאביר":"בּוֹא נִצְבַּע שִׁרְיוֹן לָאַבִּיר","צבע את הקסדה":"צְבַע אֶת הַקַּסְדָּה",
+  "צבע את השריון":"צְבַע אֶת הַשִּׁרְיוֹן","צבע את המגן":"צְבַע אֶת הַמָּגֵן","צבע את הגלימה":"צְבַע אֶת הַגְּלִימָה","צבע את המגפיים":"צְבַע אֶת הַמַּגָּפַיִם"};
+const G = t => BOY ? (MASC[t]||t) : t;
+const NAME = KID.name, NAME_EN = KID.nameEn;
+document.getElementById('appTitle').textContent = NAME + (BOY ? ' לומד אנגלית' : ' לומדת אנגלית');
+document.title = NAME_EN + "'s Magic English";
+if(BOY){ document.getElementById('buddy').setAttribute('aria-label','שמע שוב') }
 /* ---------- Content ---------- */
 const CATS = [
   {id:'kingdom', en:'Princess', he:'נסיכות', pic:'👑', items:[
@@ -482,12 +519,13 @@ const ICON={crown:()=>findItem('kingdom','Crown').img,book:()=>findItem('home','
 const tileVisual=c=>{ const t=TILE[c.id]; return t?visual(findItem(t[0],t[1]),true):visual({n:3},true) };
 /* Home grid order and tile colors */
 const ORDER=['kingdom','colors','clothes','toys','animals','fruits','food','family','body','numbers','shapes','nature','vehicles','sea','home'];
+if(BOY) ORDER.splice(0,ORDER.length,'animals','vehicles','colors','numbers','toys','sea','fruits','food','family','body','shapes','nature','clothes','home','kingdom');
 CATS.sort((a,b)=>ORDER.indexOf(a.id)-ORDER.indexOf(b.id));
 const GRADS=['#ff9ac9,#ff4f9a','#c6a4ff,#9566f2','#ffcf6b,#ff9c3a','#7fe3c4,#29b98d','#8fd0ff,#5b8dff','#ffb2e0,#d46cff'];
-const CHEER=['כל הכבוד מלודי!','מצוין!','איזו חכמה!','וואו, נכון!','את אלופה!'];
-const REWARDS = [['kingdom','Crown'],['kingdom','Unicorn'],['kingdom','Rainbow'],['animals','Butterfly'],['kingdom','Princess'],
+const CHEER=['כל הכבוד מלודי!','מצוין!','איזו חכמה!','וואו, נכון!','את אלופה!'].map(G);
+const REWARDS = (BOY ? [['kingdom','Crown'],['kingdom','Castle'],['animals','Horse'],['animals','Lion'],['vehicles','Rocket'],['kingdom','Star'],['sea','Shark'],['vehicles','Airplane'],['animals','Bear'],['vehicles','Train'],['sea','Whale'],['toys','Ball'],['vehicles','Helicopter'],['sea','Octopus'],['toys','Drum'],['vehicles','Truck'],['food','Pizza'],['toys','Kite'],['food','Ice cream'],['nature','Sun']] : [['kingdom','Crown'],['kingdom','Unicorn'],['kingdom','Rainbow'],['animals','Butterfly'],['kingdom','Princess'],
   ['kingdom','Star'],['kingdom','Castle'],['kingdom','Heart'],['kingdom','Flower'],['kingdom','Ring'],['food','Cake'],['food','Ice cream'],
-  ['food','Candy'],['toys','Teddy bear'],['toys','Balloon'],['toys','Gift'],['animals','Bunny'],['animals','Cat'],['sea','Dolphin'],['nature','Tulip']]
+  ['food','Candy'],['toys','Teddy bear'],['toys','Balloon'],['toys','Gift'],['animals','Bunny'],['animals','Cat'],['sea','Dolphin'],['nature','Tulip']])
   .map(([c,en])=>({img:findItem(c,en).img,en}));
 const LEVEL_SIZE = 5;
 const PER_REWARD = 5, ROUNDS = 5;
@@ -496,7 +534,8 @@ const CHAR_BUST='data:image/webp;base64,UklGRlBuAABXRUJQVlA4WAoAAAAQAAAAKwEARwEA
 // Princess Melody: the whole figure on big screens, head and shoulders as the companion
 const MOUTH={"closed": "data:image/webp;base64,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", "half": "data:image/webp;base64,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", "wide": "data:image/webp;base64,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"};
 const MOUTH_POS={big:'left:41.922%;top:25.184%;width:19.061%;height:7.462%',bust:'left:36.214%;top:50.478%;width:26.210%;height:14.957%'};
-const charHTML=(kind,cls)=>`<div class="pm ${kind} ${cls||''}"><span class="pm-in"><span class="pm-pic"><img class="pm-img" src="${kind==='big'?CHAR_FULL:CHAR_BUST}" alt="הנסיכה מלודי" draggable="false"><img class="mouth" src="${MOUTH.closed}" alt="" hidden style="${MOUTH_POS[kind==='big'?'big':'bust']}"></span></span><span class="pm-spark" aria-hidden="true"></span></div>`;
+const CHAR_IMG = BOY ? {big:'../../assets/kids/'+KID.id+'.webp', bust:'../../assets/kids/'+KID.id+'-bust.webp'} : {big:CHAR_FULL, bust:CHAR_BUST};
+const charHTML=(kind,cls)=>`<div class="pm ${kind} ${cls||''}"><span class="pm-in"><span class="pm-pic"><img class="pm-img" src="${kind==='big'?CHAR_IMG.big:CHAR_IMG.bust}" alt="${NAME}" draggable="false">${BOY?'':`<img class="mouth" src="${MOUTH.closed}" alt="" hidden style="${MOUTH_POS[kind==='big'?'big':'bust']}">`}</span></span><span class="pm-spark" aria-hidden="true"></span></div>`;
 /* Talking mouth: while the voice speaks, the mouth switches between closed, half and wide open */
 const MOUTH_SEQ=['closed','half','wide','orig','half','closed','wide','orig','closed','half'];
 let mouthTimer=null, mouthI=0;
@@ -505,15 +544,16 @@ function startMouth(){ if(mouthTimer) return; mouthTimer=setInterval(()=>{ mouth
 function stopMouth(){ if(mouthTimer) clearInterval(mouthTimer); mouthTimer=null; setMouth('orig') }
 
 /* ---------- Storage ---------- */
+const KEY = KID.id==='melody' ? 'melody-' : KID.id+'-english-';
 let stars = 0;
-try{ stars = parseInt(localStorage.getItem('melody-stars')||'0',10)||0 }catch(e){}
-function saveStars(){ try{ localStorage.setItem('melody-stars',String(stars)) }catch(e){} }
+try{ stars = parseInt(localStorage.getItem(KEY+'stars')||'0',10)||0 }catch(e){}
+function saveStars(){ try{ localStorage.setItem(KEY+'stars',String(stars)) }catch(e){} }
 let prog={levels:{},weak:{}};
-try{ const raw=JSON.parse(localStorage.getItem('melody-progress')||'null'); if(raw&&raw.levels&&raw.weak) prog=raw }catch(e){}
-function saveProg(){ try{ localStorage.setItem('melody-progress',JSON.stringify(prog)) }catch(e){} }
+try{ const raw=JSON.parse(localStorage.getItem(KEY+'progress')||'null'); if(raw&&raw.levels&&raw.weak) prog=raw }catch(e){}
+function saveProg(){ try{ localStorage.setItem(KEY+'progress',JSON.stringify(prog)) }catch(e){} }
 let settings={voice:true,rate:1};
-try{ Object.assign(settings,JSON.parse(localStorage.getItem('melody-settings')||'{}')) }catch(e){}
-function saveSettings(){ try{ localStorage.setItem('melody-settings',JSON.stringify(settings)) }catch(e){} }
+try{ Object.assign(settings,JSON.parse(localStorage.getItem(KEY+'settings')||'{}')) }catch(e){}
+function saveSettings(){ try{ localStorage.setItem(KEY+'settings',JSON.stringify(settings)) }catch(e){} }
 
 /* Levels: split each topic into balanced groups of about 5 words */
 function levelsOf(cat){
@@ -533,16 +573,19 @@ function gotIt(cat,it){ const w=weakOf(cat,it); if(w){ prog.weak[wkey(cat,it)]=w
 
 /* ---------- Voice ---------- */
 const synth = window.speechSynthesis;
-let voices=[], enVoice=null, heVoice=null;
+let voices=[], enVoice=null, heVoice=null, maleEn=false, maleHe=false;
 function pickVoices(){
   if(!synth) return;
   voices = synth.getVoices()||[];
   const norm = v => (v.lang||'').toLowerCase().replace('_','-');
   const en = voices.filter(v=>norm(v).startsWith('en'));
   const fem = /female|samantha|victoria|karen|moira|tessa|zira|aria|jenny|google us english|serena|fiona/i;
-  enVoice = en.find(v=>norm(v)==='en-us'&&fem.test(v.name)) || en.find(v=>fem.test(v.name)) || en.find(v=>norm(v)==='en-us') || en[0] || null;
+  const male = /\bmale|daniel|alex|fred|david|guy|tom|aaron|arthur|google uk english male|asaf|avri/i;
+  if(BOY){ enVoice = en.find(v=>male.test(v.name)&&!fem.test(v.name)) || null; heVoice = voices.filter(v=>norm(v).startsWith('he')||norm(v).startsWith('iw')).find(v=>male.test(v.name)&&!fem.test(v.name)) || null }
+  maleEn = !!enVoice; maleHe = !!heVoice;
+  if(!BOY || !enVoice) enVoice = en.find(v=>norm(v)==='en-us'&&fem.test(v.name)) || en.find(v=>fem.test(v.name)) || en.find(v=>norm(v)==='en-us') || en[0] || null;
   const he = voices.filter(v=>norm(v).startsWith('he')||norm(v).startsWith('iw'));
-  heVoice = he.find(v=>/carmit|female|google/i.test(v.name)) || he[0] || null;
+  if(!BOY || !heVoice) heVoice = he.find(v=>/carmit|female|google/i.test(v.name)) || he[0] || null;
 }
 if(synth){ pickVoices(); synth.onvoiceschanged = pickVoices; }
 
@@ -550,6 +593,7 @@ if(synth){ pickVoices(); synth.onvoiceschanged = pickVoices; }
 const HE_SAY={"שלום מלודי! בואי נלמד אנגלית!": "שָׁלוֹם מֶלוֹדִי! בּוֹאִי נִלְמַד אַנְגְּלִית!", "עכשיו נשחק! תקשיבי טוב.": "עַכְשָׁו נְשַׂחֵק! תַּקְשִׁיבִי טוֹב.", "בחרי משחק": "בַּחֲרִי מִשְׂחָק", "תלחצי על": "תִּלְחֲצִי עַל", "תפוצצי את הבלון הנכון!": "תְּפוֹצְצִי אֶת הַבָּלוֹן הַנָּכוֹן!", "תפוצצי את הבלון של": "תְּפוֹצְצִי אֶת הַבָּלוֹן שֶׁל", "מצאי שני קלפים זהים": "מִצְאִי שְׁנֵי קְלָפִים זֵהִים", "בואי נצבע שמלה לנסיכה": "בּוֹאִי נִצְבַּע שִׂמְלָה לַנְּסִיכָה", "צבעי את החולצה": "צִבְעִי אֶת הַחֻלְצָה", "צבעי את החצאית": "צִבְעִי אֶת הַחֲצָאִית", "צבעי את הפפיון": "צִבְעִי אֶת הַפַּפְּיוֹן", "צבעי את הנעליים": "צִבְעִי אֶת הַנַּעֲלַיִם", "צבעי את הכתר": "צִבְעִי אֶת הַכֶּתֶר", "זה": "זֶה", "הנה, זה": "הִנֵּה, זֶה", "נסי שוב!": "נַסִּי שׁוּב!", "קודם נשחק בשלב הזה": "קֹדֶם נְשַׂחֵק בַּשָּׁלָב הַזֶּה", "מצוין!": "מְצֻיָּן!", "איזו חכמה!": "אֵיזוֹ חֲכָמָה!", "את אלופה!": "אַתְּ אַלּוּפָה!", "את נסיכה חכמה!": "אַתְּ נְסִיכָה חֲכָמָה!", "קיבלת מדבקה!": "קִבַּלְתְּ מַדְבֵּקָה!", "פתחת שלב חדש!": "פָּתַחְתְּ שָׁלָב חָדָשׁ!", "קיבלת כתר בנושא הזה!": "קִבַּלְתְּ כֶּתֶר בַּנּוֹשֵׂא הַזֶּה!", "אספי עוד כוכבים כדי לקבל אותה": "אִסְפִי עוֹד כּוֹכָבִים כְּדֵי לְקַבֵּל אוֹתָהּ", "עוד כוכב אחד למדבקה הבאה": "עוֹד כּוֹכָב אֶחָד לַמַּדְבֵּקָה הַבָּאָה", "עוד שני כוכבים למדבקה הבאה": "עוֹד שְׁנֵי כּוֹכָבִים לַמַּדְבֵּקָה הַבָּאָה", "עוד שלושה כוכבים למדבקה הבאה": "עוֹד שְׁלוֹשָׁה כּוֹכָבִים לַמַּדְבֵּקָה הַבָּאָה", "עוד ארבעה כוכבים למדבקה הבאה": "עוֹד אַרְבָּעָה כּוֹכָבִים לַמַּדְבֵּקָה הַבָּאָה", "עוד חמישה כוכבים למדבקה הבאה": "עוֹד חֲמִשָּׁה כּוֹכָבִים לַמַּדְבֵּקָה הַבָּאָה", "נסיכות": "נְסִיכוֹת", "צבעים": "צְבָעִים", "בגדים": "בְּגָדִים", "צעצועים": "צַעֲצוּעִים", "חיות": "חַיּוֹת", "פירות": "פֵּרוֹת", "אוכל": "אֹכֶל", "משפחה": "מִשְׁפָּחָה", "הגוף שלי": "הַגּוּף שֶׁלִּי", "מספרים": "מִסְפָּרִים", "צורות": "צוּרוֹת", "טבע": "טֶבַע", "תחבורה": "תַּחְבּוּרָה", "ים": "יָם", "בבית": "בַּבַּיִת", "כתר": "כֶּתֶר", "נסיכה": "נְסִיכָה", "ארמון": "אַרְמוֹן", "שמלה": "שִׂמְלָה", "חד־קרן": "חַד־קֶרֶן", "לב": "לֵב", "כוכב": "כּוֹכָב", "קשת": "קֶשֶׁת", "טבעת": "טַבַּעַת", "פרח": "פֶּרַח", "ורוד": "וָרֹד", "אדום": "אָדֹם", "כחול": "כָּחֹל", "צהוב": "צָהֹב", "ירוק": "יָרֹק", "סגול": "סָגֹל", "כתום": "כָּתֹם", "שחור": "שָׁחֹר", "לבן": "לָבָן", "חולצה": "חֻלְצָה", "מכנסיים": "מִכְנָסַיִם", "נעליים": "נַעֲלַיִם", "כובע": "כּוֹבַע", "גרביים": "גַּרְבַּיִם", "תיק": "תִּיק", "מעיל": "מְעִיל", "משקפיים": "מִשְׁקָפַיִם", "כפפות": "כְּפָפוֹת", "דובי": "דֻּבִּי", "כדור": "כַּדּוּר", "בובה": "בֻּבָּה", "בלון": "בָּלוֹן", "עפיפון": "עֲפִיפוֹן", "פאזל": "פָּאזֶל", "תוף": "תֹּף", "מתנה": "מַתָּנָה", "צבע": "צֶבַע", "חתול": "חָתוּל", "כלב": "כֶּלֶב", "ארנב": "אַרְנָב", "סוס": "סוּס", "ציפור": "צִפּוֹר", "דג": "דָּג", "פרפר": "פַּרְפַּר", "דוב": "דֹּב", "ברווז": "בַּרְוָז", "אריה": "אַרְיֵה", "תפוח": "תַּפּוּחַ", "בננה": "בָּנָנָה", "תות": "תּוּת", "ענבים": "עֲנָבִים", "אבטיח": "אֲבַטִּיחַ", "דובדבן": "דֻּבְדְּבָן", "לימון": "לִימוֹן", "אגס": "אַגָּס", "חלב": "חָלָב", "לחם": "לֶחֶם", "ביצה": "בֵּיצָה", "גבינה": "גְּבִינָה", "פיצה": "פִּיצָה", "עוגה": "עוּגָה", "גלידה": "גְּלִידָה", "עוגייה": "עוּגִיָּה", "מים": "מַיִם", "סוכרייה": "סֻכָּרִיָּה", "אמא": "אִמָּא", "אבא": "אַבָּא", "תינוק": "תִּינוֹק", "אחות": "אָחוֹת", "אח": "אָח", "סבתא": "סַבְתָּא", "סבא": "סַבָּא", "עיניים": "עֵינַיִם", "אף": "אַף", "פה": "פֶּה", "אוזן": "אֹזֶן", "יד": "יָד", "רגל": "רֶגֶל", "שיער": "שֵׂעָר", "שיניים": "שִׁנַּיִם", "אחת": "אַחַת", "שתיים": "שְׁתַּיִם", "שלוש": "שָׁלוֹשׁ", "ארבע": "אַרְבַּע", "חמש": "חָמֵשׁ", "שש": "שֵׁשׁ", "שבע": "שֶׁבַע", "שמונה": "שְׁמוֹנֶה", "תשע": "תֵּשַׁע", "עשר": "עֶשֶׂר", "עיגול": "עִגּוּל", "ריבוע": "רִבּוּעַ", "משולש": "מְשֻׁלָּשׁ", "יהלום": "יַהֲלוֹם", "מלבן": "מַלְבֵּן", "אליפסה": "אֶלִיפְּסָה", "שמש": "שֶׁמֶשׁ", "ירח": "יָרֵחַ", "ענן": "עָנָן", "גשם": "גֶּשֶׁם", "שלג": "שֶׁלֶג", "עץ": "עֵץ", "עלה": "עָלֶה", "צבעוני": "צִבְעוֹנִי", "הר": "הַר", "מכונית": "מְכוֹנִית", "אוטובוס": "אוֹטוֹבּוּס", "רכבת": "רַכֶּבֶת", "מטוס": "מָטוֹס", "סירה": "סִירָה", "אופניים": "אוֹפַנַּיִם", "מסוק": "מַסּוֹק", "משאית": "מַשָּׂאִית", "חללית": "חֲלָלִית", "לווייתן": "לִוְיָתָן", "דולפין": "דּוֹלְפִין", "סרטן": "סַרְטָן", "צדף": "צֶדֶף", "צב": "צָב", "כריש": "כָּרִישׁ", "בית": "בַּיִת", "מיטה": "מִטָּה", "כיסא": "כִּסֵּא", "דלת": "דֶּלֶת", "אמבטיה": "אַמְבַּטְיָה", "שעון": "שָׁעוֹן", "מפתח": "מַפְתֵּחַ", "טלפון": "טֶלֶפוֹן", "ספר": "סֵפֶר", "כל הכבוד מלודי!": "כֹּל הַכָּבוֹד מֶלוֹדִי!", "וואו, נכון!": "wow, נָכוֹן!", "סיימת את כל השלבים!": "עָשִׂית אֶת כֹּל הַשְּׁלַבִּים!", "סיימת את כל השלבים וקיבלת כתר!": "עָשִׂית אֶת כֹּל הַשְּׁלַבִּים, וְקִבַּלְתְּ כֶּתֶר!", "אספת את כל המדבקות!": "יֵשׁ לָךְ אֶת כֹּל הַמַּדְבֵּקוֹת!", "תמנון": "תָּמְנוּן"};
 let liveUtts=[], talkId=0, lastSay=null;   // keep references so the browser doesn't drop the end event
 function say(parts){
+  parts = parts.map(([l,t])=>[l, l==='he'?G(t):t.replace(/Melody/g,NAME_EN)]);
   const list = settings.voice ? parts.filter(([lang])=>!(lang==='he' && !heVoice && voices.length)) : [];
   if(list.length) lastSay=parts;
   const myTalk=++talkId;
@@ -565,9 +609,9 @@ function say(parts){
     try{ synth.cancel() }catch(e){}
     liveUtts=[];
     list.forEach(([lang,text],k)=>{
-      const u = new SpeechSynthesisUtterance(lang==='he' ? (HE_SAY[text]||text) : text);
-      if(lang==='en'){ u.lang = enVoice?enVoice.lang:'en-US'; if(enVoice) u.voice=enVoice; u.rate=.78*settings.rate; u.pitch=1.25; }
-      else { u.lang = heVoice?heVoice.lang:'he-IL'; if(heVoice) u.voice=heVoice; u.rate=.95*settings.rate; u.pitch=1.15; }
+      const u = new SpeechSynthesisUtterance(lang==='he' ? ((BOY&&HE_SAY_M[text])||HE_SAY[text]||text) : text);
+      if(lang==='en'){ u.lang = enVoice?enVoice.lang:'en-US'; if(enVoice) u.voice=enVoice; u.rate=.78*settings.rate; u.pitch=BOY?(maleEn?1:.85):1.25; }
+      else { u.lang = heVoice?heVoice.lang:'he-IL'; if(heVoice) u.voice=heVoice; u.rate=.95*settings.rate; u.pitch=BOY?(maleHe?1:.8):1.15; }
       if(k===list.length-1){ u.onend=finish; u.onerror=finish; }
       liveUtts.push(u);
       synth.speak(u);
@@ -670,11 +714,11 @@ function showStart(){
   screenId++; homeTo=null;
   $home.hidden=false; atStart=true;
   $main.innerHTML=`<div class="screen">
-    <div class="hello">${charHTML('big')}<h1 dir="ltr">Hello Melody!</h1></div>
+    <div class="hello">${charHTML('big')}<h1 dir="ltr">Hello ${NAME_EN}!</h1></div>
     <button class="play" id="go" aria-label="מתחילים">${PLAY}<span dir="ltr">Play</span></button>
-    <div class="parent-note">להורים: הגבירו את הקול 🔊 — האפליקציה מדברת אל מלודי באנגלית ובעברית.<span id="heNote"></span></div>
+    <div class="parent-note">להורים: הגבירו את הקול 🔊 — האפליקציה מדברת אל ${NAME} באנגלית ובעברית.<span id="heNote"></span></div>
   </div>`;
-  setTimeout(()=>{ if(voices.length && !heVoice) document.getElementById('heNote').textContent=' בטלפון הזה אין קול עברי, אז היא תשמע רק את האנגלית.' },800);
+  setTimeout(()=>{ if(voices.length && !heVoice) document.getElementById('heNote').textContent=BOY?' בטלפון הזה אין קול עברי, אז הוא ישמע רק את האנגלית.':' בטלפון הזה אין קול עברי, אז היא תשמע רק את האנגלית.' },800);
   document.getElementById('go').onclick=e=>{ ac(); chime(); burstAt(e.currentTarget,50);
     say([['en','Hello Melody!'],['he','שלום מלודי! בואי נלמד אנגלית!']]); showCats() };
 }
@@ -806,7 +850,7 @@ function pickGame(cat,level){
     {en:'Balloons',pic:UI.balloons,g:GRADS[0],run:()=>startBalloons(g())},
     {en:'Memory',pic:UI.memory,g:GRADS[1],run:()=>startMemory(g())},
   ];
-  if(cat.id==='colors') games.push({en:'Magic Dress',pic:UI.palette,g:GRADS[5],run:()=>startDress(g())});
+  if(cat.id==='colors') games.push({en:BOY?'Magic Armor':'Magic Dress',pic:UI.palette,g:GRADS[5],run:()=>startDress(g())});
   $main.innerHTML=`<div class="screen">
     <div class="cat-chip"><span class="chip-pic">${tileVisual(cat)}</span><span dir="ltr">${cat.en}</span></div>
     <div class="picker-title" dir="ltr">Let's play!</div>
@@ -946,7 +990,18 @@ function startMemory(g){
 }
 
 /* ---------- Game 4: Magic dress (colors) ---------- */
-const DRESS_SVG=`<svg class="dress" viewBox="0 0 200 262" aria-label="שמלה">
+const ARMOR_SVG=`<svg class="dress" viewBox="0 0 200 262" aria-label="שריון">
+  <g class="part" data-p="cape" fill="#fff"><path d="M62 70 L138 70 L166 232 Q100 246 34 232 Z"/></g>
+  <g fill="#d9dde6" stroke="#7b4592" stroke-width="3"><rect x="80" y="150" width="17" height="76" rx="4"/><rect x="103" y="150" width="17" height="76" rx="4"/></g>
+  <g class="part" data-p="boots" fill="#fff"><path d="M78 220 h21 v28 h-31 v-9 Q68 228 78 228 Z M101 220 h21 v8 Q132 228 132 239 v9 h-31 Z"/></g>
+  <g class="part" data-p="armor" fill="#fff"><ellipse cx="66" cy="80" rx="18" ry="14"/><ellipse cx="134" cy="80" rx="18" ry="14"/><path d="M72 66 Q100 58 128 66 L124 152 L76 152 Z"/></g>
+  <g class="part" data-p="shield" fill="#fff"><path d="M16 104 L64 104 L64 146 Q64 178 40 192 Q16 178 16 146 Z"/></g>
+  <g fill="#ffe0c8" stroke="#7b4592" stroke-width="3"><circle cx="100" cy="42" r="21"/></g>
+  <g fill="#7b4592" pointer-events="none"><circle cx="93" cy="42" r="2.6"/><circle cx="107" cy="42" r="2.6"/></g>
+  <g class="part" data-p="helmet" fill="#fff"><path d="M76 46 Q76 14 100 12 Q124 14 124 46 L124 56 L113 56 L113 34 L87 34 L87 56 L76 56 Z"/></g>
+</svg>`;
+const ARMOR_PARTS=[{p:'helmet',he:'צבע את הקסדה'},{p:'armor',he:'צבע את השריון'},{p:'shield',he:'צבע את המגן'},{p:'cape',he:'צבע את הגלימה'},{p:'boots',he:'צבע את המגפיים'}];
+const DRESS_SVG_F=`<svg class="dress" viewBox="0 0 200 262" aria-label="שמלה">
   <g class="part" data-p="crown" fill="#fff"><path d="M68 40 L72 12 L87 28 L100 6 L113 28 L128 12 L132 40 Z"/></g>
   <g class="part" data-p="top" fill="#fff"><ellipse cx="62" cy="80" rx="19" ry="15"/><ellipse cx="138" cy="80" rx="19" ry="15"/><path d="M74 66 Q100 80 126 66 L120 124 L80 124 Z"/></g>
   <g class="part" data-p="skirt" fill="#fff"><path d="M80 124 L120 124 Q150 168 178 222 Q100 240 22 222 Q50 168 80 124 Z"/></g>
@@ -954,7 +1009,8 @@ const DRESS_SVG=`<svg class="dress" viewBox="0 0 200 262" aria-label="שמלה">
   <g class="part" data-p="bow" fill="#fff"><path d="M100 124 L80 112 L80 136 Z M100 124 L120 112 L120 136 Z"/><circle cx="100" cy="124" r="6"/></g>
   <g class="part" data-p="shoes" fill="#fff"><ellipse cx="80" cy="248" rx="16" ry="8"/><ellipse cx="120" cy="248" rx="16" ry="8"/></g>
 </svg>`;
-const DRESS_PARTS=[{p:'top',he:'צבעי את החולצה'},{p:'skirt',he:'צבעי את החצאית'},{p:'bow',he:'צבעי את הפפיון'},{p:'shoes',he:'צבעי את הנעליים'},{p:'crown',he:'צבעי את הכתר'}];
+const DRESS_PARTS_F=[{p:'top',he:'צבעי את החולצה'},{p:'skirt',he:'צבעי את החצאית'},{p:'bow',he:'צבעי את הפפיון'},{p:'shoes',he:'צבעי את הנעליים'},{p:'crown',he:'צבעי את הכתר'}];
+const DRESS_SVG = BOY ? ARMOR_SVG : DRESS_SVG_F, DRESS_PARTS = BOY ? ARMOR_PARTS : DRESS_PARTS_F;
 function startDress(g){
   screenId++; homeTo=()=>pickGame(g.cat,g.level);
   const colors=g.cat.items.filter(c=>c.en!=='White');
@@ -968,7 +1024,7 @@ function startDress(g){
     ${DRESS_SVG}
     <div class="palette" id="palette"></div>
   </div>`;
-  sayThen([['en','Magic dress!'],['he','בואי נצבע שמלה לנסיכה']],()=>dressRound(g,colors,plan,0),300);
+  sayThen([['en',BOY?'Magic armor!':'Magic dress!'],['he','בואי נצבע שמלה לנסיכה']],()=>dressRound(g,colors,plan,0),300);
 }
 function dressRound(g,colors,plan,r){
   const id=++screenId;
@@ -1012,8 +1068,8 @@ function party(g,again,hero){
   const opened=firstTime && g.level+1<lv.length;
   $main.innerHTML=`<div class="screen party">
     ${hero && !crowned ? hero : charHTML('big',crowned?'won':'')}
-    <h2 dir="ltr">${crowned?'Queen of '+g.cat.en+'!':'Super Star!'}</h2>
-    <p>${crowned?'קיבלת כתר! '+art(ICON.crown(),'inl'):'כל הכבוד מלודי! '+art(UI.star,'inl')}</p>
+    <h2 dir="ltr">${crowned?(BOY?'King of ':'Queen of ')+g.cat.en+'!':'Super Star!'}</h2>
+    <p>${crowned?'קיבלת כתר! '+art(ICON.crown(),'inl'):G('כל הכבוד מלודי!')+' '+art(UI.star,'inl')}</p>
     <div class="row">
       <button class="wand" id="again">${art(UI.wand,'ico')} <span dir="ltr">Again</span></button>
       <button class="play" id="more" style="animation:none">${PLAY}<span dir="ltr">${opened?'Next':'More'}</span></button>
@@ -1037,13 +1093,13 @@ function showAlbum(){
   const got=Math.min(Math.floor(stars/PER_REWARD),REWARDS.length);
   const full=got===REWARDS.length;
   const left=PER_REWARD-(stars%PER_REWARD);
-  const fresh=(()=>{ try{ return +(localStorage.getItem('melody-seen')||0) }catch(e){ return got } })();
+  const fresh=(()=>{ try{ return +(localStorage.getItem(KEY+'seen')||0) }catch(e){ return got } })();
   $main.innerHTML=`<div class="screen">
     <div class="picker-title" dir="ltr">My Stickers</div>
     ${full?'':`<div class="next-stk" aria-label="כוכבים למדבקה הבאה">${starRow(PER_REWARD-left,PER_REWARD)}<span class="gift">${art(ICON.gift())}</span></div>`}
     <div class="album">${REWARDS.map((r,i)=>`<button class="stk ${i<got?'got':'locked'}${i<got&&i>=fresh?' fresh':''}" data-i="${i}" aria-label="${i<got?r.en:'מדבקה נעולה'}">${art(r.img)}</button>`).join('')}</div>
   </div>`;
-  try{ localStorage.setItem('melody-seen',String(got)) }catch(e){}
+  try{ localStorage.setItem(KEY+'seen',String(got)) }catch(e){}
   const NUM={1:'עוד כוכב אחד',2:'עוד שני כוכבים',3:'עוד שלושה כוכבים',4:'עוד ארבעה כוכבים',5:'עוד חמישה כוכבים'};
   say(full?[['en','My stickers!'],['he','אספת את כל המדבקות!']]:[['en','My stickers!'],['he',NUM[left]+' למדבקה הבאה']]);
   $main.querySelectorAll('.stk').forEach(b=>b.onclick=()=>{
@@ -1066,11 +1122,11 @@ function showParents(){
     <div class="pbox"><h3>התקדמות</h3>
       <div class="pnote">${stars} כוכבים, ${Math.min(Math.floor(stars/PER_REWARD),REWARDS.length)} מתוך ${REWARDS.length} מדבקות</div>${rows}</div>
     <div class="pbox"><h3>מילים שכדאי לתרגל</h3>
-      ${weak.length?`<div class="weak">${weak.map(w=>`<span>${w}</span>`).join('')}</div>`:'<div class="pnote">אין כרגע מילים שהיא מתקשה בהן.</div>'}</div>
+      ${weak.length?`<div class="weak">${weak.map(w=>`<span>${w}</span>`).join('')}</div>`:`<div class="pnote">${BOY?'אין כרגע מילים שהוא מתקשה בהן.':'אין כרגע מילים שהיא מתקשה בהן.'}</div>`}</div>
     <div class="pbox"><h3>קול</h3>
       <div class="pbtns"><button class="pbtn ${settings.voice?'on':''}" data-voice="1">דיבור פועל</button><button class="pbtn ${settings.voice?'':'on'}" data-voice="0">בלי דיבור</button></div>
       <div class="pbtns" style="margin-top:8px"><button class="pbtn ${settings.rate<1?'on':''}" data-rate=".8">איטי</button><button class="pbtn ${settings.rate===1?'on':''}" data-rate="1">רגיל</button></div>
-      <div class="pnote" style="margin-top:6px">${voices.length?(heVoice?'יש בטלפון קול עברי.':'אין בטלפון קול עברי, ולכן היא שומעת רק אנגלית.'):''}</div></div>
+      <div class="pnote" style="margin-top:6px">${voices.length?(heVoice?'יש בטלפון קול עברי.':(BOY?'אין בטלפון קול עברי, ולכן הוא שומע רק אנגלית.':'אין בטלפון קול עברי, ולכן היא שומעת רק אנגלית.')):''}</div></div>
     <div class="pbox"><h3>גיבוי</h3>
       <div class="pnote">ההתקדמות נשמרת רק בטלפון הזה, וניקוי נתונים של הדפדפן מוחק אותה. כדאי לשמור גיבוי מדי פעם.</div>
       <div class="pbtns" style="margin-top:8px"><button class="pbtn" id="pExport">שמירת גיבוי לקובץ</button><button class="pbtn" id="pImport">שחזור מקובץ</button></div>
@@ -1079,22 +1135,22 @@ function showParents(){
       <div class="pbtns"><button class="pbtn danger" id="pReset">מחיקת כל ההתקדמות</button></div></div>
   </div></div>`;
   $main.querySelectorAll('[data-voice]').forEach(b=>b.onclick=()=>{ settings.voice=b.dataset.voice==='1'; saveSettings(); showParents() });
-  $main.querySelectorAll('[data-rate]').forEach(b=>b.onclick=()=>{ settings.rate=+b.dataset.rate; saveSettings(); showParents(); say([['en','Hello Melody!']]) });
+  $main.querySelectorAll('[data-rate]').forEach(b=>b.onclick=()=>{ settings.rate=+b.dataset.rate; saveSettings(); showParents(); say([['en','Hello '+NAME_EN+'!']]) });
   document.getElementById('pExport').onclick=()=>{
-    let seen=0; try{ seen=+(localStorage.getItem('melody-seen')||0) }catch(e){}
-    const data={app:'melody-english',saved:new Date().toISOString(),stars,prog,seen,settings};
+    let seen=0; try{ seen=+(localStorage.getItem(KEY+'seen')||0) }catch(e){}
+    const data={app:'melody-english',kid:KID.id,saved:new Date().toISOString(),stars,prog,seen,settings};
     const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(data)],{type:'application/json'}));
-    a.download='melody-english-backup-'+new Date().toISOString().slice(0,10)+'.json'; document.body.appendChild(a); a.click(); a.remove();
+    a.download=KID.id+'-english-backup-'+new Date().toISOString().slice(0,10)+'.json'; document.body.appendChild(a); a.click(); a.remove();
   };
   const file=document.getElementById('pFile');
   document.getElementById('pImport').onclick=()=>file.click();
   file.onchange=async()=>{
     try{
       const d=JSON.parse(await file.files[0].text());
-      if(d.app!=='melody-english'||!d.prog||!d.prog.levels) throw 0;
+      if(d.app!=='melody-english'||(d.kid||'melody')!==KID.id||!d.prog||!d.prog.levels) throw 0;
       if(!confirm('לשחזר את הגיבוי? ההתקדמות הנוכחית תוחלף.')) return;
       stars=+d.stars||0; prog=d.prog; saveStars(); saveProg();
-      try{ localStorage.setItem('melody-seen',String(+d.seen||0)) }catch(e){}
+      try{ localStorage.setItem(KEY+'seen',String(+d.seen||0)) }catch(e){}
       if(d.settings){ Object.assign(settings,d.settings); saveSettings() }
       $count.textContent=stars; showParents();
     }catch(e){ alert('הקובץ הזה לא נראה כמו גיבוי של הלומדה.') }
@@ -1102,7 +1158,7 @@ function showParents(){
   document.getElementById('pReset').onclick=()=>{
     if(!confirm('למחוק את כל הכוכבים, המדבקות והשלבים?')) return;
     stars=0; prog={levels:{},weak:{}}; saveStars(); saveProg();
-    try{ localStorage.removeItem('melody-seen') }catch(e){}
+    try{ localStorage.removeItem(KEY+'seen') }catch(e){}
     $count.textContent=stars; showParents();
   };
 }

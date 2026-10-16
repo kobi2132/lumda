@@ -13,7 +13,8 @@ window.LUMDA_APPS = [
     description: 'מילים ראשונות באנגלית: צבעים, חיות, פירות, מספרים ועוד, עם משחקים ומדבקות.',
     subject: 'english',
     ages: [3, 6],
-    kids: ['melody'],
+    kids: ['melody', 'yam'],
+    titles: { melody: 'מלודי לומדת אנגלית', yam: 'ים לומד אנגלית' },
     icon: '👑',
     path: 'apps/melody-english/index.html'
   }
