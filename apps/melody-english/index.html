@@ -410,6 +410,8 @@ html[data-kid="yam"] .parent-note{color:#1f2550}
 html[data-kid="yam"] .pm.big{aspect-ratio:401/758}
 html[data-kid="yam"] #homeBtn svg{stroke:#24358f}
 html[data-kid="yam"] .buddy{aspect-ratio:320/350}
+/* stickers won in this game */
+.new-stk .art{width:44px;height:44px}.new-stk{animation:pop .8s 2}
 /* the topic she was in the middle of */
 .cat.last{box-shadow:0 0 0 5px var(--gold),0 6px 0 rgba(78,31,99,.18);animation:breathe 1.8s ease-in-out infinite}
 /* Letters (ABC), emoji pictures, and the new games */
@@ -584,8 +586,6 @@ const LETTER_WORDS=[['A','Apple','fruits'],['B','Ball','toys'],['C','Cat','anima
   ['O','Octopus','sea'],['P','Pizza','food'],['Q','Queen',null,'👸','מלכה'],['R','Rainbow','kingdom'],['S','Sun','nature'],['T','Train','vehicles'],['U','Umbrella',null,'☂️','מטרייה'],
   ['V','Violin',null,'🎻','כינור'],['W','Whale','sea'],['X','Fox',null,'🦊','שועל'],['Y','Yo-yo',null,'🪀','יו־יו'],['Z','Zebra',null,'🦓','זברה']];
 CATS.push({id:'abc',en:'ABC',he:'אותיות',items:LETTER_WORDS.map(([L,w,c,e,he])=>{ const src=c&&findItem(c,w); return src?{en:L,L,w,he:src.he,img:src.img}:{en:L,L,w,he,e} })});
-// how the voice says each letter's name (a lone "A" is otherwise read as the word "a")
-const LETTER_NAME={A:'ay',B:'bee',C:'see',D:'dee',E:'ee',F:'eff',G:'gee',H:'aitch',I:'eye',J:'jay',K:'kay',L:'el',M:'em',N:'en',O:'oh',P:'pee',Q:'cue',R:'ar',S:'ess',T:'tee',U:'you',V:'vee',W:'double you',X:'ex',Y:'why',Z:'zee'};
 const ABC_ART={"Juice": "img/603387fcff3f.webp", "Queen": "img/5cb175302c1a.webp", "Umbrella": "img/73da1ec03dc5.webp", "Violin": "img/03627703144d.webp", "Fox": "img/977e533f3bea.webp", "Yo-yo": "img/ae1e2b96fcbc.webp", "Zebra": "img/100b1ba03d9b.webp"};
 CATS.find(c=>c.id==='abc').items.forEach(it=>{ if(ABC_ART[it.w]) it.img=ABC_ART[it.w] });
 const ltrHTML=L=>`<span class="ltr">${L}<small>${L.toLowerCase()}</small></span>`;
@@ -681,12 +681,12 @@ Object.assign(HE_SAY,{"מה זה? תבחרי את המילה הנכונה":"מַ
   "שמחה":"שְׂמֵחָה","שמח":"שָׂמֵחַ","עצובה":"עֲצוּבָה","עצוב":"עָצוּב","כועסת":"כּוֹעֶסֶת","כועס":"כּוֹעֵס","מפחדת":"מְפַחֶדֶת","מפחד":"מְפַחֵד","עייפה":"עֲיֵפָה","עייף":"עָיֵף",
   "רעבה":"רְעֵבָה","רעב":"רָעֵב","שובבה":"שׁוֹבָבָה","שובב":"שׁוֹבָב","מופתעת":"מֻפְתַּעַת","מופתע":"מֻפְתָּע",
   "שלום":"שָׁלוֹם","להתראות":"לְהִתְרָאוֹת","תודה":"תּוֹדָה","בבקשה":"בְּבַקָּשָׁה","כן":"כֵּן","לא":"לֹא","אני אוהבת אותך":"אֲנִי אוֹהֶבֶת אוֹתְךָ","אני אוהב אותך":"אֲנִי אוֹהֵב אוֹתְךָ","לילה טוב":"לַיְלָה טוֹב"});
-let liveUtts=[], talkId=0, lastSay=null;   // keep references so the browser doesn't drop the end event
+let liveUtts=[], talkId=0, lastSay=null, talkScreen=-1;   // keep references so the browser doesn't drop the end event
 function say(parts){
-  parts = parts.map(([l,t])=>[l, l==='he'?G(t):t.replace(/Melody/g,NAME_EN).replace(new RegExp('\\b'+NAME_EN+'\\b','g'),KID.nameEnSay||NAME_EN).replace(/\b([A-Z])(?=[!?.,]|$)/g,m=>LETTER_NAME[m])]);
+  parts = parts.map(([l,t])=>[l, l==='he'?G(t):t.replace(/Melody/g,NAME_EN).replace(new RegExp('\\b'+NAME_EN+'\\b','g'),KID.nameEnSay||NAME_EN)]);
   const list = settings.voice ? parts.filter(([lang])=>!(lang==='he' && !heVoice && voices.length)) : [];
   if(list.length) lastSay=parts;
-  const myTalk=++talkId;
+  const myTalk=++talkId; talkScreen=screenId;
   document.documentElement.classList.toggle('talking',list.length>0);
   if(list.length) startMouth(); else stopMouth();
   // safety net: roughly how long this should take, in case the phone never reports the end
@@ -794,7 +794,8 @@ function visual(item,small){
   return `<div class="emoji">${item.e}</div>`;
 }
 function addStar(){ stars++; saveStars(); $count.textContent=stars; $stars.classList.remove('pop'); void $stars.offsetWidth; $stars.classList.add('pop');
-  if(stars%PER_REWARD===0 && stars/PER_REWARD<=REWARDS.length){ const r=REWARDS[stars/PER_REWARD-1]; setTimeout(()=>burstAt($stars,60),900); return r } return null }
+  if(stars%PER_REWARD===0 && stars/PER_REWARD<=REWARDS.length){ const r=REWARDS[stars/PER_REWARD-1]; newStickers.push(r); return r } return null }
+let newStickers=[];   // stickers won during the current game, shown and announced when it ends
 $home.onclick=()=>{ tick(); if(atStart){ location.href='../../index.html'; return } const go=homeTo; go ? go() : showCats() };
 $stars.onclick=()=>{ tick(); showAlbum() };
 document.getElementById('hdrStar').innerHTML=art(UI.star);
@@ -811,7 +812,7 @@ function showStart(){
   </div>`;
   setTimeout(()=>{ if(voices.length && !heVoice) document.getElementById('heNote').textContent=BOY?' בטלפון הזה אין קול עברי, אז הוא ישמע רק את האנגלית.':' בטלפון הזה אין קול עברי, אז היא תשמע רק את האנגלית.' },800);
   document.getElementById('go').onclick=e=>{ ac(); chime(); burstAt(e.currentTarget,50);
-    say([['en','Hello Melody!'],['he','שלום מלודי! בואי נלמד אנגלית!']]); showCats() };
+    showCats(); say([['en','Hello Melody!'],['he','שלום מלודי! בואי נלמד אנגלית!']]) };
 }
 
 /* Screen time: after a while (set in the parent corner) the companion suggests a break, at the next natural stop */
@@ -951,7 +952,7 @@ function distractors(g,target,n){
 function win(el,word,next,extra){
   chime(); burstAt(el,46); react('happy'); const gift=addStar();
   const cheer=CHEER[Math.floor(Math.random()*CHEER.length)];
-  const lines=(extra||[['en','Yes! '+word+'!']]).concat([['he',cheer]]).concat(gift?[['he','קיבלת מדבקה!'],['en',gift.en+'!']]:[]);
+  const lines=(extra||[['en','Yes! '+word+'!']]).concat([['he',cheer]]);
   if(next) sayThen(lines,next,600); else say(lines);
   return gift;
 }
@@ -1328,10 +1329,12 @@ function party(g,again,hero){
   const firstTime=!isDone(g.cat,g.level);
   const crowned=markDone(g.cat,g.level);
   const opened=firstTime && g.level+1<lv.length;
+  const got=newStickers.splice(0);
   $main.innerHTML=`<div class="screen party">
     ${hero && !crowned ? hero : charHTML('big',crowned?'won':'')}
     <h2 dir="ltr">${crowned?(BOY?'King of ':'Queen of ')+g.cat.en+'!':'Super Star!'}</h2>
     <p>${crowned?'קיבלת כתר! '+art(ICON.crown(),'inl'):G('כל הכבוד מלודי!')+' '+art(UI.star,'inl')}</p>
+    ${got.length?`<div class="next-stk new-stk"><span class="gift">${art(ICON.gift())}</span>${got.map(r=>art(r.img)).join('')}</div>`:''}
     <div class="row">
       <button class="wand" id="again">${art(UI.wand,'ico')} <span dir="ltr">Again</span></button>
       <button class="play" id="more" style="animation:none">${PLAY}<span dir="ltr">${opened?'Next':'More'}</span></button>
@@ -1343,6 +1346,7 @@ function party(g,again,hero){
   if(crowned) lines.push(['he','סיימת את כל השלבים וקיבלת כתר!']);
   else if(opened) lines.push(['he','פתחת שלב חדש!']);
   else lines.push(['he','את נסיכה חכמה!']);
+  if(got.length){ lines.push(['he','קיבלת מדבקה!']); got.forEach(r=>lines.push(['en',r.en+'!'])); setTimeout(()=>burstAt($stars,60),700) }
   say(lines);
   document.getElementById('again').onclick=()=>{ tick(); again() };
   document.getElementById('more').onclick=()=>{ tick(); opened ? learn(g.cat,g.level+1,0) : showTopic(g.cat) };
@@ -1350,6 +1354,7 @@ function party(g,again,hero){
 
 /* ---------- Sticker album ---------- */
 function showAlbum(){
+  newStickers=[];
   screenId++; homeTo=null; atStart=false;
   $home.hidden=false;
   const got=Math.min(Math.floor(stars/PER_REWARD),REWARDS.length);
@@ -1389,6 +1394,7 @@ function showParents(){
     <div class="pbox"><h3>קול</h3>
       <div class="pbtns"><button class="pbtn ${settings.voice?'on':''}" data-voice="1">דיבור פועל</button><button class="pbtn ${settings.voice?'':'on'}" data-voice="0">בלי דיבור</button></div>
       <div class="pbtns" style="margin-top:8px"><button class="pbtn ${settings.rate<1?'on':''}" data-rate=".8">איטי</button><button class="pbtn ${settings.rate===1?'on':''}" data-rate="1">רגיל</button></div>
+      <div class="pbtns" style="margin-top:8px"><button class="pbtn" id="pLetters">השמעת כל האותיות</button></div>
       <div class="pnote" style="margin-top:6px">${voices.length?(heVoice?'יש בטלפון קול עברי.':(BOY?'אין בטלפון קול עברי, ולכן הוא שומע רק אנגלית.':'אין בטלפון קול עברי, ולכן היא שומעת רק אנגלית.')):''}</div></div>
     <div class="pbox"><h3>למידה</h3>
       <div class="pnote">תרגום לעברית בכרטיסי המילים. כשהמילים כבר מוכרות, אפשר לכבות ולתת לאנגלית לעמוד לבד.</div>
@@ -1408,6 +1414,7 @@ function showParents(){
   $main.querySelectorAll('[data-he]').forEach(b=>b.onclick=()=>{ settings.heHelp=b.dataset.he==='1'; saveSettings(); showParents() });
   $main.querySelectorAll('[data-mic]').forEach(b=>b.onclick=()=>{ settings.mic=b.dataset.mic==='1'; srOff=false; saveSettings(); showParents() });
   $main.querySelectorAll('[data-break]').forEach(b=>b.onclick=()=>{ settings.breakMin=+b.dataset.break; saveSettings(); showParents() });
+  document.getElementById('pLetters').onclick=()=>{ talkScreen=screenId; say('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(L=>['en',L+'!'])) };
   $main.querySelectorAll('[data-rate]').forEach(b=>b.onclick=()=>{ settings.rate=+b.dataset.rate; saveSettings(); showParents(); say([['en','Hello '+NAME_EN+'!']]) });
   document.getElementById('pExport').onclick=()=>{
     let seen=0; try{ seen=+(localStorage.getItem(KEY+'seen')||0) }catch(e){}
@@ -1456,7 +1463,9 @@ function fitScreen(){
 function markScroll(){ $main.classList.toggle('scrollable', $main.scrollHeight-$main.clientHeight>4 && $main.scrollTop+$main.clientHeight<$main.scrollHeight-4) }
 $main.addEventListener('scroll',markScroll,{passive:true});
 let keepTop=null;
-new MutationObserver(()=>{ $buddyBar.hidden=!!$main.querySelector('.pm.big'); $main.scrollTop=keepTop||0; keepTop=null; fitScreen(); requestAnimationFrame(()=>{ fitScreen(); markScroll() }) }).observe($main,{childList:true});
+// a new screen silences whatever the previous screen was still saying
+function hush(){ talkId++; try{ synth&&synth.cancel() }catch(e){} document.documentElement.classList.remove('talking'); stopMouth() }
+new MutationObserver(()=>{ if(talkScreen!==screenId) hush(); $buddyBar.hidden=!!$main.querySelector('.pm.big'); $main.scrollTop=keepTop||0; keepTop=null; fitScreen(); requestAnimationFrame(()=>{ fitScreen(); markScroll() }) }).observe($main,{childList:true});
 addEventListener('resize',()=>requestAnimationFrame(()=>{ fitScreen(); markScroll() }));
 addEventListener('load',fitScreen);
 $buddy.onclick=()=>{ react('happy'); burstAt($buddy,16); if(lastSay) say(lastSay) };
