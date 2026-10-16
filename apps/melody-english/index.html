@@ -802,7 +802,7 @@ function visual(item,small){
 function addStar(){ stars++; saveStars(); $count.textContent=stars; $stars.classList.remove('pop'); void $stars.offsetWidth; $stars.classList.add('pop');
   if(stars%PER_REWARD===0 && stars/PER_REWARD<=REWARDS.length){ const r=REWARDS[stars/PER_REWARD-1]; newStickers.push(r); return r } return null }
 let newStickers=[];   // stickers won during the current game, shown and announced when it ends
-$home.onclick=()=>{ tick(); if(atStart){ location.href='../../index.html'; return } const go=homeTo; go ? go() : showCats() };
+$home.onclick=()=>{ tick(); if(atStart){ location.replace('../../index.html'); return } const go=homeTo; go ? go() : showCats() };
 $stars.onclick=()=>{ tick(); showAlbum() };
 document.getElementById('hdrStar').innerHTML=art(UI.star);
 document.getElementById('hdrAlbum').innerHTML=art(UI.album);
@@ -1475,7 +1475,15 @@ $main.addEventListener('scroll',markScroll,{passive:true});
 let keepTop=null;
 // a new screen silences whatever the previous screen was still saying
 function hush(){ talkId++; try{ synth&&synth.cancel() }catch(e){} document.documentElement.classList.remove('talking'); stopMouth() }
-new MutationObserver(()=>{ if(talkScreen!==screenId) hush(); $buddyBar.hidden=!!$main.querySelector('.pm.big'); $main.scrollTop=keepTop||0; keepTop=null; fitScreen(); requestAnimationFrame(()=>{ fitScreen(); markScroll() }) }).observe($main,{childList:true});
+/* The phone's Back button steps back inside the app, like the home button: one extra history entry is kept while away from the start screen */
+const guard=()=>{ if(!atStart && !(history.state&&history.state.lumda)) try{ history.pushState({lumda:1},'') }catch(e){} };
+addEventListener('popstate',()=>{
+  if(atStart) return;
+  tick();
+  if($main.querySelector('.cats')) return showStart();
+  const go=homeTo; go ? go() : showCats();
+});
+new MutationObserver(()=>{ guard(); if(talkScreen!==screenId) hush(); $buddyBar.hidden=!!$main.querySelector('.pm.big'); $main.scrollTop=keepTop||0; keepTop=null; fitScreen(); requestAnimationFrame(()=>{ fitScreen(); markScroll() }) }).observe($main,{childList:true});
 addEventListener('resize',()=>requestAnimationFrame(()=>{ fitScreen(); markScroll() }));
 addEventListener('load',fitScreen);
 $buddy.onclick=()=>{ react('happy'); burstAt($buddy,16); if(lastSay) say(lastSay) };

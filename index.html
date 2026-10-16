@@ -128,6 +128,7 @@ function showPick(){
 
 function showList(kid){
   theme(kid); $('pick').hidden = true; $('list').hidden = false;
+  if(!(history.state && history.state.list)) try { history.pushState({list:1}, '') } catch(e){}
   $('meImg').src = kid.img; $('hi').textContent = 'שלום ' + kid.name;
   const list = APPS.filter(a => !a.kids || a.kids.includes(kid.id));
   const grid = $('grid');
@@ -143,6 +144,8 @@ function showList(kid){
   });
 }
 $('switch').onclick = () => { try { sessionStorage.removeItem('lumda-kid') } catch(e){} showPick() };
+// the phone's Back button on a child's list goes back to "who's playing?"
+addEventListener('popstate', () => { if(!$('list').hidden){ try { sessionStorage.removeItem('lumda-kid') } catch(e){} showPick() } });
 
 // coming back from an app in the same visit: stay with the same child
 let back = null; try { back = KIDS[sessionStorage.getItem('lumda-kid')] } catch(e){}
