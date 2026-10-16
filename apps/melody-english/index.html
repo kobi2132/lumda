@@ -348,7 +348,7 @@ main.scrollable{-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 34
 }
 /* Balloons: three bigger balloons on narrow screens; on short screens they float in place instead of rising */
 .air .balloon{width:var(--bw,24%);max-width:170px}
-.air.calm .balloon{top:14%!important;height:66%;width:auto;max-width:none;animation:bob 3.2s ease-in-out infinite;animation-delay:var(--delay)}
+.air.calm .balloon{top:14%!important;max-height:66%;width:var(--bw,24%);max-width:min(30%,170px);animation:bob 3.2s ease-in-out infinite;animation-delay:var(--delay)}
 .air.calm .balloon::after{height:20px}
 .air.calm .balloon.popped{animation:none}
 /* Parent corner: opened by holding the title */
@@ -583,6 +583,22 @@ const UI={"find": "img/5067d6fb4a77.webp", "balloons": "img/5f5d93026508.webp", 
 Object.assign(ART,{"actions": ["img/e314b9ef7151.webp", "img/72fbe08ac718.webp", "img/44cc9c54ca87.webp", "img/e9d4aa46d641.webp", "img/80a8afa9c461.webp", "img/9dfb67b6c024.webp", "img/900907d548d2.webp", "img/409fc01044a7.webp", "img/a1914494986e.webp", "img/bb92d0c5d116.webp"], "feelings": ["img/1dd69cd33b49.webp", "img/29596a8a6db1.webp", "img/af4430180d20.webp", "img/7e8956ceb9bc.webp", "img/4ca4d2c8f78e.webp", "img/ab880e8c34e3.webp", "img/ac51cd360c20.webp", "img/b1ad2529505d.webp"], "talk": ["img/959f328754f0.webp", "img/d6c0b7cea810.webp", "img/38435b84375e.webp", "img/9708ab842bcb.webp", "img/db8ee46fad7d.webp", "img/82e4188c58d3.webp", "img/bd7c7852aca4.webp", "img/1483c9eb8ab8.webp"]});   // actions, feelings, talk
 /* Attach the illustrations to the words (same order as the sheets) */
 for(const c of CATS){ if(ART[c.id]) c.items.forEach((it,i)=>{ it.img=ART[c.id][i] }) }
+/* More words, added as new levels after the original ones (so finished levels keep their words). Pictures arrive in MORE_ART; until then an emoji stands in */
+const MORE={
+  body:[{en:'Head',he:'ראש',e:'🧒'},{en:'Shoulders',he:'כתפיים',e:'🤷'},{en:'Knees',he:'ברכיים',e:'🦵'},{en:'Toes',he:'אצבעות הרגליים',e:'🦶'},
+    {en:'Arm',he:'זרוע',e:'💪'},{en:'Leg',he:'רגל',e:'🦵'},{en:'Finger',he:'אצבע',e:'☝️'},{en:'Tummy',he:'בטן',e:'🫃'}],
+  animals:[{en:'Cow',he:'פרה',e:'🐮'},{en:'Pig',he:'חזיר',e:'🐷'},{en:'Sheep',he:'כבשה',e:'🐑'},{en:'Chicken',he:'תרנגולת',e:'🐔'},{en:'Frog',he:'צפרדע',e:'🐸'},
+    {en:'Elephant',he:'פיל',e:'🐘'},{en:'Monkey',he:'קוף',e:'🐵'},{en:'Giraffe',he:"ג'ירפה",e:'🦒'},{en:'Mouse',he:'עכבר',e:'🐭'},{en:'Snake',he:'נחש',e:'🐍'}],
+  fruits:[{en:'Orange',he:'תפוז',e:'🍊'},{en:'Pineapple',he:'אננס',e:'🍍'},{en:'Peach',he:'אפרסק',e:'🍑'},{en:'Mango',he:'מנגו',e:'🥭'},{en:'Kiwi',he:'קיווי',e:'🥝'}],
+  food:[{en:'Pasta',he:'פסטה',e:'🍝'},{en:'Rice',he:'אורז',e:'🍚'},{en:'Soup',he:'מרק',e:'🍲'},{en:'Sandwich',he:'כריך',e:'🥪'},{en:'Salad',he:'סלט',e:'🥗'}],
+  home:[{en:'Table',he:'שולחן',e:'🪑'},{en:'Sofa',he:'ספה',e:'🛋️'},{en:'Window',he:'חלון',e:'🪟'},{en:'Lamp',he:'מנורה',e:'💡'},{en:'Cup',he:'כוס',e:'☕'},{en:'Toothbrush',he:'מברשת שיניים',e:'🪥'}],
+  vehicles:[{en:'Fire truck',he:'כבאית',e:'🚒'},{en:'Police car',he:'ניידת משטרה',e:'🚓'},{en:'Ambulance',he:'אמבולנס',e:'🚑'},{en:'Tractor',he:'טרקטור',e:'🚜'},{en:'Motorcycle',he:'אופנוע',e:'🏍️'}],
+  colors:[{en:'Brown',he:'חום',c:'#8b5a2b'},{en:'Gray',he:'אפור',c:'#9aa0a6'}],
+  actions:[{en:'Walk',he:'ללכת',e:'🚶',ph:'I can walk!'},{en:'Sit',he:'לשבת',e:'🪑',ph:'Sit down!'},{en:'Stand',he:'לעמוד',e:'🧍',ph:'Stand up!'},{en:'Read',he:'לקרוא',e:'📖',ph:'I can read!'},{en:'Draw',he:'לצייר',e:'🖍️',ph:'I can draw!'}],
+};
+const MORE_ART={};
+for(const id in MORE){ const c=CATS.find(x=>x.id===id); c.base=c.items.length; MORE[id].forEach((it,i)=>{ if(MORE_ART[id]&&MORE_ART[id][i]) it.img=MORE_ART[id][i] }); c.items.push(...MORE[id]) }
+CATS.find(c=>c.id==='body').items.find(i=>i.en==='Foot').he='כף רגל';   // "רגל" is now Leg
 { const FAM_ORDER=['Grandpa','Grandma','Dad','Mom','Brother','Sister','Baby'];
   CATS.find(c=>c.id==='family').items.forEach(it=>{ const k=FAM_ORDER.indexOf(it.en); it.fam=k<0?'all':k }); }
 const findItem=(cat,en)=>CATS.find(c=>c.id===cat).items.find(i=>i.en===en);
@@ -642,11 +658,16 @@ try{ Object.assign(settings,JSON.parse(localStorage.getItem(KEY+'settings')||'{}
 function saveSettings(){ try{ localStorage.setItem(KEY+'settings',JSON.stringify(settings)) }catch(e){} }
 
 /* Levels: split each topic into balanced groups of about 5 words */
+function split(items){
+  const n=Math.ceil(items.length/LEVEL_SIZE), out=[]; let i=0;
+  for(let k=0;k<n;k++){ const sz=Math.ceil((items.length-i)/(n-k)); out.push(items.slice(i,i+sz)); i+=sz }
+  return out;
+}
+// the original words keep their levels; added words (MORE) come as levels after them
 function levelsOf(cat){
   if(cat._lv) return cat._lv;
-  const n=Math.ceil(cat.items.length/LEVEL_SIZE), out=[]; let i=0;
-  for(let k=0;k<n;k++){ const sz=Math.ceil((cat.items.length-i)/(n-k)); out.push(cat.items.slice(i,i+sz)); i+=sz }
-  return cat._lv=out;
+  const b=cat.base||cat.items.length;
+  return cat._lv=split(cat.items.slice(0,b)).concat(split(cat.items.slice(b)));
 }
 const isDone=(cat,l)=>!!(prog.levels[cat.id]||[])[l];
 const isOpen=(cat,l)=>l===0||isDone(cat,l-1);
@@ -677,6 +698,12 @@ if(synth){ pickVoices(); synth.onvoiceschanged = pickVoices; }
 
 /* How each Hebrew text is spoken (chosen on the phone in the pronunciation check); the screen keeps the plain spelling */
 const HE_SAY={"שלום מלודי! בואי נלמד אנגלית!": "שָׁלוֹם מֶלוֹדִי! בּוֹאִי נִלְמַד אַנְגְּלִית!", "עכשיו נשחק! תקשיבי טוב.": "עַכְשָׁו נְשַׂחֵק! תַּקְשִׁיבִי טוֹב.", "בחרי משחק": "בַּחֲרִי מִשְׂחָק", "תלחצי על": "תִּלְחֲצִי עַל", "תפוצצי את הבלון הנכון!": "תְּפוֹצְצִי אֶת הַבָּלוֹן הַנָּכוֹן!", "תפוצצי את הבלון של": "תְּפוֹצְצִי אֶת הַבָּלוֹן שֶׁל", "מצאי שני קלפים זהים": "מִצְאִי שְׁנֵי קְלָפִים זֵהִים", "בואי נצבע שמלה לנסיכה": "בּוֹאִי נִצְבַּע שִׂמְלָה לַנְּסִיכָה", "צבעי את החולצה": "צִבְעִי אֶת הַחֻלְצָה", "צבעי את החצאית": "צִבְעִי אֶת הַחֲצָאִית", "צבעי את הפפיון": "צִבְעִי אֶת הַפַּפְּיוֹן", "צבעי את הנעליים": "צִבְעִי אֶת הַנַּעֲלַיִם", "צבעי את הכתר": "צִבְעִי אֶת הַכֶּתֶר", "זה": "זֶה", "הנה, זה": "הִנֵּה, זֶה", "נסי שוב!": "נַסִּי שׁוּב!", "קודם נשחק בשלב הזה": "קֹדֶם נְשַׂחֵק בַּשָּׁלָב הַזֶּה", "מצוין!": "מְצֻיָּן!", "איזו חכמה!": "אֵיזוֹ חֲכָמָה!", "את אלופה!": "אַתְּ אַלּוּפָה!", "את נסיכה חכמה!": "אַתְּ נְסִיכָה חֲכָמָה!", "קיבלת מדבקה!": "קִבַּלְתְּ מַדְבֵּקָה!", "פתחת שלב חדש!": "פָּתַחְתְּ שָׁלָב חָדָשׁ!", "קיבלת כתר בנושא הזה!": "קִבַּלְתְּ כֶּתֶר בַּנּוֹשֵׂא הַזֶּה!", "אספי עוד כוכבים כדי לקבל אותה": "אִסְפִי עוֹד כּוֹכָבִים כְּדֵי לְקַבֵּל אוֹתָהּ", "עוד כוכב אחד למדבקה הבאה": "עוֹד כּוֹכָב אֶחָד לַמַּדְבֵּקָה הַבָּאָה", "עוד שני כוכבים למדבקה הבאה": "עוֹד שְׁנֵי כּוֹכָבִים לַמַּדְבֵּקָה הַבָּאָה", "עוד שלושה כוכבים למדבקה הבאה": "עוֹד שְׁלוֹשָׁה כּוֹכָבִים לַמַּדְבֵּקָה הַבָּאָה", "עוד ארבעה כוכבים למדבקה הבאה": "עוֹד אַרְבָּעָה כּוֹכָבִים לַמַּדְבֵּקָה הַבָּאָה", "עוד חמישה כוכבים למדבקה הבאה": "עוֹד חֲמִשָּׁה כּוֹכָבִים לַמַּדְבֵּקָה הַבָּאָה", "נסיכות": "נְסִיכוֹת", "צבעים": "צְבָעִים", "בגדים": "בְּגָדִים", "צעצועים": "צַעֲצוּעִים", "חיות": "חַיּוֹת", "פירות": "פֵּרוֹת", "אוכל": "אֹכֶל", "משפחה": "מִשְׁפָּחָה", "הגוף שלי": "הַגּוּף שֶׁלִּי", "מספרים": "מִסְפָּרִים", "צורות": "צוּרוֹת", "טבע": "טֶבַע", "תחבורה": "תַּחְבּוּרָה", "ים": "יָם", "בבית": "בַּבַּיִת", "כתר": "כֶּתֶר", "נסיכה": "נְסִיכָה", "ארמון": "אַרְמוֹן", "שמלה": "שִׂמְלָה", "חד־קרן": "חַד־קֶרֶן", "לב": "לֵב", "כוכב": "כּוֹכָב", "קשת": "קֶשֶׁת", "טבעת": "טַבַּעַת", "פרח": "פֶּרַח", "ורוד": "וָרֹד", "אדום": "אָדֹם", "כחול": "כָּחֹל", "צהוב": "צָהֹב", "ירוק": "יָרֹק", "סגול": "סָגֹל", "כתום": "כָּתֹם", "שחור": "שָׁחֹר", "לבן": "לָבָן", "חולצה": "חֻלְצָה", "מכנסיים": "מִכְנָסַיִם", "נעליים": "נַעֲלַיִם", "כובע": "כּוֹבַע", "גרביים": "גַּרְבַּיִם", "תיק": "תִּיק", "מעיל": "מְעִיל", "משקפיים": "מִשְׁקָפַיִם", "כפפות": "כְּפָפוֹת", "דובי": "דֻּבִּי", "כדור": "כַּדּוּר", "בובה": "בֻּבָּה", "בלון": "בָּלוֹן", "עפיפון": "עֲפִיפוֹן", "פאזל": "פָּאזֶל", "תוף": "תֹּף", "מתנה": "מַתָּנָה", "צבע": "צֶבַע", "חתול": "חָתוּל", "כלב": "כֶּלֶב", "ארנב": "אַרְנָב", "סוס": "סוּס", "ציפור": "צִפּוֹר", "דג": "דָּג", "פרפר": "פַּרְפַּר", "דוב": "דֹּב", "ברווז": "בַּרְוָז", "אריה": "אַרְיֵה", "תפוח": "תַּפּוּחַ", "בננה": "בָּנָנָה", "תות": "תּוּת", "ענבים": "עֲנָבִים", "אבטיח": "אֲבַטִּיחַ", "דובדבן": "דֻּבְדְּבָן", "לימון": "לִימוֹן", "אגס": "אַגָּס", "חלב": "חָלָב", "לחם": "לֶחֶם", "ביצה": "בֵּיצָה", "גבינה": "גְּבִינָה", "פיצה": "פִּיצָה", "עוגה": "עוּגָה", "גלידה": "גְּלִידָה", "עוגייה": "עוּגִיָּה", "מים": "מַיִם", "סוכרייה": "סֻכָּרִיָּה", "אמא": "אִמָּא", "אבא": "אַבָּא", "תינוק": "תִּינוֹק", "אחות": "אָחוֹת", "אח": "אָח", "סבתא": "סַבְתָּא", "סבא": "סַבָּא", "עיניים": "עֵינַיִם", "אף": "אַף", "פה": "פֶּה", "אוזן": "אֹזֶן", "יד": "יָד", "רגל": "רֶגֶל", "שיער": "שֵׂעָר", "שיניים": "שִׁנַּיִם", "אחת": "אַחַת", "שתיים": "שְׁתַּיִם", "שלוש": "שָׁלוֹשׁ", "ארבע": "אַרְבַּע", "חמש": "חָמֵשׁ", "שש": "שֵׁשׁ", "שבע": "שֶׁבַע", "שמונה": "שְׁמוֹנֶה", "תשע": "תֵּשַׁע", "עשר": "עֶשֶׂר", "עיגול": "עִגּוּל", "ריבוע": "רִבּוּעַ", "משולש": "מְשֻׁלָּשׁ", "יהלום": "יַהֲלוֹם", "מלבן": "מַלְבֵּן", "אליפסה": "אֶלִיפְּסָה", "שמש": "שֶׁמֶשׁ", "ירח": "יָרֵחַ", "ענן": "עָנָן", "גשם": "גֶּשֶׁם", "שלג": "שֶׁלֶג", "עץ": "עֵץ", "עלה": "עָלֶה", "צבעוני": "צִבְעוֹנִי", "הר": "הַר", "מכונית": "מְכוֹנִית", "אוטובוס": "אוֹטוֹבּוּס", "רכבת": "רַכֶּבֶת", "מטוס": "מָטוֹס", "סירה": "סִירָה", "אופניים": "אוֹפַנַּיִם", "מסוק": "מַסּוֹק", "משאית": "מַשָּׂאִית", "חללית": "חֲלָלִית", "לווייתן": "לִוְיָתָן", "דולפין": "דּוֹלְפִין", "סרטן": "סַרְטָן", "צדף": "צֶדֶף", "צב": "צָב", "כריש": "כָּרִישׁ", "בית": "בַּיִת", "מיטה": "מִטָּה", "כיסא": "כִּסֵּא", "דלת": "דֶּלֶת", "אמבטיה": "אַמְבַּטְיָה", "שעון": "שָׁעוֹן", "מפתח": "מַפְתֵּחַ", "טלפון": "טֶלֶפוֹן", "ספר": "סֵפֶר", "כל הכבוד מלודי!": "כֹּל הַכָּבוֹד מֶלוֹדִי!", "וואו, נכון!": "wow, נָכוֹן!", "סיימת את כל השלבים!": "עָשִׂית אֶת כֹּל הַשְּׁלַבִּים!", "סיימת את כל השלבים וקיבלת כתר!": "עָשִׂית אֶת כֹּל הַשְּׁלַבִּים, וְקִבַּלְתְּ כֶּתֶר!", "אספת את כל המדבקות!": "יֵשׁ לָךְ אֶת כֹּל הַמַּדְבֵּקוֹת!", "תמנון": "תָּמְנוּן"};
+Object.assign(HE_SAY,{"ראש":"רֹאשׁ","כתפיים":"כְּתֵפַיִם","ברכיים":"בִּרְכַּיִם","אצבעות הרגליים":"אֶצְבְּעוֹת הָרַגְלַיִם","זרוע":"זְרוֹעַ","אצבע":"אֶצְבַּע","בטן":"בֶּטֶן","כף רגל":"כַּף רֶגֶל",
+  "פרה":"פָּרָה","חזיר":"חֲזִיר","כבשה":"כִּבְשָׂה","תרנגולת":"תַּרְנְגֹלֶת","צפרדע":"צְפַרְדֵּעַ","פיל":"פִּיל","קוף":"קוֹף","ג'ירפה":"גִ'ירָפָה","עכבר":"עַכְבָּר","נחש":"נָחָשׁ",
+  "תפוז":"תַּפּוּז","אננס":"אֲנָנָס","אפרסק":"אֲפַרְסֵק","מנגו":"מַנְגּוֹ","קיווי":"קִיוִי","פסטה":"פַּסְטָה","אורז":"אֹרֶז","מרק":"מָרָק","כריך":"כָּרִיךְ","סלט":"סָלָט",
+  "שולחן":"שֻׁלְחָן","ספה":"סַפָּה","חלון":"חַלּוֹן","מנורה":"מְנוֹרָה","כוס":"כּוֹס","מברשת שיניים":"מִבְרֶשֶׁת שִׁנַּיִם",
+  "כבאית":"כַּבָּאִית","ניידת משטרה":"נַיֶּדֶת מִשְׁטָרָה","אמבולנס":"אַמְבּוּלַנְס","טרקטור":"טְרַקְטוֹר","אופנוע":"אוֹפַנּוֹעַ","חום":"חוּם","אפור":"אָפֹר",
+  "ללכת":"לָלֶכֶת","לשבת":"לָשֶׁבֶת","לעמוד":"לַעֲמֹד","לקרוא":"לִקְרֹא","לצייר":"לְצַיֵּר"});
 Object.assign(HE_SAY,{"מה זה? תבחרי את המילה הנכונה":"מַה זֶּה? תִּבְחֲרִי אֶת הַמִּלָּה הַנְּכוֹנָה","מה זה? תבחר את המילה הנכונה":"מַה זֶּה? תִּבְחַר אֶת הַמִּלָּה הַנְּכוֹנָה",
   "תקשיבי ותגידי אחריי":"תַּקְשִׁיבִי וְתַגִּידִי אַחֲרַי","תקשיב ותגיד אחריי":"תַּקְשִׁיב וְתַגִּיד אַחֲרַי","לא שמעתי. נסי שוב!":"לֹא שָׁמַעְתִּי. נַסִּי שׁוּב!","לא שמעתי. נסה שוב!":"לֹא שָׁמַעְתִּי. נַסֵּה שׁוּב!",
   "כמעט! תקשיבי שוב":"כִּמְעַט! תַּקְשִׁיבִי שׁוּב","כמעט! תקשיב שוב":"כִּמְעַט! תַּקְשִׁיב שׁוּב","עבדת יפה! הגיע הזמן להפסקה קטנה":"עָבַדְתְּ יָפֶה! הִגִּיעַ הַזְּמַן לְהַפְסָקָה קְטַנָּה","עבדת יפה!! הגיע הזמן להפסקה קטנה":"עָבַדְתָּ יָפֶה! הִגִּיעַ הַזְּמַן לְהַפְסָקָה קְטַנָּה",
@@ -700,7 +727,7 @@ function say(parts){
   return new Promise(resolve=>{
     let finished=false;
     const finish=()=>{ if(!finished){ finished=true; clearTimeout(guard); if(myTalk===talkId){ document.documentElement.classList.remove('talking'); stopMouth() } resolve() } };
-    const guard=setTimeout(finish, est*1.6+1200);
+    const guard=setTimeout(finish, est*1.6/Math.min(1,settings.rate||1)+1200);
     if(!synth || !list.length){ clearTimeout(guard); setTimeout(finish, synth?0:est); return }
     try{ synth.cancel() }catch(e){}
     liveUtts=[];
@@ -802,7 +829,7 @@ function visual(item,small){
 function addStar(){ stars++; saveStars(); $count.textContent=stars; $stars.classList.remove('pop'); void $stars.offsetWidth; $stars.classList.add('pop');
   if(stars%PER_REWARD===0 && stars/PER_REWARD<=REWARDS.length){ const r=REWARDS[stars/PER_REWARD-1]; newStickers.push(r); return r } return null }
 let newStickers=[];   // stickers won during the current game, shown and announced when it ends
-$home.onclick=()=>{ tick(); if(atStart){ location.replace('../../index.html'); return } const go=homeTo; go ? go() : showCats() };
+$home.onclick=()=>{ tick(); if(atStart){ let fromHub=false; try{ fromHub=sessionStorage.getItem('lumda-from-hub')==='1' }catch(e){} if(fromHub && history.length>1) history.back(); else location.replace('../../index.html'); return } const go=homeTo; go ? go() : showCats() };
 $stars.onclick=()=>{ tick(); showAlbum() };
 document.getElementById('hdrStar').innerHTML=art(UI.star);
 document.getElementById('hdrAlbum').innerHTML=art(UI.album);
@@ -822,15 +849,15 @@ function showStart(){
 }
 
 /* Screen time: after a while (set in the parent corner) the companion suggests a break, at the next natural stop */
-let playMs=0, seenAt=Date.now();
+let playMs=0, seenAt=Date.now(), hiddenAt=Date.now();
 document.addEventListener('visibilitychange',()=>{
-  if(document.hidden){ playMs+=Date.now()-seenAt }
-  else { if(Date.now()-seenAt>30*60000) playMs=0; seenAt=Date.now() }   // back after a long time away: a fresh start
+  if(document.hidden){ playMs+=Date.now()-seenAt; hiddenAt=Date.now() }
+  else { if(Date.now()-hiddenAt>30*60000) playMs=0; seenAt=Date.now() }   // back after a long time away: a fresh start
 });
 const played=()=>playMs+(document.hidden?0:Date.now()-seenAt);
 const breakDue=()=>settings.breakMin>0 && played()>=settings.breakMin*60000;
 function showBreak(then){
-  playMs=0; seenAt=Date.now(); screenId++; homeTo=null; $home.hidden=false;
+  playMs=0; seenAt=Date.now(); screenId++; homeTo=null; $home.hidden=false; atStart=false;
   $main.innerHTML=`<div class="screen party">
     ${charHTML('big')}
     <h2 dir="ltr">Great job today!</h2>
@@ -1342,7 +1369,7 @@ function party(g,again,hero){
   const got=newStickers.splice(0);
   $main.innerHTML=`<div class="screen party">
     ${hero && !crowned ? hero : charHTML('big',crowned?'won':'')}
-    <h2 dir="ltr">${crowned?(BOY?'King of ':'Queen of ')+g.cat.en+'!':'Super Star!'}</h2>
+    <h2 dir="ltr">${crowned?(BOY?(g.cat.id==='kingdom'?'King of the castle':'King of '+g.cat.en):'Queen of '+g.cat.en)+'!':'Super Star!'}</h2>
     <p>${crowned?'קיבלת כתר! '+art(ICON.crown(),'inl'):G('כל הכבוד מלודי!')+' '+art(UI.star,'inl')}</p>
     ${got.length?`<div class="next-stk new-stk"><span class="gift">${art(ICON.gift())}</span>${got.map(r=>art(r.img)).join('')}</div>`:''}
     <div class="row">
@@ -1364,7 +1391,6 @@ function party(g,again,hero){
 
 /* ---------- Sticker album ---------- */
 function showAlbum(){
-  newStickers=[];
   screenId++; homeTo=null; atStart=false;
   $home.hidden=false;
   const got=Math.min(Math.floor(stars/PER_REWARD),REWARDS.length);
@@ -1474,8 +1500,9 @@ function markScroll(){ $main.classList.toggle('scrollable', $main.scrollHeight-$
 $main.addEventListener('scroll',markScroll,{passive:true});
 let keepTop=null;
 // a new screen silences whatever the previous screen was still saying
-function hush(){ talkId++; try{ synth&&synth.cancel() }catch(e){} document.documentElement.classList.remove('talking'); stopMouth() }
+function hush(){ talkId++; lastSay=null; try{ synth&&synth.cancel() }catch(e){} document.documentElement.classList.remove('talking'); stopMouth() }
 /* The phone's Back button steps back inside the app, like the home button: one extra history entry is kept while away from the start screen */
+if(history.state&&history.state.lumda) try{ history.replaceState(null,'') }catch(e){}
 const guard=()=>{ if(!atStart && !(history.state&&history.state.lumda)) try{ history.pushState({lumda:1},'') }catch(e){} };
 addEventListener('popstate',()=>{
   if(atStart) return;

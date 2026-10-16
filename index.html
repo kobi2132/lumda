@@ -113,6 +113,7 @@ function theme(kid){
 function showPick(){
   theme(null); $('list').hidden = true; $('pick').hidden = false;
   const box = $('kids'); box.classList.remove('picked');
+  if(history.state && history.state.list) try { history.replaceState(null, '') } catch(e){}
   box.innerHTML = Object.values(KIDS).map(k =>
     `<button class="kid" data-k="${k.id}" aria-label="${k.name}"><span class="fig"><img src="${k.img}" alt="" draggable="false"></span><span class="name">${k.name}</span></button>`).join('');
   box.querySelectorAll('.kid').forEach(b => b.onclick = async () => {
@@ -136,6 +137,7 @@ function showList(kid){
   list.forEach(a => {
     const el = document.createElement('a');
     el.className = 'app'; el.href = a.path;
+    el.onclick = () => { try { sessionStorage.setItem('lumda-from-hub', '1') } catch(e){} };
     el.innerHTML = '<div class="icon"></div><h2></h2><p></p>';
     el.querySelector('.icon').textContent = a.icon;
     el.querySelector('h2').textContent = (a.titles && a.titles[kid.id]) || a.title;
@@ -151,7 +153,7 @@ addEventListener('popstate', () => { if(!$('list').hidden){ try { sessionStorage
 let back = null; try { back = KIDS[sessionStorage.getItem('lumda-kid')] } catch(e){}
 back ? showList(back) : showPick();
 
-if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(()=>{});
+if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').then(() => navigator.serviceWorker.ready).then(r => r.active && r.active.postMessage('fill')).catch(()=>{});
 </script>
 </body>
 </html>
