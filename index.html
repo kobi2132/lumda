@@ -67,8 +67,8 @@ button{font:inherit;color:inherit}
 #pick{position:relative}
 h1#pickTitle{margin:44px 0 0}
 .sub{margin:4px 0 10px;text-align:center;font-family:var(--display);font-weight:600;font-size:clamp(22px,6vw,34px);color:var(--plum)}
-.parentsBtn{position:absolute;top:0;inset-inline-end:0;min-height:44px;padding:6px 16px;border:3px solid rgba(255,255,255,.8);border-radius:999px;
-  background:rgba(255,255,255,.35);color:var(--plum);font-size:16px;cursor:pointer;display:flex;align-items:center;gap:6px}
+.parentsBtn{position:absolute;top:0;inset-inline-start:0;width:48px;height:48px;padding:0;border:3px solid rgba(255,255,255,.8);border-radius:50%;
+  background:rgba(255,255,255,.35);font-size:24px;line-height:1;cursor:pointer;display:grid;place-items:center}
 .parentsBtn:active{transform:translateY(2px)}
 .kid .kstars{font-family:var(--display);font-weight:700;font-size:clamp(16px,4.4vw,22px);color:var(--plum);background:rgba(255,255,255,.7);border-radius:999px;padding:2px 12px;margin-top:-2px}
 .kid .kstars:empty{display:none}
@@ -89,6 +89,17 @@ h1#pickTitle{margin:44px 0 0}
 .keys button:active{transform:translateY(3px);box-shadow:0 1px 0 #d9c2e8}
 .keys button.ok{background:linear-gradient(180deg,#ff8fc0,#e0307f);color:#fff;box-shadow:0 4px 0 #a8226a}
 .linkbtn{border:0;background:none;color:#b0208a;font-weight:700;font-size:16px;margin-top:14px;cursor:pointer;min-height:44px;text-decoration:underline}
+
+/* Install window (first visits) */
+.inst{text-align:center}
+.inst .icon{width:84px;height:84px;border-radius:22px;box-shadow:0 4px 12px rgba(40,10,60,.25);margin:4px auto 8px;display:block}
+.inst ol{text-align:start;padding-inline-start:22px;margin:8px 0 0;font-size:17px;line-height:1.7}
+.inst .ios-share{display:inline-block;vertical-align:-4px;width:22px;height:22px}
+.f textarea{width:100%;min-height:110px;border:3px solid #ead6f5;border-radius:16px;padding:10px 14px;font:inherit;font-size:18px;color:inherit;background:#fff;resize:vertical;user-select:text;-webkit-user-select:text}
+.f textarea:focus{outline:0;border-color:#c48ae6}
+.small{font-size:14px;line-height:1.5;opacity:.8;margin:6px 0 0}
+.msg{background:#fff;border-radius:14px;padding:8px 10px;margin-top:8px;font-size:15px;line-height:1.5;user-select:text;-webkit-user-select:text}
+.msg small{display:block;opacity:.7;font-size:12px}
 
 /* Parents area */
 .pcard{margin-top:14px;padding:14px;border-radius:20px;background:#faf3fd}
@@ -172,7 +183,7 @@ h1#pickTitle{margin:44px 0 0}
 <body>
 <div class="wrap">
   <section id="pick">
-    <button class="parentsBtn" id="parentsBtn" aria-label="אזור ההורים">🔒 הורים</button>
+    <button class="parentsBtn" id="parentsBtn" aria-label="אזור ההורים">⚙️</button>
     <h1 id="pickTitle"></h1>
     <p class="sub" id="pickSub">מי משחק היום?</p>
     <div class="kids" id="kids"></div>
@@ -221,6 +232,13 @@ h1#pickTitle{margin:44px 0 0}
         <button class="btn soft" id="backupKids">💾 שמירת גיבוי</button>
         <button class="btn soft" id="loadKids">📂 שחזור מגיבוי</button>
         <input type="file" id="loadFile" accept="application/json,.json" hidden></div>
+      <div class="pcard"><h3>☁️ גיבוי בגוגל</h3>
+        <p class="note">מתחברים עם חשבון הגוגל שלכם, וההתקדמות נשמרת בדרייב. כך היא לא הולכת לאיבוד, ואפשר לראות אותה גם מהטלפון שלכם.</p>
+        <div id="cloudBox"></div></div>
+      <div class="pcard"><h3>✉️ הודעה למפתח</h3>
+        <p class="note">מצאתם באג, משהו לא עובד או לא מתאים לגיל, או סתם רוצים להחמיא? כתבו כאן.</p>
+        <div class="f" style="margin-top:0"><textarea id="devMsg" maxlength="1000" dir="auto" aria-label="ההודעה"></textarea></div>
+        <button class="btn soft" id="devMsgSend">שליחה</button><p class="okline" id="devMsgOk"></p></div>
       <div class="pcard"><h3>📲 התקנה ועדכון</h3>
         <p class="note" id="pVer"></p>
         <button class="btn" id="pInstall" hidden>📲 התקנה בטלפון</button>
@@ -288,6 +306,11 @@ h1#pickTitle{margin:44px 0 0}
 </div>
 <div class="shade" id="chars" hidden><div class="page"><h2><span>בחירת דמות</span><button class="x" id="charsX" aria-label="סגירה">✕</button></h2>
   <div class="chgrid" id="chGrid"></div></div></div>
+<div class="shade" id="inst" hidden><div class="page inst"><h2><span>התקנה על מסך הבית</span><button class="x" id="instX" aria-label="סגירה">✕</button></h2>
+  <img class="icon" src="icon-192.png?v=2" alt="">
+  <p class="note">כך הלומדות נפתחות מהר, במסך מלא, וגם בלי אינטרנט.</p>
+  <div id="instBody"></div>
+  <button class="btn soft" id="instLater">אחר כך</button></div></div>
 <div class="shade" id="ask" hidden><div class="page"><h2><span id="askTitle"></span></h2><p class="note" id="askText"></p>
   <label class="chk" id="askChkRow"><input type="checkbox" id="askChk"><span id="askChkText"></span></label>
   <div class="two"><button class="btn" id="askYes"></button><button class="btn soft" id="askNo">ביטול</button></div></div></div>
@@ -387,7 +410,7 @@ function showList(kid){
 $('switch').onclick = () => { try { sessionStorage.removeItem('lumda-kid') } catch(e){} showPick() };
 // the phone's Back button: a child's list or the kids page goes back to "who's playing?", the kid form goes back to the kids page
 addEventListener('popstate', () => {
-  $('ask').hidden = true;
+  $('ask').hidden = true; $('inst').hidden = true;
   if(view === 'list'){ try { sessionStorage.removeItem('lumda-kid') } catch(e){} showPick() }
   else if(view === 'pin' && pinChange){ pinChange = false; showParents() }
   else if(view === 'parents' || view === 'pin') showPick();
@@ -440,10 +463,20 @@ function askRemove(kid){
 }
 
 /* Backup of all children and their progress in one file */
-$('backupKids').onclick = () => {
+// everything a backup holds: the children, the settings and each child's progress (also used for the Google Drive backup)
+function backupData(){
   const data = { 'lumda-kids': JSON.stringify(window.LUMDA_KIDS_LIST()), 'lumda-settings': JSON.stringify(window.LUMDA_SETTINGS()) };
   Object.keys(KIDS).forEach(id => progressKeys(id).forEach(k => { data[k] = localStorage.getItem(k) }));
-  const blob = new Blob([JSON.stringify({ lumda: 'kids', v: 1, saved: new Date().toISOString(), data }, null, 1)], { type: 'application/json' });
+  return { lumda: 'kids', v: 1, saved: new Date().toISOString(), data };
+}
+// a backup replaces what's on the phone, but only the lumda's own keys (other sites on this address keep theirs)
+function restoreData(d){
+  let ids = []; try { ids = JSON.parse(d.data['lumda-kids']).map(k => k.id) } catch(e){}
+  Object.keys(d.data).forEach(k => { if(k === 'lumda-settings' || ids.some(id => k.startsWith(id + '-'))) store(k, String(d.data[k])) });
+  window.LUMDA_SAVE_KIDS(JSON.parse(d.data['lumda-kids'])); KIDS = window.LUMDA_KIDS;
+}
+$('backupKids').onclick = () => {
+  const blob = new Blob([JSON.stringify(backupData(), null, 1)], { type: 'application/json' });
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'lumda-kids-backup-' + new Date().toISOString().slice(0,10) + '.json';
   document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove() }, 1000);
 };
@@ -455,10 +488,7 @@ $('loadFile').onchange = async () => {
   if(!d || d.lumda !== 'kids' || !d.data || !d.data['lumda-kids']){ ask({ title: 'הקובץ לא מתאים', text: 'זה לא קובץ גיבוי של רשימת הילדים.', yes: 'הבנתי', then: () => {} }); return }
   ask({ title: 'לשחזר מהגיבוי?', text: 'רשימת הילדים וההתקדמות שבקובץ יחליפו את מה ששמור בטלפון.', yes: 'שחזור',
     then: () => {
-      // only the lumda's own keys: the settings and each child's progress (other sites on this address keep theirs)
-      let ids = []; try { ids = JSON.parse(d.data['lumda-kids']).map(k => k.id) } catch(e){}
-      Object.keys(d.data).forEach(k => { if(k === 'lumda-settings' || ids.some(id => k.startsWith(id + '-'))) store(k, String(d.data[k])) });
-      window.LUMDA_SAVE_KIDS(JSON.parse(d.data['lumda-kids'])); KIDS = window.LUMDA_KIDS; showParents();
+      restoreData(d); showParents();
     } });
 };
 
@@ -629,7 +659,7 @@ function showParents(){
     const h = new Set(k.hide || []); h.has(b.dataset.a) ? h.delete(b.dataset.a) : h.add(b.dataset.a); k.hide = [...h];
     saveList(list); showParents();
   });
-  installInfo();
+  installInfo(); cloudOnParents();
   const pin = getPin();
   $('pPinNote').textContent = pin ? 'אזור ההורים נפתח עם קוד של 4 ספרות. שכחתם? בכניסה יש "שכחתי את הקוד".' : 'אין קוד, וכל אחד יכול להיכנס לכאן. כדאי לבחור קוד.';
   $('pPin').textContent = pin ? 'שינוי הקוד' : 'בחירת קוד'; $('pPinOff').hidden = !pin;
@@ -654,26 +684,157 @@ function testVoice(){
 $('sTest').onclick = testVoice;
 
 /* Install and update */
+/* Install on the home screen: a window on the first visits (Android installs at once, iPhone gets the steps), and a button in the parents area */
 let installEv = null;
+const standalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEv = e; if(view === 'parents') installInfo() });
+addEventListener('appinstalled', () => { installEv = null; $('inst').hidden = true; if(view === 'parents') installInfo() });
+const SHARE_ICON = '<svg class="ios-share" viewBox="0 0 24 24" fill="none" stroke="#2f7cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="שיתוף"><path d="M12 3v12M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>';
+function showInstall(){
+  $('instBody').innerHTML = installEv ? '<button class="btn" id="instGo">📲 התקנה</button>'
+    : isIOS ? `<ol><li>לוחצים על כפתור השיתוף ${SHARE_ICON} בתחתית המסך (או למעלה באייפד).</li><li>גוללים ובוחרים "הוספה למסך הבית".</li><li>לוחצים "הוסף".</li></ol>`
+    : '<ol><li>לוחצים על התפריט ⋮ של הדפדפן.</li><li>בוחרים "התקנת אפליקציה" או "הוספה למסך הבית".</li></ol>';
+  const go = $('instGo'); if(go) go.onclick = async () => { $('inst').hidden = true; installEv.prompt(); try { await installEv.userChoice } catch(e){} installEv = null; if(view === 'parents') installInfo() };
+  $('inst').hidden = false;
+}
+$('instX').onclick = $('instLater').onclick = () => { $('inst').hidden = true };
+// shown on the first three visits until it's installed
+setTimeout(() => {
+  let n = 0; try { n = +localStorage.getItem('lumda-install-asked') || 0 } catch(e){}
+  if(standalone() || n >= 3 || view !== 'pick' || !$('ask').hidden) return;
+  store('lumda-install-asked', String(n + 1)); showInstall();
+}, 1500);
 async function installInfo(){
-  const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
-  $('pInstall').hidden = !installEv || standalone;
-  $('pInstallHelp').textContent = standalone ? '✓ הלומדות מותקנות בטלפון ונפתחות גם בלי אינטרנט.' : installEv ? '' : 'כדי להתקין: בתפריט של הדפדפן (⋮ או שיתוף) בוחרים "הוספה למסך הבית".';
+  $('pInstall').hidden = standalone();
+  $('pInstallHelp').textContent = standalone() ? '✓ הלומדות מותקנות בטלפון ונפתחות גם בלי אינטרנט.' : '';
   let ver = ''; try { ver = ((await caches.keys()).find(k => /^lumda-v\d+$/.test(k)) || '').replace('lumda-v', '') } catch(e){}
   $('pVer').textContent = ver ? 'גרסה ' + ver : 'הלומדות מתעדכנות לבד כשיש אינטרנט.';
 }
-$('pInstall').onclick = async () => { if(!installEv) return; installEv.prompt(); try { await installEv.userChoice } catch(e){} installEv = null; installInfo() };
+$('pInstall').onclick = showInstall;
 $('pUpdate').onclick = async () => {
   $('pMsg').textContent = 'בודק...';
   try { const r = await navigator.serviceWorker.getRegistration(); if(r) await r.update() } catch(e){}
   if(!navigator.onLine){ $('pMsg').textContent = 'אין אינטרנט כרגע. נסו שוב אחר כך.'; return }
   $('pMsg').textContent = 'מעדכן...'; setTimeout(() => location.reload(), 800);
 };
+// the app's name is still open (Jacob will choose one); the text is Jacob's own
+const APP_NAME = 'הלומדות';
+const SHARE_TEXT = `היי! תכירו את ${APP_NAME}, לומדות לילדים בגילאי 4 עד 7.
+
+כרגע יש בה לומדה לאנגלית ולומדה למספרים וחשבון.
+האפליקציה עדיין בפיתוח, ובקרוב יצטרפו לומדות נוספות של:
+- עברית וקריאה
+- צורות ודפוסים
+- חשיבה וזיכרון
+- ועוד
+
+כנסו להתרשם: [קישור]
+
+בכניסה הראשונה תופיע הצעה להתקין את האפליקציה על מסך הבית. ממליץ לעשות את זה, ככה היא נפתחת מהר ועובדת גם בלי אינטרנט.
+
+מצאתם באג, משהו לא עובד או לא מתאים לגיל, או סתם רוצים להחמיא? אפשר לשלוח לי הודעה דרך אזור ההורים באפליקציה.
+
+תיהנו,
+יעקב ימין`;
 const SITE = location.origin + location.pathname.replace(/index\.html$/, '');
 $('pShare').onclick = async () => {
-  try { if(navigator.share){ await navigator.share({ title: 'הלומדות', text: 'לומדות לילדים: אנגלית, חשבון ועוד', url: SITE }); return } } catch(e){ if(e && e.name === 'AbortError') return }
-  try { await navigator.clipboard.writeText(SITE); $('pMsg').textContent = 'הקישור הועתק: ' + SITE } catch(e){ $('pMsg').textContent = SITE }
+  const text = SHARE_TEXT.replace('[קישור]', SITE);
+  try { if(navigator.share){ await navigator.share({ title: APP_NAME, text }); return } } catch(e){ if(e && e.name === 'AbortError') return }
+  try { await navigator.clipboard.writeText(text); $('pMsg').textContent = 'ההודעה והקישור הועתקו. אפשר להדביק בוואטסאפ.' } catch(e){ $('pMsg').textContent = SITE }
+};
+
+/* ---------- Google Drive backup ----------
+   The parent signs in with Google; each phone keeps its backup as one file in the app's hidden Drive folder (the app sees no other file).
+   Signing in on another phone (the parent's own) shows every phone's children and progress, and can restore from one of them.
+   GOOGLE_CLIENT_ID comes from Google Cloud (Jacob will create it); until then the button says it's coming soon. */
+const GOOGLE_CLIENT_ID = '';
+const DRIVE = 'https://www.googleapis.com/drive/v3/files', UPLOAD = 'https://www.googleapis.com/upload/drive/v3/files';
+const deviceId = (() => { let d = ''; try { d = localStorage.getItem('lumda-device') } catch(e){} if(!d){ d = Math.random().toString(36).slice(2, 10); store('lumda-device', d) } return d })();
+const cloudOn = () => { try { return localStorage.getItem('lumda-cloud') === '1' } catch(e){ return false } };
+let gToken = null, gTokenAt = 0, gClient = null, cloudMsg = '', cloudOthers = null, cloudBackedUp = false;
+function loadGis(){
+  return window.google && google.accounts ? Promise.resolve() : new Promise((ok, no) => {
+    const sc = document.createElement('script'); sc.src = 'https://accounts.google.com/gsi/client'; sc.onload = ok; sc.onerror = no; document.head.appendChild(sc);
+  });
+}
+// a token for an hour; asking again after the first time is quiet (or a quick Google window)
+async function token(ask){
+  if(gToken && Date.now() - gTokenAt < 50 * 60000) return gToken;
+  await loadGis();
+  return new Promise((ok, no) => {
+    gClient = google.accounts.oauth2.initTokenClient({ client_id: GOOGLE_CLIENT_ID, scope: 'https://www.googleapis.com/auth/drive.appdata',
+      callback: r => { if(r && r.access_token){ gToken = r.access_token; gTokenAt = Date.now(); ok(gToken) } else no(r) }, error_callback: no });
+    gClient.requestAccessToken({ prompt: ask ? 'consent' : '' });
+  });
+}
+async function gfetch(url, opt = {}){
+  const t = await token(false);
+  const r = await fetch(url, Object.assign({}, opt, { headers: Object.assign({ Authorization: 'Bearer ' + t }, opt.headers || {}) }));
+  if(!r.ok) throw new Error('drive ' + r.status);
+  return r;
+}
+const listFiles = async () => (await (await gfetch(DRIVE + '?spaces=appDataFolder&fields=files(id,name,modifiedTime)&pageSize=100')).json()).files || [];
+async function cloudBackup(){
+  const name = 'lumda-' + deviceId + '.json', body = JSON.stringify(backupData());
+  const mine = (await listFiles()).find(f => f.name === name);
+  if(mine) await gfetch(UPLOAD + '/' + mine.id + '?uploadType=media', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body });
+  else {
+    const fd = new FormData();
+    fd.append('meta', new Blob([JSON.stringify({ name, parents: ['appDataFolder'] })], { type: 'application/json' }));
+    fd.append('file', new Blob([body], { type: 'application/json' }));
+    await gfetch(UPLOAD + '?uploadType=multipart', { method: 'POST', body: fd });
+  }
+  store('lumda-cloud-at', String(Date.now()));
+}
+// every phone's backup: its children and their progress summaries
+async function cloudLoadOthers(){
+  const files = (await listFiles()).filter(f => /^lumda-\w+\.json$/.test(f.name));
+  cloudOthers = await Promise.all(files.map(async f => ({ f, mine: f.name === 'lumda-' + deviceId + '.json', d: await (await gfetch(DRIVE + '/' + f.id + '?alt=media')).json().catch(() => null) })));
+  cloudOthers = cloudOthers.filter(x => x.d && x.d.data && x.d.data['lumda-kids']);
+}
+async function cloudSync(ask){
+  cloudMsg = 'מתחבר...'; renderCloud();
+  try { await token(ask); store('lumda-cloud', '1'); cloudMsg = 'שומר...'; renderCloud(); await cloudBackup(); cloudBackedUp = true; await cloudLoadOthers(); cloudMsg = '' }
+  catch(e){ cloudMsg = 'לא הצלחתי להתחבר לגוגל. נסו שוב.' }
+  renderCloud();
+}
+function renderCloud(){
+  const box = $('cloudBox'); if(!box) return;
+  if(!GOOGLE_CLIENT_ID){ box.innerHTML = '<button class="btn soft" disabled>התחברות עם גוגל (בקרוב)</button>'; return }
+  if(!cloudOn()){ box.innerHTML = `<button class="btn" id="gIn">התחברות עם גוגל</button><p class="okline">${esc(cloudMsg)}</p>`; $('gIn').onclick = () => cloudSync(true); return }
+  let at = 0; try { at = +localStorage.getItem('lumda-cloud-at') || 0 } catch(e){}
+  const phones = (cloudOthers || []).map((x, i) => {
+    let kids = []; try { kids = JSON.parse(x.d.data['lumda-kids']) } catch(e){}
+    const rows = kids.map(k => {
+      const stars = Object.keys(x.d.data).filter(key => key.startsWith(k.id + '-') && /stars$/.test(key)).reduce((a, key) => a + (parseInt(x.d.data[key], 10) || 0), 0);
+      const apps = APPS.map(a => { let sm = null; try { sm = JSON.parse(x.d.data[k.id + '-summary-' + a.id]) } catch(e){} return sm ? `${a.icon} ${sm.done}/${sm.total}` : '' }).filter(Boolean).join(' · ');
+      return `<div class="prow2"><span>${esc(k.name)}</span><small>⭐ ${stars}${apps ? ' · ' + apps : ''}</small></div>`;
+    }).join('');
+    return `<div class="prog"><div class="ph"><b>${x.mine ? 'הטלפון הזה' : 'טלפון עם ' + esc(kids.map(k => k.name).join(', '))}</b><small>${esc(ago(Date.parse(x.d.saved)))}</small></div>${rows}
+      ${x.mine ? '' : `<button class="btn soft" data-restore="${i}">שחזור לטלפון הזה</button>`}</div>`;
+  }).join('');
+  box.innerHTML = `<p class="okline">✓ מחובר.${at ? ' גיבוי אחרון: ' + ago(at) + '.' : ''}</p>${phones}
+    <button class="btn soft" id="gSync">${cloudOthers ? '🔄 גיבוי ורענון' : 'הצגת ההתקדמות מכל הטלפונים'}</button>
+    <button class="btn soft" id="gOut">ניתוק מגוגל</button><p class="okline">${esc(cloudMsg)}</p>`;
+  $('gSync').onclick = () => cloudSync(false);
+  $('gOut').onclick = () => { try { gToken && google.accounts.oauth2.revoke(gToken) } catch(e){} gToken = null; cloudOthers = null; store('lumda-cloud', null); renderCloud() };
+  box.querySelectorAll('[data-restore]').forEach(b => b.onclick = () => ask({ title: 'לשחזר מהטלפון השני?', text: 'הילדים וההתקדמות שבגיבוי יחליפו את מה ששמור בטלפון הזה.', yes: 'שחזור',
+    then: () => { restoreData(cloudOthers[+b.dataset.restore].d); showParents() } }));
+}
+// opening the parents area (always right after a tap) saves a backup once per visit
+function cloudOnParents(){ renderCloud(); if(GOOGLE_CLIENT_ID && cloudOn() && !cloudBackedUp){ cloudBackedUp = true; cloudSync(false) } }
+// and leaving the lumda saves one too, while the hour's token is still good (no Google window)
+document.addEventListener('visibilitychange', () => { if(document.hidden && gToken && Date.now() - gTokenAt < 50 * 60000) cloudBackup().catch(() => {}) });
+
+/* A message to the developer: kept on the phone and listed in the developer page (later a bot will send it on) */
+const devMsgs = () => { try { return JSON.parse(localStorage.getItem('lumda-dev-msgs')) || [] } catch(e){ return [] } };
+$('devMsgSend').onclick = async () => {
+  const text = $('devMsg').value.trim(); if(!text){ $('devMsgOk').textContent = 'כתבו משהו קודם.'; return }
+  let ver = ''; try { ver = ((await caches.keys()).find(k => /^lumda-v\d+$/.test(k)) || '').replace('lumda-v', '') } catch(e){}
+  const list = devMsgs(); list.push({ at: new Date().toISOString(), text, ver, ua: navigator.userAgent, kids: Object.values(KIDS).map(k => k.name + ' (' + levelName(k.level) + ')').join(', ') });
+  store('lumda-dev-msgs', JSON.stringify(list.slice(-50)));
+  $('devMsg').value = ''; $('devMsgOk').textContent = 'תודה! ההודעה נשמרה.';
 };
 
 /* Reset everything: only the lumda's own keys (other sites on this address keep their data) */
@@ -700,8 +861,10 @@ function showDev(){
   const keys = []; try { for(let i = 0; i < localStorage.length; i++){ const k = localStorage.key(i); const ours = k.startsWith('lumda-') || Object.keys(KIDS).concat(DEFAULT_IDS).some(id => k.startsWith(id + '-')); if(ours) keys.push(k + ' (' + (localStorage.getItem(k) || '').length + ')') } } catch(e){}
   $('devBody').innerHTML = `<div class="pcard"><h3>קולות</h3><p class="note">עברית: ${he.length ? he.map(v => esc(v.name)).join(', ') : 'אין'}</p><p class="note">אנגלית: ${en.length} קולות</p>
     <div class="chips">${Object.values(KIDS).map(k => `<button data-w="${esc(k.id)}">🔊 ${esc(k.name)}</button>`).join('')}</div></div>
+    <div class="pcard"><h3>הודעות למפתח</h3>${devMsgs().length ? devMsgs().slice().reverse().map(m => `<div class="msg"><small>${esc(new Date(m.at).toLocaleString('he-IL'))} · גרסה ${esc(m.ver || '?')} · ${esc(m.kids || '')}</small>${esc(m.text)}</div>`).join('') + '<button class="btn soft" id="dCopy">העתקת ההודעות</button><p class="okline" id="dCopyOk"></p>' : '<p class="note">אין הודעות.</p>'}</div>
     <div class="pcard"><h3>נתונים שמורים</h3><p class="note" dir="ltr" style="text-align:left;word-break:break-all">${keys.sort().map(esc).join('<br>')}</p></div>`;
   $('devBody').querySelectorAll('[data-w]').forEach(b => b.onclick = () => welcome(KIDS[b.dataset.w]));
+  if($('dCopy')) $('dCopy').onclick = async () => { try { await navigator.clipboard.writeText(devMsgs().map(m => m.at + ' (' + (m.ua || '') + ')\n' + m.text).join('\n\n')); $('dCopyOk').textContent = 'הועתק.' } catch(e){ $('dCopyOk').textContent = 'לא הצלחתי להעתיק.' } };
 }
 
 // coming back from an app in the same visit: stay with the same child
