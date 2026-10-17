@@ -560,6 +560,117 @@ html[data-kid="yam"] .ltr{color:#24358f}
 .opt.right,.cmp .side.win,.bub.right,.pm.big.won{animation-name:popSoft}
 .stars{min-height:44px}
 @media (min-width:700px) and (min-height:700px){ .word-en.expr{font-size:76px} .story{font-size:26px} .plate{width:320px;min-height:160px} .plate .art{width:52px;height:52px} .pet{width:220px;font-size:180px} .jar{width:160px} }
+/* ---------- New games ---------- */
+.game-btn{position:relative}
+.game-btn.locked{filter:grayscale(.9);opacity:.55}
+.game-btn .lockb{position:absolute;top:6px;inset-inline-end:6px;width:28px;height:28px}.game-btn .lockb .art{width:100%;height:100%}
+.game-btn .newb{position:absolute;top:-8px;inset-inline-end:-6px;background:var(--gold);color:var(--plum);font:700 13px/1 var(--body);padding:5px 8px;border-radius:999px;border:2px solid #fff;box-shadow:0 3px 0 rgba(78,31,99,.2)}
+.game-btn.sugg{box-shadow:0 0 0 5px var(--gold),0 7px 0 rgba(78,31,99,.2);animation:breathe 1.8s ease-in-out infinite}
+.game-btn .emo{font-size:clamp(46px,13vw,70px);line-height:1}
+.screen.scrolls .picker{margin-bottom:14px}
+.card.mini{padding:8px 14px;cursor:pointer}.card.mini .visual{height:min(18vh,120px);width:min(60vw,240px)}
+/* shop */
+.shopitem{position:relative;border:0;background:none;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center;gap:10px}
+.shopitem .thing{width:clamp(96px,30vw,150px);aspect-ratio:1;display:grid;place-items:center;background:#fff;border:4px solid var(--lilac);border-radius:26px;box-shadow:0 6px 0 rgba(78,31,99,.15)}
+.shopitem .thing .art{width:82%;height:82%}
+.shopitem .tag{min-width:84px;min-height:84px;padding:6px 12px;display:grid;place-items:center;background:#fff7d6;border:4px dashed var(--gold);border-radius:18px;transform:rotate(-5deg);box-shadow:0 5px 0 rgba(212,154,18,.35)}
+.shopitem .tag .num{font-size:clamp(32px,10vw,46px)}
+.tagdie,.tagobjs{display:block;width:84px;height:84px}.tagdie .die{width:100%;border-width:3px}.tagobjs .box{width:100%;height:100%}
+.shopitem.sold .thing{animation:popSoft .6s;border-color:var(--mint,#29b98d)}
+.counter{min-height:clamp(80px,22vw,110px);width:min(100%,360px);background:linear-gradient(180deg,#fff,#f6eefa);border:4px solid var(--lilac);border-radius:22px;
+  display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:4px;padding:8px;direction:ltr;box-shadow:inset 0 3px 0 rgba(78,31,99,.06)}
+.coin{width:clamp(30px,9vw,42px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#fff3c4,#ffd451 55%,#e0a412);
+  border:3px solid #c98d0c;box-shadow:0 3px 0 #a87406;animation:cardIn .3s}
+.coin b{font:700 clamp(13px,4vw,18px)/1 var(--display);color:#7a4f00}
+.coin.mid{background:radial-gradient(circle at 35% 30%,#fff,#d9dde6 55%,#9aa3b5);border-color:#7f879a;box-shadow:0 3px 0 #636b7d}.coin.mid b{color:#3b4150}
+.coin.big{width:clamp(36px,11vw,50px)}
+.coinbtn{border:0;background:none;padding:0;cursor:pointer;min-width:64px;min-height:64px;display:grid;place-items:center}
+.coinbtn .coin{width:64px;animation:none}.coinbtn .coin b{font-size:26px}.coinbtn:active{transform:translateY(3px)}
+.purse{flex-wrap:wrap}
+/* frog */
+.pond{position:relative;width:100%;max-width:560px;align-self:center;padding-top:clamp(46px,13vw,64px);direction:ltr}
+.pads{display:grid;grid-template-columns:repeat(11,1fr);gap:2px;background:linear-gradient(180deg,#9fe3ff,#5bc3f0);border-radius:999px;padding:6px 4px;border:3px solid #fff;box-shadow:0 5px 0 rgba(78,31,99,.15)}
+.pad{aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 40% 35%,#9be27a,#4caf50);display:grid;place-items:center;border:2px solid #2e8b3a}
+.pad b{font:700 clamp(11px,3.4vw,18px)/1 var(--display);color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.35)}
+.pad.win{background:radial-gradient(circle at 40% 35%,#ffe08a,#ffbf2e);border-color:#d49a12}
+.pad.hint{box-shadow:0 0 0 4px var(--gold);animation:hintGlow 1s ease-in-out infinite}
+.frog{position:absolute;top:0;width:clamp(40px,11vw,60px);height:clamp(40px,11vw,60px);transform:translateX(-50%);transition:left .25s ease-out;pointer-events:none}
+.frog .art{width:100%;height:100%}.frog.hop{animation:frogHop .3s ease-out}
+@keyframes frogHop{50%{margin-top:-18px}}
+.arrow{flex:none}.frogbtns{direction:ltr}
+.screen .feed-btns{flex-wrap:wrap;row-gap:10px}
+/* tower */
+.site{width:min(100%,360px);height:min(34vh,260px);display:flex;align-items:flex-end;justify-content:center;border-bottom:6px solid #c9a27a;border-radius:4px}
+.stack{display:flex;flex-direction:column-reverse;align-items:center;gap:2px;height:100%;justify-content:flex-start}
+.stack i{width:clamp(56px,18vw,80px);height:min(8%,24px);flex:none;border-radius:6px;background:var(--bc);border:2px solid rgba(0,0,0,.18);box-shadow:inset 0 -4px 0 rgba(0,0,0,.12);animation:cardIn .25s}
+.site.tens{container-type:size}.site.tens .rods{height:92cqh}
+.site.built{animation:popSoft .6s}
+.blockbtn{width:64px;height:64px;border-radius:18px;border:4px solid #fff;background:#fff;box-shadow:0 5px 0 rgba(78,31,99,.2);cursor:pointer;padding:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.blockbtn i{width:30px;height:16px;border-radius:4px;background:#ffbf2e;border:2px solid #d49a12}
+.blockbtn.rodbtn i{width:12px;height:34px;background:repeating-linear-gradient(180deg,#ffe08a 0 5px,#d49a12 5px 6px)}
+.blockbtn b{font:700 15px/1 var(--display);color:var(--plum)}
+.blockbtn:active{transform:translateY(3px)}
+/* balance */
+.scale{--sh:min(36vh,250px);position:relative;width:min(100%,440px);height:var(--sh);direction:ltr;pointer-events:none;margin-bottom:12px}
+.post{position:absolute;left:50%;bottom:0;width:14px;height:62%;margin-left:-7px;background:linear-gradient(90deg,#b98cff,#7a54d1);border-radius:7px 7px 0 0}
+.post::after{content:"";position:absolute;bottom:-4px;left:-36px;width:86px;height:14px;border-radius:7px;background:#7a54d1}
+.beam{--tilt:0deg;position:absolute;left:4%;right:4%;top:18%;height:10px;background:linear-gradient(180deg,#c6a4ff,#9566f2);border-radius:5px;transform:rotate(var(--tilt));transition:transform .45s cubic-bezier(.3,1.4,.5,1)}
+.pan{position:absolute;top:5px;width:40%;height:calc(var(--sh)*.64);transform:rotate(calc(-1 * var(--tilt)));transform-origin:50% 0;transition:transform .45s cubic-bezier(.3,1.4,.5,1);
+  display:flex;flex-direction:column;justify-content:flex-end;align-items:center;border-top:3px dashed rgba(149,102,242,.5)}
+.pan.l{left:-4%}.pan.r{right:-4%}
+.pan .box{height:80%;width:100%;background:radial-gradient(ellipse at 50% 100%,rgba(255,255,255,.9) 0 40%,transparent 41%) bottom/100% 30% no-repeat;border-bottom:8px solid #9566f2;border-radius:0 0 50% 50%/0 0 30% 30%}
+.scale+.feed-btns .jar{width:clamp(76px,22vw,100px)}.scale.even .beam{box-shadow:0 0 0 4px var(--gold)}
+/* cups */
+.cupcard{cursor:pointer}.cupcard .visual{width:min(80vw,380px)}
+.cupscene{display:flex;gap:6%;width:100%;height:100%;align-items:flex-end;justify-content:center;direction:ltr}
+.cupside{position:relative;flex:1;max-width:48%;height:100%;display:grid;place-items:center}
+.cupside .box{width:100%;height:100%}
+.cup{position:absolute;inset:-4% -3% -2%;border-radius:30% 30% 10% 10%/18% 18% 6% 6%;background:linear-gradient(90deg,#ff6fae,#ff9ac9 40%,#e0307f);border:4px solid #fff;
+  box-shadow:0 8px 0 rgba(78,31,99,.2);transform:translateY(-140%);opacity:0;transition:transform .6s cubic-bezier(.3,1.3,.5,1),opacity .2s}
+.cup::after{content:"";position:absolute;left:12%;right:12%;top:12%;height:10%;border-radius:999px;background:rgba(255,255,255,.45)}
+.cup.down{transform:none;opacity:1}
+.cup.up{transform:translateY(-120%);opacity:.0;transition:transform .7s,opacity .7s .3s}
+html[data-kid="yam"] .cup{background:linear-gradient(90deg,#3f6fd8,#7fa0ff 40%,#24358f)}
+.opt:disabled{opacity:.55}
+/* dice race */
+.board{position:relative;margin-bottom:22px;display:grid;grid-template-columns:repeat(var(--cols),1fr);gap:5px;width:min(100%,440px);direction:ltr;margin-inline:auto}
+.sq{aspect-ratio:1;border-radius:14px;border:3px solid #fff;background:linear-gradient(180deg,#fff,var(--blush));box-shadow:0 4px 0 rgba(78,31,99,.15);cursor:pointer;display:grid;place-items:center;padding:0;min-width:44px;min-height:44px}
+.sq:nth-child(odd){background:linear-gradient(180deg,#fff,#f1e4f6)}
+.sq b{font:700 clamp(14px,4vw,20px)/1 var(--display);color:var(--plum);opacity:.7}
+.sq.end{background:linear-gradient(180deg,#fff3c4,var(--gold))}.sq.end .art{width:80%;height:80%}
+.sq.wrong{animation:shake .4s}.sq.hint{animation:hintGlow 1s ease-in-out infinite;box-shadow:0 0 0 4px var(--gold)}
+.token{position:absolute;width:clamp(40px,11vw,58px);aspect-ratio:1;transform:translate(-50%,-62%);transition:left .22s,top .22s;pointer-events:none;z-index:2;filter:drop-shadow(0 4px 4px rgba(78,31,99,.3))}
+.token .art{width:100%;height:100%;object-fit:contain}
+.dice{display:flex;gap:8px;direction:ltr}.dice .die{width:clamp(44px,13vw,60px);height:clamp(44px,13vw,60px);flex:none;border-width:3px}
+/* patterns */
+.patcard{cursor:pointer;padding:12px}
+.pat{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:min(92vw,520px)}
+.pi{width:clamp(40px,12vw,64px);aspect-ratio:1;display:grid;place-items:center;background:#fff;border-radius:14px;border:3px solid var(--lilac)}
+.pi .art{width:84%;height:84%}
+.pi.q{border:3px dashed var(--gold);font:700 clamp(26px,8vw,40px)/1 var(--display);color:var(--rose-deep);background:var(--gold-soft,#fff7d6)}
+.opt .art{width:72%;height:72%}
+/* party, challenge */
+.new-game{gap:6px;align-items:center;font-weight:700;color:var(--plum)}.new-game .emo{font-size:30px}.new-game .art{width:32px;height:32px}
+.wand .gpic{display:inline-flex;width:1.4em;height:1.4em;vertical-align:middle;align-items:center;justify-content:center}.wand .gpic .emo{font-size:1.2em}.wand .gpic .art{width:100%;height:100%}
+.won.gold .art,.art.gold,.lvl-crown.gold .art{filter:drop-shadow(0 0 6px #ffbf2e) drop-shadow(0 0 2px #ffbf2e) saturate(1.4)}
+.wand.chal{background:linear-gradient(180deg,#fff3c4,var(--gold))}.wand.chal.gold{box-shadow:0 0 0 4px var(--gold),0 6px 0 #d49a12}
+.screen > .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.climb{display:flex;align-items:flex-end;gap:4px;direction:ltr;height:58px}
+.climb .step{position:relative;width:clamp(26px,8vw,40px);height:calc(10px + var(--h,0px));background:#fff;border:3px solid var(--lilac);border-radius:8px 8px 4px 4px}
+.climb .step:nth-child(1){--h:0px}.climb .step:nth-child(2){--h:7px}.climb .step:nth-child(3){--h:14px}.climb .step:nth-child(4){--h:21px}.climb .step:nth-child(5){--h:28px}.climb .step:nth-child(6){--h:35px}
+.climb .step.on{background:var(--gold);border-color:#d49a12}
+.climb .me{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);width:clamp(30px,9vw,40px);height:clamp(30px,9vw,40px)}.climb .me .art{width:100%;height:100%;object-fit:contain}
+.climb .goal{font-size:clamp(30px,9vw,42px);line-height:1;margin-inline-start:4px}
+/* developer: every game */
+.devgames{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;margin-top:8px}
+.devgames .pbtn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px}
+.devgames .pbtn .emo,.devgames .pbtn .art{font-size:26px;width:30px;height:30px}
+.devgames .pbtn:disabled{opacity:.35}
+.dsel{font:inherit;font-size:16px;padding:6px 10px;border:2px solid var(--lilac);border-radius:12px;background:#fff;min-height:44px;max-width:100%}
+@media (max-height:700px){ .scale{--sh:min(32vh,200px)} .site{height:min(28vh,200px)} .counter{min-height:70px} }
+@media (max-height:500px) and (orientation:landscape){ .scale{--sh:min(40vh,150px)}
+  .screen:has(> .scale){display:grid;grid-template-columns:auto auto;align-items:center;justify-content:center;column-gap:18px;row-gap:6px}
+  .screen:has(> .scale) > .round,.screen:has(> .scale) > .ask{grid-column:1/-1;justify-self:center} .screen:has(> .scale) > .scale{width:min(56vw,380px);margin:0} .site{height:min(40vh,150px)} .board{width:min(100%,380px)} .sq{min-width:36px;min-height:36px} .shopitem .thing{width:84px} .counter{min-height:56px} .pond{padding-top:40px} }
 </style>
 
 <canvas id="sky"></canvas>
@@ -887,8 +998,8 @@ const numHTML=n=>`<span class="num">${n}</span>`;
 
 /* ---------- Pictures of numbers ---------- */
 // n pictures in rows of up to 5; some can be marked as "added" (b) or "taken away" (gone)
-function objsHTML(n,obj,mark){
-  const c=n<=3?n:n===4?2:n<=10?Math.ceil(n/2):5, r=Math.ceil(n/c);
+function objsHTML(n,obj,mark,grid){
+  const c=grid?grid[0]:n<=3?n:n===4?2:n<=10?Math.ceil(n/2):5, r=grid?grid[1]:Math.ceil(n/c);
   return `<div class="objs" style="--c:${c};--r:${r}">${Array.from({length:n},(_,k)=>`<span class="o${mark?mark(k):''}" data-k="${k+1}">${art(PIC[obj].img)}</span>`).join('')}</div>`;
 }
 const DIE={1:[[2,2]],2:[[1,3],[3,1]],3:[[1,3],[2,2],[3,1]],4:[[1,1],[1,3],[3,1],[3,3]],5:[[1,1],[1,3],[2,2],[3,1],[3,3]],6:[[1,1],[2,1],[3,1],[1,3],[2,3],[3,3]]};
@@ -981,7 +1092,7 @@ function showCats(){
     <button class="album-btn" id="albumBtn">${art(UI.album,'ico')} <span>מדבקות</span><span class="mini">${mini}</span></button>
     <div class="cats">${CATS.map((c,i)=>{ const lv=levelsOf(c);
       return `<button class="cat${c===glow?' last':''}" data-i="${i}" style="background:linear-gradient(160deg,${GRADS[i%GRADS.length]})">
-        ${catDone(c)?`<span class="won">${art(ICON.crown())}</span>`:''}
+        ${catDone(c)?`<span class="won${(prog.gold||{})[c.id]?' gold':''}">${art(ICON.crown())}</span>`:''}
         <span class="pic">${tileVisual(c)}</span><span class="en">${c.he}</span>
         <span class="lvdots">${lv.map((_,l)=>`<i class="${isDone(c,l)?'on':''}"></i>`).join('')}</span></button>` }).join('')}</div>
   </div>`;
@@ -1007,7 +1118,8 @@ function showTopic(cat,announce){
       const badge=cls==='done'?art(UI.star):cls==='locked'?art(UI.lock):'';
       return `${l?'<span class="link"></span>':''}<button class="lvl ${cls}" data-l="${l}" aria-label="שלב ${l+1}">${levelPic(items)}${badge?`<span class="badge">${badge}</span>`:''}</button>` }).join('')}
       <span class="link"></span><span class="lvl-crown ${catDone(cat)?'won':''}">${art(ICON.crown())}</span></div>
-    ${now!==0?`<button class="wand" id="review">${art(UI.wand,'ico')} <span>משחקים</span></button>`:''}
+    <div class="row">${now!==0?`<button class="wand" id="review">${art(UI.wand,'ico')} <span>משחקים</span></button>`:''}
+    ${catDone(cat)?`<button class="wand chal${(prog.gold||{})[cat.id]?' gold':''}" id="challenge">${BOY?'🐉':'🏰'} <span>אתגר הכתר</span></button>`:''}</div>
   </div>`;
   if(announce) say(he(cat.he).concat(catDone(cat)?he(L.crownHere):[]));
   $main.querySelectorAll('.lvl').forEach(b=>b.onclick=()=>{
@@ -1016,6 +1128,7 @@ function showTopic(cat,announce){
     tick(); burstAt(b,24); learn(cat,l,0);
   });
   const rv=document.getElementById('review'); if(rv) rv.onclick=()=>{ tick(); pickGame(cat,-1) };
+  const ch=document.getElementById('challenge'); if(ch) ch.onclick=()=>{ tick(); startChallenge(cat) };
   if(now<0&&!announce) say(he(L.allDone));
 }
 // what a level button shows: its first card's number or sum
@@ -1100,9 +1213,12 @@ function nearNums(it,n){
 
 /* ---------- Shared game bits ---------- */
 function win(el,it,next,extra){
-  chime(); burstAt(el,46); react('happy'); addStar();
+  // now and then a golden star counts twice: a small surprise
+  const gold=Math.random()<.08;
+  chime(); burstAt(el,gold?90:46); react('happy'); addStar();
+  if(gold){ addStar(); setTimeout(()=>{ chime(); burstAt($stars,70) },350) }
   const cheer=CHEER[Math.floor(Math.random()*CHEER.length)];
-  const lines=(extra||he(it.kind==='compare'?it.done2||it.done:P(it.ans,W.x))).concat(he(cheer));
+  const lines=(extra||he(it.kind==='compare'?it.done2||it.done:P(it.ans,W.x))).concat(he(gold?L2.gold:cheer));
   if(next) sayThen(lines,next,600); else say(lines);
 }
 const askBtn=(label,cls)=>`<button class="ask" id="ask">${SPEAKER}<span class="q ${cls||''}">${label}</span></button>`;
@@ -1122,19 +1238,18 @@ function pickGame(cat,level){
   if(breakDue()) return showBreak(()=>pickGame(cat,level),3,()=>showTopic(cat));
   screenId++; homeTo=()=>showTopic(cat); navD=3;
   $home.hidden=false;
-  const g=()=>makeCtx(cat,level);
-  const games=[{he:'מוצאים',pic:UI.find,g:GRADS[4],run:()=>startFind(g())}];
-  if(KINDS_BAL.includes(cat.kind)) games.push({he:'בלונים',pic:UI.balloons,g:GRADS[0],run:()=>startBalloons(g())});
-  if(KINDS_MEM.includes(cat.kind)) games.push({he:'זיכרון',pic:UI.memory,g:GRADS[1],run:()=>startMemory(g())});
-  if(KINDS_FEED.includes(cat.kind)) games.push({he:BOY?'מאכילים את הדרקון':'מאכילים את החד־קרן',pic:PIC.Cookie.img,g:GRADS[2],run:()=>startFeed(g())});
-  $main.innerHTML=`<div class="screen">
+  const games=GAMES.filter(x=>x.fits(cat)), sugg=suggestGame(cat,null);
+  $main.innerHTML=`<div class="screen${games.length>4?' scrolls':''}">
     <div class="cat-chip"><span class="chip-pic">${tileVisual(cat)}</span><span>${cat.he}</span></div>
     <div class="picker-title">${G(L.play)}</div>
-    <div class="picker">${games.map((x,k)=>`<button class="game-btn" data-k="${k}" style="background:linear-gradient(160deg,${x.g})"><span class="pic">${art(x.pic)}</span><span class="en">${x.he}</span></button>`).join('')}</div>
+    <div class="picker${games.length>4?' many':''}">${games.map((x,k)=>{ const open=gameOpen(x);
+      return `<button class="game-btn${open?'':' locked'}${open&&x===sugg?' sugg':''}" data-k="${k}" data-id="${x.id}" style="background:linear-gradient(160deg,${GRADS[k%GRADS.length]})"><span class="pic">${gamePic(x)}</span><span class="en">${x.he}</span>${open?(x.opens&&!gamesSeen[x.id]?'<span class="newb">חדש!</span>':''):`<span class="lockb">${art(UI.lock)}</span>`}</button>` }).join('')}</div>
     ${level<0?'':`<button class="wand" id="cards">${art(ICON.book(),'ico')} <span>כרטיסים</span></button>`}
   </div>`;
   say(he(L.pick));
-  $main.querySelectorAll('.game-btn').forEach(b=>b.onclick=()=>{ tick(); burstAt(b,24); games[+b.dataset.k].run() });
+  $main.querySelectorAll('.game-btn').forEach(b=>b.onclick=()=>{ const x=games[+b.dataset.k];
+    if(!gameOpen(x)){ boop(); say(he(G(L2.locked))); return }
+    tick(); burstAt(b,24); runGame(x,makeCtx(cat,level)) });
   if(level>=0) document.getElementById('cards').onclick=()=>{ tick(); learn(cat,level,0) };
 }
 // what the question pill shows: never the answer
@@ -1145,16 +1260,16 @@ function askLabel(it){
 }
 
 /* ---------- Game 1: Find it (the question, three answers) ---------- */
-function startFind(g){ screenId++; findRound(g,pickTargets(g,ROUNDS),0) }
+function startFind(g){ screenId++; findRound(g,pickTargets(g,g.rounds||ROUNDS),0) }
 function findRound(g,targets,r){
-  screenId++; homeTo=()=>pickGame(g.cat,g.level); navD=4;
+  screenId++; homeTo=g.challenge?()=>showTopic(g.cat):()=>pickGame(g.cat,g.level); navD=g.challenge?3:4;
   $home.hidden=false;
   const target=targets[r], cmp=target.kind==='compare';
   const opts=cmp?[0,1]:shuffle([target.ans,...nearNums(target,2)]);
   const [lab,lc]=askLabel(target);
   const showQ=!target.hear&&!cmp;
   $main.innerHTML=`<div class="screen${target.kind==='story'?' whats':''}">
-    ${roundBar(r)}
+    ${g.challenge?climbBar(r,g.rounds):roundBar(r)}
     ${showQ?`<div class="card enter" id="card" role="button" aria-label="${G('שמעי שוב')}"><div class="speaker">${SPEAKER}</div><div class="visual">${visual(target)}</div>${target.kind==='story'?`<div class="story">${BOY&&HE_SAY_M[G(target.text)]||HE_SAY[target.text]}</div>`:''}</div>`:askBtn(lab,lc)}
     <div class="options${cmp?' two':''}">${opts.map((o,k)=>`<button class="opt" data-k="${k}" aria-label="${cmp?'צד '+(k+1):o}">${cmp?'':numHTML(o)}</button>`).join('')}</div>
   </div>`;
@@ -1172,7 +1287,7 @@ function findRound(g,targets,r){
     if(o===right){
       done=true; b.classList.remove('hint'); b.classList.add('right');
       if(!wrongs) gotIt(g.cat,target);
-      win(b,target,()=>r+1<ROUNDS?findRound(g,targets,r+1):party(g,()=>startFind(g)));
+      win(b,target,()=>r+1<(g.rounds||ROUNDS)?findRound(g,targets,r+1):party(g,()=>startFind(g)));
     } else {
       wrongs++; b.classList.remove('wrong'); void b.offsetWidth; b.classList.add('wrong');
       miss(g,target,cmp?null:o,wrongs,()=>btns[opts.indexOf(right)].classList.add('hint'));
@@ -1302,33 +1417,413 @@ function feedRound(g,targets,r){
   };
 }
 
+/* ---------- Words for the new games ---------- */
+const L2={
+  pay:line('תשלמי בדיוק את המחיר','תְּשַׁלְּמִי בְּדִיּוּק אֶת הַמְּחִיר','תשלם בדיוק את המחיר','תְּשַׁלֵּם בְּדִיּוּק אֶת הַמְּחִיר'),
+  paid:line('שילמתי','שִׁלַּמְתִּי'),
+  frogTo:line('תקפצי עם הצפרדע למספר','תִּקְפְּצִי עִם הַצְּפַרְדֵּעַ לַמִּסְפָּר','תקפוץ עם הצפרדע למספר','תִּקְפֹּץ עִם הַצְּפַרְדֵּעַ לַמִּסְפָּר'),
+  frogGo:line('תקפצי עם הצפרדע לתשובה','תִּקְפְּצִי עִם הַצְּפַרְדֵּעַ לַתְּשׁוּבָה','תקפוץ עם הצפרדע לתשובה','תִּקְפֹּץ עִם הַצְּפַרְדֵּעַ לַתְּשׁוּבָה'),
+  frogTen:line('תקפצי עם הצפרדע עד עשר','תִּקְפְּצִי עִם הַצְּפַרְדֵּעַ עַד עֶשֶׂר','תקפוץ עם הצפרדע עד עשר','תִּקְפֹּץ עִם הַצְּפַרְדֵּעַ עַד עֶשֶׂר'),
+  here:line('כאן!','כָּאן!'),
+  frogOn:['הצפרדע על','הַצְּפַרְדֵּעַ עַל'],
+  towerD:line('תבני מגדל','תִּבְנִי מִגְדָּל','תבנה מגדל','תִּבְנֶה מִגְדָּל'),
+  tower:line('תבני מגדל של','תִּבְנִי מִגְדָּל שֶׁל','תבנה מגדל של','תִּבְנֶה מִגְדָּל שֶׁל'),
+  build:line('תבני את המספר','תִּבְנִי אֶת הַמִּסְפָּר','תבנה את המספר','תִּבְנֶה אֶת הַמִּסְפָּר'),
+  done:line('סיימתי','סִיַּמְתִּי'),
+  same:line('תשימי בצד השני בדיוק כמו בצד הזה','תָּשִׂימִי בַּצַּד הַשֵּׁנִי בְּדִיּוּק כְּמוֹ בַּצַּד הַזֶּה','תשים בצד השני בדיוק כמו בצד הזה','תָּשִׂים בַּצַּד הַשֵּׁנִי בְּדִיּוּק כְּמוֹ בַּצַּד הַזֶּה'),
+  equal:line('שווה!','שָׁוֶה!'),
+  balanced:line('עכשיו זה שווה!','עַכְשָׁו זֶה שָׁוֶה!'),
+  needMore:line('צריך עוד','צָרִיךְ עוֹד'),
+  tooMany:line('יש יותר מדי','יֵשׁ יוֹתֵר מִדַּי'),
+  look:line('תסתכלי טוב!','תִּסְתַּכְּלִי טוֹב!','תסתכל טוב!','תִּסְתַּכֵּל טוֹב!'),
+  hiding:line('כמה מתחבאים מתחת לכוס?','כַּמָּה מִתְחַבְּאִים מִתַּחַת לַכּוֹס?'),
+  roll:line('תטילי את הקובייה','תָּטִילִי אֶת הַקֻּבִּיָּה','תטיל את הקובייה','תָּטִיל אֶת הַקֻּבִּיָּה'),
+  roll2:line('תטילי את הקוביות','תָּטִילִי אֶת הַקֻּבִּיּוֹת','תטיל את הקוביות','תָּטִיל אֶת הַקֻּבִּיּוֹת'),
+  where:line('לאן מגיעים? תלחצי על המשבצת','לְאָן מַגִּיעִים? תִּלְחֲצִי עַל הַמִּשְׁבֶּצֶת','לאן מגיעים? תלחץ על המשבצת','לְאָן מַגִּיעִים? תִּלְחַץ עַל הַמִּשְׁבֶּצֶת'),
+  castle:line('הגעת לארמון!','הִגַּעְתְּ לָאַרְמוֹן!','הגעת לטירה!','הִגַּעְתָּ לַטִּירָה!'),
+  next:line('מה בא אחר כך?','מָה בָּא אַחַר כָּךְ?'),
+  pattern:line('נכון, ככה ממשיך הדפוס!','נָכוֹן, כָּכָה מַמְשִׁיךְ הַדְּפוּס!'),
+  locked:line('המשחק הזה ייפתח כשתסיימי עוד שלבים','הַמִּשְׂחָק הַזֶּה יִפָּתַח כְּשֶׁתְּסַיְּמִי עוֹד שְׁלַבִּים','המשחק הזה ייפתח כשתסיים עוד שלבים','הַמִּשְׂחָק הַזֶּה יִפָּתַח כְּשֶׁתְּסַיֵּם עוֹד שְׁלַבִּים'),
+  newGame:line('נפתח משחק חדש!','נִפְתַּח מִשְׂחָק חָדָשׁ!'),
+  challenge:line('אתגר הכתר! תעני נכון על שש שאלות','אֶתְגַּר הַכֶּתֶר! תַּעֲנִי נָכוֹן עַל שֵׁשׁ שְׁאֵלוֹת','אתגר הכתר! תענה נכון על שש שאלות','אֶתְגַּר הַכֶּתֶר! תַּעֲנֶה נָכוֹן עַל שֵׁשׁ שְׁאֵלוֹת'),
+  goldCrown:line('קיבלת כתר זהב!','קִבַּלְתְּ כֶּתֶר זָהָב!','קיבלת כתר זהב!','קִבַּלְתָּ כֶּתֶר זָהָב!'),
+  gold:line('כוכב זהב! שני כוכבים!','כּוֹכַב זָהָב! שְׁנֵי כּוֹכָבִים!'),
+};
+const cubes=n=>n===1?line('קובייה אחת','קֻבִּיָּה אַחַת'):n===2?line('שתי קוביות','שְׁתֵּי קֻבִּיּוֹת'):P(n,['קוביות','קֻבִּיּוֹת']);
+const FROG_IMG=E+'img/f6bd162e133b.webp';   // the frog from the English app's animals
+
+/* ---------- Game 5: The shop (pay the price with coins) ---------- */
+const SHOP_ITEMS=['Apple','Ball','Cake','Teddy bear','Ice cream','Kite','Drum','Balloon','Candy','Pizza','Train','Truck','Gift','Book'];
+const coinHTML=v=>`<span class="coin${v>=10?' big':v>=5?' mid':''}"><b>${v}</b></span>`;
+// what the price tag shows: never the plain answer for a sum
+function tagHTML(it){
+  if(it.kind==='dice') return `<span class="tagdie">${dieHTML(it.ans)}</span>`;
+  if(it.kind==='add') return numHTML(it.a+opTxt(it.op)+it.b);
+  if(it.kind==='count') return `<span class="tagobjs"><span class="box">${objsHTML(it.ans,it.obj)}</span></span>`;
+  return numHTML(it.ans);
+}
+function startShop(g){ screenId++; shopRound(g,pickTargets(g,ROUNDS),0) }
+function shopRound(g,targets,r){
+  screenId++; homeTo=()=>pickGame(g.cat,g.level); navD=4;
+  $home.hidden=false;
+  const target=targets[r], n=target.ans;
+  const vals=(n>10||target.kind==='tens')?[10,1]:BOY?[5,1]:[1];
+  const thing=SHOP_ITEMS[Math.floor(Math.random()*SHOP_ITEMS.length)];
+  $main.innerHTML=`<div class="screen">
+    ${roundBar(r)}
+    <button class="shopitem" id="ask" aria-label="${G(L2.pay)}"><span class="thing">${art(PIC[thing].img)}</span><span class="tag">${tagHTML(target)}</span></button>
+    <div class="counter" id="tray" data-n="${n}"></div>
+    <div class="feed-btns purse"><button class="undo" id="undo" aria-label="להחזיר מטבע">↩️</button>
+      ${vals.map(v=>`<button class="coinbtn" data-v="${v}" aria-label="${v}">${coinHTML(v)}</button>`).join('')}
+      <button class="wand" id="fdone">${art(UI.star,'ico')} <span>${L2.paid}</span></button></div>
+  </div>`;
+  const ask=()=>say(target.kind==='add'?he(...target.ask.map(G),G(L2.pay)):he(G(L2.pay))); ask();
+  document.getElementById('ask').onclick=ask;
+  const paid=[]; let done=false, wrongs=0;
+  const tray=document.getElementById('tray'), sum=()=>paid.reduce((a,b)=>a+b,0);
+  const draw=()=>{ tray.innerHTML=paid.map(coinHTML).join('') };
+  $main.querySelectorAll('.coinbtn').forEach(b=>b.onclick=()=>{ if(done||paid.length>=20) return; paid.push(+b.dataset.v); draw(); blip(paid.length); say(he(numHe(sum()))) });
+  document.getElementById('undo').onclick=()=>{ if(done||!paid.length) return; paid.pop(); draw(); tick(); if(paid.length) say(he(numHe(sum()))) };
+  document.getElementById('fdone').onclick=()=>{
+    if(done) return;
+    if(sum()===n){ done=true; const t=document.querySelector('.shopitem'); t.classList.add('sold'); tone(660,0,.1); tone(990,.1,.2);
+      if(!wrongs) gotIt(g.cat,target);
+      win(t,target,()=>r+1<ROUNDS?shopRound(g,targets,r+1):party(g,()=>startShop(g)));
+    } else {
+      wrongs++; boop(); react('oops'); if(wrongs===1) missed(g.cat,target);
+      say(he(P(W.here,sum(),W.comma),P(W.need,n,W.dot),G(L.again)));
+    }
+  };
+}
+
+/* ---------- Game 6: The frog on the number line (jump to the answer) ---------- */
+// where the frog starts, where it must get to, and how far one jump goes
+function frogSpec(it){
+  switch(it.kind){
+    case 'count': case 'digit': case 'dice': return {s:0,goal:it.ans,st:1};
+    case 'num20': return {s:10,goal:it.ans,st:1};
+    case 'add': case 'story': return {s:it.a,goal:it.ans,st:1};
+    case 'ten': return {s:it.a,goal:10,st:1};
+    case 'next': return {s:it.seq[it.k===0?3:0],goal:it.ans,st:it.step};
+  }
+  return null;
+}
+function startFrog(g){ screenId++; frogRound(g,pickTargets(g,ROUNDS),0) }
+function frogRound(g,targets,r){
+  screenId++; homeTo=()=>pickGame(g.cat,g.level); navD=4;
+  $home.hidden=false;
+  const target=targets[r], {s,goal,st}=frogSpec(target);
+  const span=10*st, gap=span-Math.abs(goal-s);
+  const lo=Math.max(0,Math.min(s,goal)-Math.floor(gap/2/st)*st);
+  const pads=Array.from({length:11},(_,j)=>lo+j*st);
+  let pos=s;
+  const lab=target.kind==='dice'?'':target.kind==='count'?'':target.kind==='next'?target.qt:askLabel(target)[0];
+  $main.innerHTML=`<div class="screen">
+    ${roundBar(r)}
+    ${target.kind==='dice'||target.kind==='count'?`<button class="card mini" id="ask"><div class="visual">${visual(target)}</div></button>`:askBtn(lab==='?'?numHTML('?'):lab)}
+    <div class="pond" id="pond" data-s="${s}" data-goal="${goal}" data-st="${st}"><div class="pads">${pads.map((x,j)=>`<span class="pad" data-x="${x}"><b>${x}</b></span>`).join('')}</div><span class="frog" id="frog">${art(FROG_IMG)}</span></div>
+    <div class="feed-btns frogbtns"><button class="arrow" id="back" aria-label="אחורה">${CHEV_L}</button>
+      <button class="wand" id="fdone">${art(FROG_IMG,'ico')} <span>${L2.here}</span></button>
+      <button class="arrow next" id="fwd" aria-label="קדימה" style="animation:none">${CHEV_R}</button></div>
+  </div>`;
+  const frog=document.getElementById('frog');
+  const place=()=>{ const j=(pos-lo)/st; frog.style.left=((j+.5)/11*100)+'%' };
+  place();
+  const ask=()=>{
+    const intro=he(P(L2.frogOn,s,W.dot));
+    if(target.kind==='count'||target.kind==='digit') return say(target.kind==='count'?he(L.howMany,G(L2.frogTo)):he(G(L2.frogTo),numHe(goal)));
+    if(target.kind==='dice') return say(he(L.dots,G(L2.frogGo)));
+    if(target.kind==='num20') return say(intro.concat(he(G(L2.frogTo),numHe(goal))));
+    if(target.kind==='ten') return say(intro.concat(he(L.toTen,G(L2.frogTen))));
+    if(target.kind==='next') return say(he(L.missing,G(L2.frogGo)));
+    say(intro.concat(he(...target.ask.map(G),G(L2.frogGo))));
+  };
+  ask(); document.getElementById('ask').onclick=ask;
+  let done=false, wrongs=0;
+  const jump=d=>{ if(done) return; const nx=pos+d*st; if(nx<pads[0]||nx>pads[10]){ boop(); return } pos=nx; place();
+    frog.classList.remove('hop'); void frog.offsetWidth; frog.classList.add('hop'); blip(Math.abs(pos-s)/st+1); say(he(numHe(pos))) };
+  document.getElementById('fwd').onclick=()=>jump(1);
+  document.getElementById('back').onclick=()=>jump(-1);
+  document.getElementById('fdone').onclick=()=>{
+    if(done) return;
+    if(pos===goal){ done=true; if(!wrongs) gotIt(g.cat,target);
+      const pad=$main.querySelector(`.pad[data-x="${goal}"]`); pad.classList.add('win');
+      win(frog,target,()=>r+1<ROUNDS?frogRound(g,targets,r+1):party(g,()=>startFrog(g)),
+        ['add','story','ten'].includes(target.kind)?he(target.done):null);
+    } else {
+      wrongs++; boop(); react('oops'); if(wrongs===1) missed(g.cat,target);
+      if(wrongs>=2) $main.querySelector(`.pad[data-x="${goal}"]`).classList.add('hint');
+      say(he(P(L2.frogOn,pos,W.dot),G(L.again)));
+    }
+  };
+}
+
+/* ---------- Game 7: Build a tower (blocks; for tens, rods of ten and single cubes) ---------- */
+const BLOCK_COLORS=['#ff6fae','#ffbf2e','#29b98d','#5b8dff','#9566f2','#ff8a4c'];
+function startTower(g){ screenId++; towerRound(g,pickTargets(g,ROUNDS),0) }
+function towerRound(g,targets,r){
+  screenId++; homeTo=()=>pickGame(g.cat,g.level); navD=4;
+  $home.hidden=false;
+  const target=targets[r], n=target.ans, tens=target.kind==='tens'||target.kind==='num20';
+  const lab=target.kind==='dice'?'':String(n);
+  $main.innerHTML=`<div class="screen">
+    ${roundBar(r)}
+    ${target.kind==='dice'?`<button class="card mini" id="ask"><div class="visual">${visual(target)}</div></button>`:askBtn(lab)}
+    <div class="site${tens?' tens':''}" id="site" data-n="${n}"></div>
+    <div class="feed-btns"><button class="undo" id="undo" aria-label="להוריד">↩️</button>
+      ${tens?`<button class="blockbtn rodbtn" data-v="10" aria-label="עשר"><i></i><b>10</b></button>`:''}
+      <button class="blockbtn" data-v="1" aria-label="אחת"><i></i><b>1</b></button>
+      <button class="wand" id="fdone">${art(UI.star,'ico')} <span>${G(L2.done)}</span></button></div>
+  </div>`;
+  const ask=()=>say(target.kind==='dice'?he(L.dots,G(L2.towerD)):tens?he(G(L2.build),numHe(n)):he(G(L2.tower),cubes(n)));
+  ask(); document.getElementById('ask').onclick=ask;
+  const got=[]; let done=false, wrongs=0;
+  const site=document.getElementById('site'), val=()=>got.reduce((a,b)=>a+b,0);
+  const draw=()=>{
+    if(tens){ const t=got.filter(v=>v===10).length, u=got.filter(v=>v===1).length;
+      site.innerHTML=`<div class="rods">${('<span class="rod">'+'<i></i>'.repeat(10)+'</span>').repeat(t)}${u?`<span class="units">${'<i></i>'.repeat(u)}</span>`:''}</div>` }
+    else site.innerHTML=`<div class="stack">${got.map((_,k)=>`<i style="--bc:${BLOCK_COLORS[k%BLOCK_COLORS.length]}"></i>`).join('')}</div>`;
+  };
+  draw();
+  $main.querySelectorAll('.blockbtn').forEach(b=>b.onclick=()=>{ if(done||got.length>=30) return; got.push(+b.dataset.v); draw(); blip(got.length); say(he(numHe(val()))) });
+  document.getElementById('undo').onclick=()=>{ if(done||!got.length) return; got.pop(); draw(); tick(); if(got.length) say(he(numHe(val()))) };
+  document.getElementById('fdone').onclick=()=>{
+    if(done) return;
+    if(val()===n){ done=true; site.classList.add('built'); if(!wrongs) gotIt(g.cat,target);
+      win(site,target,()=>r+1<ROUNDS?towerRound(g,targets,r+1):party(g,()=>startTower(g)),tens&&target.more?he(target.more):null);
+    } else {
+      wrongs++; boop(); react('oops'); if(wrongs===1) missed(g.cat,target);
+      say(he(P(W.here,val(),W.comma),P(W.need,n,W.dot),G(L.again)));
+    }
+  };
+}
+
+/* ---------- Game 8: The balance (put the same amount on the other side) ---------- */
+// how much weighs on the left, what already lies on the right, and the picture
+// on the pans every picture has the same size, so one picture never looks like more than four
+const panGrid=n=>[4,Math.max(3,Math.ceil(n/4))];
+function balSpec(it){
+  switch(it.kind){
+    case 'count': return {left:it.ans,right:0,obj:it.obj,show:objsHTML(it.ans,it.obj,null,panGrid(it.ans))};
+    case 'compare': return {left:it.a,right:it.b,obj:it.obj,show:objsHTML(it.a,it.obj,null,panGrid(it.a))};
+    case 'add': case 'story': return {left:it.ans,right:0,obj:it.obj,
+      show:objsHTML(it.op==='+'?it.a+it.b:it.a,it.obj,k=>it.op==='+'?(k>=it.a?' b':''):(k>=it.a-it.b?' gone':''),panGrid(it.op==='+'?it.a+it.b:it.a))};
+    case 'ten': return {left:10,right:it.a,obj:'Star',show:objsHTML(10,'Star',null,panGrid(10))};
+  }
+  return null;
+}
+function startBalance(g){ screenId++; balRound(g,pickTargets(g,ROUNDS),0) }
+function balRound(g,targets,r){
+  screenId++; homeTo=()=>pickGame(g.cat,g.level); navD=4;
+  $home.hidden=false;
+  const target=targets[r], sp=balSpec(target);
+  let k=sp.right;
+  $main.innerHTML=`<div class="screen">
+    ${roundBar(r)}
+    ${target.kind==='add'||target.kind==='story'?askBtn(askLabel(target)[0]):''}
+    <div class="scale" id="scale" data-left="${sp.left}" data-right="${sp.right}"><div class="beam" id="beam"><span class="pan l"><span class="box">${sp.show}</span></span><span class="pan r"><span class="box" id="rpan"></span></span></div><span class="post"></span></div>
+    <div class="feed-btns"><button class="undo" id="ssub" aria-label="להוריד">➖</button>
+      <button class="jar" id="sadd" aria-label="להוסיף">${art(PIC[sp.obj].img)}</button>
+      <button class="wand" id="fdone">⚖️ <span>${L2.equal}</span></button></div>
+  </div>`;
+  const beam=document.getElementById('beam'), rpan=document.getElementById('rpan');
+  const draw=()=>{ rpan.innerHTML=k?objsHTML(k,sp.obj,null,panGrid(k)):''; beam.style.setProperty('--tilt',Math.max(-10,Math.min(10,(k-sp.left)*2.5))+'deg') };
+  draw();
+  const ask=()=>say(target.kind==='add'||target.kind==='story'?he(...target.ask.map(G),G(L2.same)):target.kind==='compare'?he(P(W.here,sp.left,W.comma,W.there,sp.right,W.dot),G(L2.same)):he(G(L2.same)));
+  ask(); const a=document.getElementById('ask'); if(a) a.onclick=ask;
+  let done=false, wrongs=0;
+  document.getElementById('sadd').onclick=()=>{ if(done||k>=20) return; k++; draw(); blip(k); say(he(numHe(k))) };
+  document.getElementById('ssub').onclick=()=>{ if(done||!k) return; k--; draw(); tick(); say(he(numHe(k))) };
+  document.getElementById('fdone').onclick=()=>{
+    if(done) return;
+    if(k===sp.left){ done=true; if(!wrongs) gotIt(g.cat,target); document.getElementById('scale').classList.add('even');
+      win(beam,target,()=>r+1<ROUNDS?balRound(g,targets,r+1):party(g,()=>startBalance(g)),
+        he(L2.balanced).concat(target.kind==='add'||target.kind==='story'||target.kind==='ten'?he(target.done):he(P(W.here,k,W.x))));
+    } else {
+      wrongs++; boop(); react('oops'); if(wrongs===1) missed(g.cat,target);
+      say(he(P(W.here,k,W.comma),k<sp.left?L2.needMore:L2.tooMany,G(L.again)));
+    }
+  };
+}
+
+/* ---------- Game 9: Hide and seek under a cup (how many are hiding?) ---------- */
+// all of them, then the cup hides some; the answer is how many hide
+function cupSpec(it){
+  switch(it.kind){
+    case 'count': case 'digit': return {show:0,hide:it.ans,obj:it.obj};
+    case 'ten': return {show:it.a,hide:10-it.a,obj:'Star'};
+    case 'add': return it.op==='+'?{show:it.a,hide:it.b,obj:it.obj}:null;
+  }
+  return null;
+}
+function startCups(g){ screenId++; const pool=g.pool.filter(cupSpec); cupRound({...g,pool:pool.length?pool:g.pool},pickTargets({...g,pool:pool.length?pool:g.pool},ROUNDS),0,g) }
+function cupRound(gc,targets,r,g){
+  screenId++; homeTo=()=>pickGame(g.cat,g.level); navD=4;
+  $home.hidden=false;
+  const target=targets[r], sp=cupSpec(target)||{show:0,hide:target.ans,obj:target.obj||'Star'}, n=sp.hide, tot=sp.show+sp.hide;
+  const opts=shuffle([n,...nearNums({...target,ans:n,kind:'count'},2)]);
+  $main.innerHTML=`<div class="screen">
+    ${roundBar(r)}
+    <button class="card cupcard" id="ask"><div class="visual"><div class="cupscene" data-n="${n}">
+      ${sp.show?`<span class="cupside"><span class="box">${objsHTML(sp.show,sp.obj)}</span></span>`:''}
+      <span class="cupside under"><span class="box">${objsHTML(sp.hide,sp.obj)}</span><span class="cup" id="cup"></span></span></div></div></button>
+    <div class="options">${opts.map((o,k)=>`<button class="opt" data-k="${k}" aria-label="${o}" disabled>${numHTML(o)}</button>`).join('')}</div>
+  </div>`;
+  const id=screenId, cup=document.getElementById('cup');
+  say(he(sp.show?P(W.here,tot,W.x):G(L2.look)));
+  later(()=>{ cup.classList.add('down'); tone(220,0,.15,'triangle',.12);
+    later(()=>{ $main.querySelectorAll('.opt').forEach(b=>b.disabled=false); say(he(L2.hiding)) },700) },sp.show?2600:2200);
+  document.getElementById('ask').onclick=()=>{ if(cup.classList.contains('down')) say(he(L2.hiding)) };
+  let done=false, wrongs=0;
+  const btns=[...$main.querySelectorAll('.opt')];
+  btns.forEach(b=>b.onclick=()=>{
+    if(done) return; const o=opts[+b.dataset.k];
+    if(o===n){ done=true; b.classList.add('right'); cup.classList.remove('down'); cup.classList.add('up'); if(!wrongs) gotIt(g.cat,target);
+      win(b,target,()=>r+1<ROUNDS?cupRound(gc,targets,r+1,g):party(g,()=>startCups(g)),
+        target.kind==='ten'||target.kind==='add'?he(target.done):he(P(W.here,n,W.x)));
+    } else {
+      wrongs++; b.classList.remove('wrong'); void b.offsetWidth; b.classList.add('wrong');
+      boop(); react('oops'); if(wrongs===1) missed(g.cat,target);
+      if(wrongs>=2) btns[opts.indexOf(n)].classList.add('hint');
+      say(he(P(W.is,o),G(L.again)));
+    }
+  });
+}
+
+/* ---------- Game 10: Dice race (roll, then tap the square you land on) ---------- */
+function startRace(g){
+  screenId++; homeTo=()=>pickGame(g.cat,g.level); navD=4;
+  $home.hidden=false;
+  const two=g.cat.kind==='add', N=two?24:15, cols=two?6:5;
+  // snake board: row by row, every other row runs back
+  const cell=j=>{ const row=Math.floor((j-1)/cols), c=(j-1)%cols; return {row,col:row%2?cols-1-c:c} };
+  $main.innerHTML=`<div class="screen">
+    <div class="board" style="--cols:${cols}">${Array.from({length:N},(_,k)=>{ const j=k+1, {row,col}=cell(j);
+      return `<button class="sq${j===N?' end':''}" data-j="${j}" style="grid-row:${Math.ceil(N/cols)-row};grid-column:${col+1}">${j===N?art(PIC.Castle.img):`<b>${j}</b>`}</button>` }).join('')}
+      <span class="token" id="token">${art(CHAR_IMG.bust)}</span></div>
+    <div class="feed-btns"><span class="dice" id="dice">${dieHTML(1)}${two?dieHTML(1):''}</span>
+      <button class="play" id="roll" style="animation:none">🎲 <span>מטילים</span></button></div>
+  </div>`;
+  const token=document.getElementById('token'), board=$main.querySelector('.board'), dice=document.getElementById('dice'), rollBtn=document.getElementById('roll');
+  let pos=0, dest=0, v=0, wrongs=0, busy=false;
+  // the start is just under the first square
+  const put=j=>{ const sq=$main.querySelector(`.sq[data-j="${j||1}"]`);
+    token.style.left=(sq.offsetLeft+sq.offsetWidth/2)+'px'; token.style.top=(sq.offsetTop+sq.offsetHeight*(j?.5:1.25))+'px' };
+  requestAnimationFrame(()=>put(0)); addEventListener('resize',()=>put(pos),{once:true});
+  say(he(G(two?L2.roll2:L2.roll)));
+  rollBtn.onclick=()=>{
+    if(busy||dest) return; busy=true; tick();
+    const a=1+Math.floor(Math.random()*6), b=two?1+Math.floor(Math.random()*6):0; v=a+b;
+    let spins=0; const id=screenId;
+    const spin=setInterval(()=>{ if(id!==screenId){ clearInterval(spin); return }
+      dice.innerHTML=dieHTML(1+Math.floor(Math.random()*6))+(two?dieHTML(1+Math.floor(Math.random()*6)):''); tone(800+Math.random()*400,0,.04,'square',.05);
+      if(++spins>8){ clearInterval(spin); dice.innerHTML=dieHTML(a)+(two?dieHTML(b):''); dest=Math.min(N,pos+v); board.dataset.dest=dest; wrongs=0; busy=false;
+        say(he(two?P(a,W.plus,b,W.is,v):P(v,W.x),G(L2.where))) } },70);
+  };
+  $main.querySelectorAll('.sq').forEach(sq=>sq.onclick=()=>{
+    if(busy||!dest) return; const j=+sq.dataset.j;
+    if(j===dest){ busy=true; sq.classList.remove('hint'); const from=pos; let s=from;
+      const id=screenId, hop=setInterval(()=>{ if(id!==screenId){ clearInterval(hop); return } s++; put(s); blip(s-from); if(s>=dest){ clearInterval(hop);
+        pos=dest; dest=0; board.dataset.dest=''; const end=pos>=N;
+        win(sq,{kind:'dice',ans:v},()=>{ busy=false; if(end) party(g,()=>startRace(g)); else say(he(G(two?L2.roll2:L2.roll))) },end?he(G(L2.castle)):he(P(W.here,v,W.x))) } },260);
+    } else {
+      wrongs++; sq.classList.remove('wrong'); void sq.offsetWidth; sq.classList.add('wrong'); boop(); react('oops');
+      if(wrongs>=2) $main.querySelector(`.sq[data-j="${dest}"]`).classList.add('hint');
+      say(he(G(L.again)));
+    }
+  });
+}
+
+/* ---------- Game 11: Patterns (what comes next?) ---------- */
+const PATTERNS_KG=[[0,1],[0,0,1],[0,1,1]], PATTERNS_G1=[[0,1,2],[0,0,1,1],[0,1,1,2],[0,1,2,1]];
+function startPattern(g){ screenId++; patternRound(g,0) }
+function patternRound(g,r){
+  screenId++; homeTo=()=>pickGame(g.cat,g.level); navD=4;
+  $home.hidden=false;
+  const pats=BOY?PATTERNS_G1:PATTERNS_KG, unit=pats[(r+Math.floor(Math.random()*pats.length))%pats.length];
+  const kinds=shuffle(OBJ).slice(0,4), len=unit.length*2+Math.min(unit.length-1,1+Math.floor(Math.random()*unit.length));
+  const seq=Array.from({length:len+1},(_,j)=>kinds[unit[j%unit.length]]), ans=seq.pop();
+  const opts=shuffle([...new Set([ans,...kinds.slice(0,Math.max(...unit)+1),kinds[3]])].filter(x=>x!==ans).slice(0,2).concat(ans));
+  $main.innerHTML=`<div class="screen">
+    ${roundBar(r)}
+    <button class="card patcard" id="ask"><div class="pat" data-a="${opts.indexOf(ans)}">${seq.map(k=>`<span class="pi">${art(PIC[k].img)}</span>`).join('')}<span class="pi q">?</span></div></button>
+    <div class="options">${opts.map((o,k)=>`<button class="opt" data-k="${k}" aria-label="${PIC[o].he}">${art(PIC[o].img)}</button>`).join('')}</div>
+  </div>`;
+  const ask=()=>say(he(L2.next)); ask(); document.getElementById('ask').onclick=ask;
+  let done=false, wrongs=0;
+  const btns=[...$main.querySelectorAll('.opt')];
+  btns.forEach(b=>b.onclick=()=>{
+    if(done) return; const o=opts[+b.dataset.k];
+    if(o===ans){ done=true; b.classList.add('right'); const q=$main.querySelector('.pi.q'); q.classList.remove('q'); q.innerHTML=art(PIC[ans].img);
+      win(b,{kind:'pattern',ans:0},()=>r+1<ROUNDS?patternRound(g,r+1):party(g,()=>startPattern(g)),he(L2.pattern));
+    } else {
+      wrongs++; b.classList.remove('wrong'); void b.offsetWidth; b.classList.add('wrong'); boop(); react('oops');
+      if(wrongs>=2) btns[opts.indexOf(ans)].classList.add('hint');
+      say(he(PIC[o].he,G(L.again)));
+    }
+  });
+}
+
+/* ---------- The crown challenge: six questions from the whole topic; each right answer climbs one step to the castle (the dragon) ---------- */
+const CHAL_ROUNDS=6;
+function startChallenge(cat){ const g={cat,level:-2,pool:cat.items,challenge:true,rounds:CHAL_ROUNDS}; screenId++; sayThen(he(G(L2.challenge)),()=>startFind(g),200) }
+const climbBar=(r,n)=>`<div class="climb">${Array.from({length:n},(_,k)=>`<span class="step${k<r?' on':''}">${k===r?`<span class="me">${art(CHAR_IMG.bust)}</span>`:''}</span>`).join('')}<span class="goal">${BOY?'🐉':'🏰'}</span></div>`;
+
+/* ---------- Which games fit a topic, and when each one opens ---------- */
+const GAMES=[
+  {id:'find',he:'מוצאים',pic:UI.find,fits:()=>true,run:startFind},
+  {id:'bal',he:'בלונים',pic:UI.balloons,fits:c=>KINDS_BAL.includes(c.kind),run:startBalloons},
+  {id:'mem',he:'זיכרון',pic:UI.memory,fits:c=>KINDS_MEM.includes(c.kind),run:startMemory},
+  {id:'feed',he:BOY?'מאכילים את הדרקון':'מאכילים את החד־קרן',pic:PIC.Cookie.img,fits:c=>KINDS_FEED.includes(c.kind),run:startFeed},
+  {id:'shop',he:'החנות',emo:'🛒',opens:1,fits:c=>['count','digit','dice','num20','add','tens'].includes(c.kind),run:startShop},
+  {id:'frog',he:'הצפרדע',pic:FROG_IMG,opens:2,fits:c=>['count','digit','dice','num20','add','story','ten','next'].includes(c.kind),run:startFrog},
+  {id:'tower',he:'בונים מגדל',emo:'🧱',opens:3,fits:c=>['count','digit','dice','num20','tens'].includes(c.kind),run:startTower},
+  {id:'scale',he:'מאזניים',emo:'⚖️',opens:4,fits:c=>['count','compare','story','ten'].includes(c.kind)&&!(c.kind==='compare'&&c.items.some(x=>x.dig))||c.id==='add10'||c.id==='sub10',run:startBalance},
+  {id:'cups',he:'מחבואים',emo:'🥤',opens:5,fits:c=>['count','digit','ten'].includes(c.kind)||c.id==='add10',run:startCups},
+  {id:'race',he:'מרוץ קוביות',emo:'🎲',opens:6,fits:c=>['dice','count','digit'].includes(c.kind)||c.id==='add10'||c.id==='add20',run:startRace},
+  {id:'pattern',he:'מה בא אחר כך',emo:'🔁',opens:7,fits:c=>['count','digit','dice','compare','next'].includes(c.kind),run:startPattern},
+];
+const levelsDone=()=>ALL_CATS.reduce((a,c)=>a+levelsOf(c).filter((_,l)=>isDone(c,l)).length,0);
+const gameOpen=x=>!x.opens||levelsDone()>=x.opens;
+let gamesSeen={}; try{ gamesSeen=JSON.parse(localStorage.getItem(KEY+'games')||'{}') }catch(e){}
+function runGame(x,g){ g.game=x.id; gamesSeen[x.id]=Date.now(); try{ localStorage.setItem(KEY+'games',JSON.stringify(gamesSeen)) }catch(e){} x.run(g) }
+// the game to suggest next: open, fits the topic, not the one just played, and played least recently
+function suggestGame(cat,not){ const c=GAMES.filter(x=>x.fits(cat)&&gameOpen(x)&&x.id!==not); return c.sort((a,b)=>(gamesSeen[a.id]||0)-(gamesSeen[b.id]||0))[0]||null }
+const gamePic=x=>x.emo?`<span class="emo">${x.emo}</span>`:art(x.pic);
+
 /* ---------- End of a game: level done, maybe a crown ---------- */
 function party(g,again){
   screenId++; homeTo=()=>showTopic(g.cat); navD=3;
   $home.hidden=false;
   const lv=levelsOf(g.cat);
-  const review=g.level<0;
-  const firstTime=!review&&!isDone(g.cat,g.level);
+  const review=g.level<0||g.dev;   // games started from the developer page do not count as progress
+  const firstTime=!review&&!isDone(g.cat,g.level), before=levelsDone();
   const crowned=!review&&markDone(g.cat,g.level);
+  const fresh=GAMES.filter(x=>x.opens&&x.opens>before&&x.opens<=levelsDone());
+  const gold=g.challenge&&!(prog.gold||{})[g.cat.id];
+  if(g.challenge){ prog.gold=prog.gold||{}; prog.gold[g.cat.id]=1; saveProg() }
+  const other=g.challenge?null:suggestGame(g.cat,g.game);
   const opened=firstTime&&g.level+1<lv.length;
   const got=newStickers.splice(0);
   $main.innerHTML=`<div class="screen party">
     ${charHTML('big',crowned?'won':'')}
-    <h2>${crowned?'קיבלת כתר!':G(L.great)}</h2>
-    <p>${crowned?G(L.crowned)+' '+art(ICON.crown(),'inl'):G(L.smart)+' '+art(UI.star,'inl')}</p>
+    <h2>${g.challenge?G(L2.goldCrown):crowned?'קיבלת כתר!':G(L.great)}</h2>
+    <p>${g.challenge?art(ICON.crown(),'inl gold'):crowned?G(L.crowned)+' '+art(ICON.crown(),'inl'):G(L.smart)+' '+art(UI.star,'inl')}</p>
+    ${fresh.length?`<div class="next-stk new-game">${fresh.map(gamePic).join('')} <span>${L2.newGame}</span></div>`:''}
     ${got.length?`<div class="next-stk new-stk"><span class="gift">${art(ICON.gift())}</span>${got.map(r=>art(r.img)).join('')}</div>`:''}
     <div class="row">
-      <button class="wand" id="again">${art(UI.wand,'ico')} <span>עוד פעם</span></button>
+      ${other?`<button class="wand" id="again"><span class="gpic">${gamePic(other)}</span> <span>משחק אחר</span></button>`:`<button class="wand" id="again">${art(UI.wand,'ico')} <span>עוד פעם</span></button>`}
       <button class="play" id="more" style="animation:none">${PLAY}<span>${opened?'לשלב הבא':'המשך'}</span></button>
     </div>
   </div>`;
   chime(); setTimeout(chime,350);
   for(let k=0;k<(crowned?9:5);k++) setTimeout(()=>burst(Math.random()*innerWidth,innerHeight*(.2+Math.random()*.4),40),k*260);
   const lines=he(L.great);
-  if(crowned) lines.push(['he',L.crowned]); else if(opened) lines.push(['he',L.opened]); else lines.push(['he',L.smart]);
+  if(g.challenge) lines.push(['he',L2.goldCrown]); else if(crowned) lines.push(['he',L.crowned]); else if(opened) lines.push(['he',L.opened]); else lines.push(['he',L.smart]);
+  if(fresh.length) lines.push(['he',L2.newGame]);
   if(got.length){ lines.push(['he',L.sticker]); got.forEach(r=>lines.push(['he',r.he])); setTimeout(()=>burstAt($stars,60),700) }
   say(lines);
-  document.getElementById('again').onclick=()=>{ tick(); again() };
+  document.getElementById('again').onclick=()=>{ tick(); other?runGame(other,makeCtx(g.cat,g.level)):again() };
   document.getElementById('more').onclick=()=>{ tick(); opened?learn(g.cat,g.level+1,0):showTopic(g.cat) };
 }
 
@@ -1414,10 +1909,28 @@ function showDev(){
     <h2>עמוד מפתח</h2>
     <div class="pbox"><h3>בדיקות קול</h3>
       <div class="pbtns"><button class="pbtn" id="dHe">בדיקת העברית</button><button class="pbtn" id="dNums">השמעת המספרים 1–20</button></div></div>
+    <div class="pbox"><h3>כל המשחקים</h3>
+      <div class="pnote">בוחרים נושא ושלב, ולוחצים על משחק. המשחקים פתוחים כאן גם אם עוד לא נפתחו לילד.</div>
+      <div class="pbtns" style="margin-top:8px"><select class="dsel" id="dCat">${ALL_CATS.map((c,i)=>`<option value="${i}">${c.he}${KG.includes(c.id)?' (גן)':''}</option>`).join('')}</select>
+        <select class="dsel" id="dLv"></select></div>
+      <div class="devgames" id="dGames"></div></div>
     <div class="pbox"><h3>קולות בטלפון</h3>
       <div class="pnote">עברית: ${hv.length?hv.map(v=>v.name+(v===heVoice?' ✓':'')).join(', '):'אין'}</div></div>
   </div></div>`;
   document.getElementById('dHe').onclick=()=>showHeCheck();
+  const dCat=document.getElementById('dCat'), dLv=document.getElementById('dLv'), dGames=document.getElementById('dGames');
+  let pick={}; try{ pick=JSON.parse(sessionStorage.getItem('lumda-dev-pick')||'{}') }catch(e){}
+  const fill=()=>{ const cat=ALL_CATS[+dCat.value];
+    dLv.innerHTML=levelsOf(cat).map((_,l)=>`<option value="${l}">שלב ${l+1}</option>`).join('')+'<option value="-1">כל השלבים</option>';
+    if(pick.l!==undefined&&dLv.querySelector(`option[value="${pick.l}"]`)) dLv.value=String(pick.l);
+    dGames.innerHTML=GAMES.map((x,k)=>`<button class="pbtn" data-k="${k}"${x.fits(cat)?'':' disabled'}>${gamePic(x)}<span>${x.he}</span></button>`).join('')
+      +`<button class="pbtn" data-k="chal">${BOY?'🐉':'🏰'}<span>אתגר הכתר</span></button>`;
+    dGames.querySelectorAll('.pbtn').forEach(b=>b.onclick=()=>{
+      const l=+dLv.value; pick={c:+dCat.value,l}; try{ sessionStorage.setItem('lumda-dev-pick',JSON.stringify(pick)) }catch(e){}
+      if(b.dataset.k==='chal') return startChallenge(cat);
+      const x=GAMES[+b.dataset.k], g={cat,level:l,pool:l<0?cat.items:levelsOf(cat)[l],game:x.id,dev:true}; x.run(g) }) };
+  if(pick.c!==undefined&&ALL_CATS[pick.c]) dCat.value=String(pick.c);
+  dCat.onchange=()=>{ pick.l=undefined; fill() }; fill();
   document.getElementById('dNums').onclick=()=>{ talkScreen=screenId; say(Array.from({length:20},(_,k)=>['he',numHe(k+1)])) };
 }
 function showParents(){
