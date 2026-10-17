@@ -620,7 +620,7 @@ html[data-kid="yam"] .ltr{color:#24358f}
 .shop .coin b{color:#2f3542;text-shadow:0 0 3px #fff,0 0 2px #fff}.shop .coin.big b{color:#5a3b00;text-shadow:0 0 3px #fff3c4,0 0 2px #fff3c4}
 /* real shekels: the 1 is the smallest, the 10 the biggest */
 .shop .coinbtn .coin{width:56px}.shop .coinbtn .coin.mid{width:62px}.shop .coinbtn .coin.big{width:68px}
-.shop .counter .coin.mid{transform:scale(1.1)}.shop .counter .coin.big{transform:scale(1.22)}.shop .counter{gap:7px}
+.shop .counter .coin.mid{transform:scale(1.1)}.shop .counter .coin.big{transform:scale(1.22)}.shop .counter{gap:7px}.shop .counter .coin{transition:translate .15s,filter .15s}.shop .counter .coin.lit{translate:0 -6px;filter:drop-shadow(0 0 6px var(--gold)) drop-shadow(0 0 3px #fff)}
 /* frog */
 .pond{position:relative;width:100%;max-width:560px;align-self:center;padding-top:clamp(46px,13vw,64px);direction:ltr}
 .pads{display:grid;grid-template-columns:repeat(11,1fr);gap:2px;background:linear-gradient(180deg,#9fe3ff,#5bc3f0);border-radius:999px;padding:6px 4px;border:3px solid #fff;box-shadow:0 5px 0 rgba(78,31,99,.15)}
@@ -1584,7 +1584,7 @@ function shopRound(g,r,bought){
     <div class="feed-btns purse" id="purse"></div>
   </div>`;
   const bub=document.getElementById('bub'), tray=document.getElementById('tray'), purse=document.getElementById('purse');
-  let picks=[], paid=[], done=false, wrongs=0;
+  let picks=[], paid=[], done=false, wrongs=0, counting=false;
   const who=document.getElementById('who'), sid=screenId; let poseT=0;
   const pose=(p,after)=>{ who.src=SELLER(p); clearTimeout(poseT); if(after) poseT=setTimeout(()=>{ if(sid===screenId) who.src=SELLER(after) },2400) };
   const sum=()=>paid.reduce((a,b)=>a+b,0);
@@ -1608,25 +1608,34 @@ function shopRound(g,r,bought){
     purse.innerHTML=`<button class="undo" id="undo" aria-label="להחזיר מטבע">↩️</button>
       ${vals.map(v=>`<button class="coinbtn" data-v="${v}" aria-label="${v}">${coinHTML(v)}</button>`).join('')}
       <button class="wand" id="fdone">${art(UI.star,'ico')} <span>${L2.paid}</span></button>`;
-    purse.querySelectorAll('.coinbtn').forEach(c=>c.onclick=()=>{ if(done||paid.length>=20) return; paid.push(+c.dataset.v); draw(); blip(paid.length); say(he(P(shekels(sum())))) });
-    document.getElementById('undo').onclick=()=>{ if(done||!paid.length) return; paid.pop(); draw(); tick(); if(paid.length) say(he(P(shekels(sum())))) };
-    document.getElementById('fdone').onclick=()=>{
-      if(done) return; const it=card(), btns=picks.map(w=>$main.querySelector(`.ware[data-k="${wares.indexOf(w)}"]`));
+    // while paying only a coin sound: the child counts; after two misses the seller counts along, coin by coin
+    const along=()=>{ if(wrongs>=2&&paid.length) say(he(P(sum()))) };
+    purse.querySelectorAll('.coinbtn').forEach(c=>c.onclick=()=>{ if(done||counting||paid.length>=20) return; paid.push(+c.dataset.v); draw(); blip(paid.length); along() });
+    document.getElementById('undo').onclick=()=>{ if(done||counting||!paid.length) return; paid.pop(); draw(); tick(); along() };
+    document.getElementById('fdone').onclick=async()=>{
+      if(done||counting) return; const it=card(), btns=picks.map(w=>$main.querySelector(`.ware[data-k="${wares.indexOf(w)}"]`));
+      // the seller counts the money aloud, lighting each coin: "one, two, three... three shekels here" (tens: "ten, twenty, twenty-five")
+      if(paid.length){
+        counting=true; pose('Talk'); const coins=[...tray.children]; let run=0;
+        for(let k=0;k<paid.length;k++){ run+=paid[k]; coins.forEach((c,j)=>c.classList.toggle('lit',j===k)); await say(he(P(run))); if(sid!==screenId) return }
+        coins.forEach(c=>c.classList.remove('lit')); counting=false;
+        await say(he(P(W.here,shekels(run),W.dot))); if(sid!==screenId) return;
+      }
       if(sum()===n){ done=true; btns.forEach(b=>b.classList.add('sold')); pose('Talk','Wave'); tone(660,0,.1); tone(990,.1,.2);
         if(!wrongs&&it) gotIt(g.cat,it);
         const nb=bought.concat(picks[0].thing);
         const slot=$main.querySelectorAll('.basket .slot')[r]; if(slot) slot.innerHTML=art(PIC[picks[0].thing].img);
-        win(btns[0],it||shop.it,()=>r+1<ROUNDS?shopRound(g,r+1,nb):party(g,()=>startShop(g)),he(L2.thanks).concat(he(P(W.here,shekels(n),W.x))));
+        win(btns[0],it||shop.it,()=>r+1<ROUNDS?shopRound(g,r+1,nb):party(g,()=>startShop(g)),he(L2.thanks));
       } else {
         wrongs++; boop(); react('oops'); pose('Talk','Take'); if(wrongs===1&&it) missed(g.cat,it);
-        say(he(P(W.here,shekels(sum()),W.comma),P(W.need,shekels(n),W.dot),G(L.again)));
+        say(he(P(W.need,shekels(n),W.dot),G(L.again)));
       }
     };
     fitScreen(); pose('Talk','Take'); say(priceSay().concat(he(G(L2.pay))));
   };
   // choose: tap a thing (two in a pair round); tapping a chosen thing puts it back, and the payment starts over
   $main.querySelectorAll('.ware').forEach(b=>b.onclick=()=>{
-    if(done) return; const w=wares[+b.dataset.k];
+    if(done||counting) return; const w=wares[+b.dataset.k];
     if(picks.includes(w)) picks=picks.filter(x=>x!==w);
     else { if(picks.length===need) picks=need===1?[]:picks.slice(1); picks.push(w) }
     $main.querySelectorAll('.ware').forEach(x=>x.classList.toggle('chosen',picks.includes(wares[+x.dataset.k])));
