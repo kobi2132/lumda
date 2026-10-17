@@ -592,13 +592,13 @@ html[data-kid="yam"] .ltr{color:#24358f}
 .basket{display:flex;align-items:center;gap:4px;direction:rtl}
 .basket .slot{width:32px;height:32px;border-radius:9px;background:rgba(255,255,255,.55);border:2px dashed var(--lilac);display:grid;place-items:center}.basket .slot .art{width:90%;height:90%;animation:cardIn .35s}
 .basket .bag{width:46px;height:44px;object-fit:contain;margin-inline-start:4px}
-.stand{position:relative;width:min(100%,420px,50vh);aspect-ratio:360/347;background:center/100% 100% no-repeat;flex:none}
-.wares{position:absolute;left:8%;right:15%;top:20%;bottom:3%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2%}
-.ware{border:0;background:none;padding:0;cursor:pointer;display:grid;grid-template-rows:65% 35%;justify-items:center;min-height:44px;min-width:0;transition:transform .2s,opacity .2s}
+.stand{position:relative;width:min(100%,420px,50vh);aspect-ratio:360/357;background:center/100% 100% no-repeat;flex:none}
+.wares{position:absolute;left:15%;right:15%;top:33%;bottom:4%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3%}
+.ware{border:0;background:none;padding:0;cursor:pointer;display:grid;grid-template-rows:61% 39%;justify-items:center;min-height:44px;min-width:0;transition:transform .2s,opacity .2s}
 .ware .thing{width:100%;height:100%;display:flex;align-items:flex-end;justify-content:center;transition:transform .2s,filter .2s}
 .ware .thing .art{width:96%;height:88%;object-fit:contain;object-position:50% 100%}
 .ware .tag{align-self:center;min-width:52px;min-height:44px;padding:2px 6px;display:grid;place-items:center;background:#fff7d6;border:3px dashed var(--gold);border-radius:12px;transform:rotate(-4deg);box-shadow:0 3px 0 rgba(0,0,0,.18)}
-.ware .tag .num{font-size:clamp(18px,5.4vw,28px)}.ware .tagdie,.ware .tagobjs{width:min(56px,15vw);height:min(56px,15vw)}
+.ware .tag .num{font-size:clamp(20px,6vw,30px)}
 .wares:has(.chosen) .ware:not(.chosen){opacity:.5}
 .ware.chosen .thing{transform:translateY(-6px) scale(1.06);filter:drop-shadow(0 0 6px var(--gold)) drop-shadow(0 0 3px #fff)}
 .ware.chosen .tag{background:var(--gold);border-style:solid;border-color:#fff}
@@ -609,7 +609,11 @@ html[data-kid="yam"] .ltr{color:#24358f}
   font:700 clamp(17px,4.8vw,22px)/1.3 var(--body);color:var(--plum);box-shadow:0 4px 0 rgba(78,31,99,.12)}
 .bubble::before{content:"";position:absolute;inset-inline-start:-12px;top:50%;margin-top:-9px;border:9px solid transparent;border-inline-end-color:var(--lilac);border-inline-start:0}
 .bubble .tag.small{display:grid;place-items:center;transform:rotate(-3deg);background:#fff7d6;border:3px dashed var(--gold);border-radius:12px;padding:2px 10px;min-height:46px}
-.bubble .tag.small .num{font-size:clamp(24px,7vw,34px)}.bubble .tagdie,.bubble .tagobjs{width:68px;height:68px}
+.bubble .tag.small .num{font-size:clamp(24px,7vw,34px)}
+#bub{display:flex;align-items:center;gap:6px}#bub .plus{font:700 28px/1 var(--display);color:var(--plum)}#bub .tag.q{font:700 30px/1 var(--display);color:var(--plum);min-width:46px}
+.tagnum{display:flex;align-items:center;gap:3px;direction:ltr}.tagnum img{width:.9em;height:.9em;font-size:clamp(20px,6vw,30px)}.bubble .tagnum img{font-size:clamp(24px,7vw,34px)}
+.tagcoins{display:grid;grid-template-columns:repeat(5,auto);gap:1px;justify-content:center;direction:ltr}.tagcoins img{width:min(17px,4.3vw);height:min(17px,4.3vw)}
+.bubble .tagcoins img{width:22px;height:22px}
 .shop .counter{min-height:clamp(60px,16vw,84px)}
 .shop .purse:empty{display:none}
 .shop .coin,.shop .coin.mid,.shop .coin.big{background:var(--ci) center/contain no-repeat;border:0;border-radius:0;box-shadow:none;filter:drop-shadow(0 2px 1px rgba(0,0,0,.25))}
@@ -1454,9 +1458,10 @@ const L2={
   paid:line('שילמתי','שִׁלַּמְתִּי'),
   buy:line('מה תרצי לקנות?','מָה תִּרְצִי לִקְנוֹת?','מה תרצה לקנות?','מָה תִּרְצֶה לִקְנוֹת?'),
   costs:['זה עולה','זֶה עוֹלֶה'],
-  costsDie:line('המחיר כתוב בקובייה.','הַמְּחִיר כָּתוּב בַּקֻּבִּיָּה.'),
-  costsCount:line('המחיר כמו מספר הציורים בתג.','הַמְּחִיר כְּמוֹ מִסְפַּר הַצִּיּוּרִים בַּתָּג.'),
   thanks:line('תודה רבה!','תּוֹדָה רַבָּה!'),
+  pick2:line('בחרי שני דברים.','בַּחֲרִי שְׁנֵי דְּבָרִים.','בחר שני דברים.','בְּחַר שְׁנֵי דְּבָרִים.'),
+  pickMore:line('בחרי עוד דבר אחד.','בַּחֲרִי עוֹד דָּבָר אֶחָד.','בחר עוד דבר אחד.','בְּחַר עוֹד דָּבָר אֶחָד.'),
+  together:line('כמה זה ביחד?','כַּמָּה זֶה בְּיַחַד?'),
   frogTo:line('תקפצי עם הצפרדע למספר','תִּקְפְּצִי עִם הַצְּפַרְדֵּעַ לַמִּסְפָּר','תקפוץ עם הצפרדע למספר','תִּקְפֹּץ עִם הַצְּפַרְדֵּעַ לַמִּסְפָּר'),
   frogGo:line('תקפצי עם הצפרדע לתשובה','תִּקְפְּצִי עִם הַצְּפַרְדֵּעַ לַתְּשׁוּבָה','תקפוץ עם הצפרדע לתשובה','תִּקְפֹּץ עִם הַצְּפַרְדֵּעַ לַתְּשׁוּבָה'),
   frogTen:line('תקפצי עם הצפרדע עד עשר','תִּקְפְּצִי עִם הַצְּפַרְדֵּעַ עַד עֶשֶׂר','תקפוץ עם הצפרדע עד עשר','תִּקְפֹּץ עִם הַצְּפַרְדֵּעַ עַד עֶשֶׂר'),
@@ -1488,81 +1493,99 @@ const L2={
 const cubes=n=>n===1?line('קובייה אחת','קֻבִּיָּה אַחַת'):n===2?line('שתי קוביות','שְׁתֵּי קֻבִּיּוֹת'):P(n,['קוביות','קֻבִּיּוֹת']);
 const FROG_IMG=E+'img/f6bd162e133b.webp';
 // the shop's own pictures (this app's img/, listed in img/list.json for offline)
-const SHOP_ART={"sellerGirlWave":"img/559d8e4410d1.webp","sellerGirlTalk":"img/bbedce5af592.webp","sellerGirlTake":"img/44427446b1bc.webp","sellerBoyWave":"img/76145bf81429.webp","sellerBoyTalk":"img/33a6392c7188.webp","sellerBoyTake":"img/6ff2eca20f1e.webp","standGirl":"img/792842bbd47f.webp","standBoy":"img/22fd42a15c92.webp","basket":"img/97d3c0a547be.webp","coin1":"img/a9c877aef173.webp","coin5":"img/1eb449aa51cc.webp","coin10":"img/372d3f2ef586.webp"};   // the frog from the English app's animals
+const SHOP_ART={"sellerGirlWave":"img/559d8e4410d1.webp","sellerGirlTalk":"img/bbedce5af592.webp","sellerGirlTake":"img/44427446b1bc.webp","sellerBoyWave":"img/76145bf81429.webp","sellerBoyTalk":"img/33a6392c7188.webp","sellerBoyTake":"img/6ff2eca20f1e.webp","standGirl":"img/85c5637fe897.webp","standBoy":"img/b71a017ff5ee.webp","basket":"img/97d3c0a547be.webp","coin1":"img/a9c877aef173.webp","coin5":"img/1eb449aa51cc.webp","coin10":"img/372d3f2ef586.webp"};   // the frog from the English app's animals
 
 /* ---------- Game 5: The shop (pay the price with coins) ---------- */
 const SHOP_ITEMS=['Apple','Ball','Cake','Teddy bear','Ice cream','Kite','Drum','Balloon','Candy','Pizza','Train','Truck','Gift','Book'];
 const coinHTML=v=>`<span class="coin${v>=10?' big':v>=5?' mid':''}" style="--ci:url(${SHOP_ART['coin'+(v>=10?10:v>=5?5:1)]})"><b>${v}</b></span>`;
-// what the price tag shows: never the plain answer for a sum
-function tagHTML(it){
-  if(it.kind==='dice') return `<span class="tagdie">${dieHTML(it.ans)}</span>`;
-  if(it.kind==='add') return numHTML(it.a+opTxt(it.op)+it.b);
-  if(it.kind==='count') return `<span class="tagobjs"><span class="box">${objsHTML(it.ans,it.obj)}</span></span>`;
-  return numHTML(it.ans);
-}
 // the seller and the stand follow the kid's colours; three poses: waving, talking, holding out a hand for the coins
 const SELLER=pose=>SHOP_ART[(BOY?'sellerBoy':'sellerGirl')+pose];
-// three things on the shelf, each with its own price from this level's cards
+// the price tag is only ever money: Melody first sees the coins to count, and once she has the crown in "digits" she sees the number
+const DIGITS=ALL_CATS.find(c=>c.id==='digits');
+const coinTags=()=>!BOY&&!catDone(DIGITS);
+function priceTag(n){
+  if(coinTags()&&n<=10) return `<span class="tagcoins${n>5?' two':''}">${Array.from({length:n},()=>`<img src="${SHOP_ART.coin1}" alt="">`).join('')}</span>`;
+  return `<span class="tagnum">${numHTML(n)}<img src="${SHOP_ART.coin1}" alt=""></span>`;
+}
+// sums and differences: buy two things and pay for both (a+b costs a and b; a-b costs b and the answer)
+const pairShop=g=>g.cat.kind==='add';
+// three things on the counter, each with its price; in a pair round two of them come from one card
 function shopWares(g){
+  const things=shuffle(SHOP_ITEMS);
+  if(pairShop(g)){
+    const it=pickTargets(g,1)[0], p=it.op==='+'?[it.a,it.b]:[it.b,it.ans];
+    let x; do{ x=1+Math.floor(Math.random()*9) }while(p.includes(x));
+    return {it,pair:p,wares:shuffle(p.concat(x)).map((price,k)=>({price,thing:things[k]}))};
+  }
   const out=[];
   for(const t of pickTargets(g,9).concat(shuffle(g.pool))){ if(out.length===3) break; if(!out.some(w=>w.ans===t.ans)) out.push(t) }
-  const things=shuffle(SHOP_ITEMS);
-  return shuffle(out).map((it,k)=>({it,thing:things[k]}));
-}
-// what the seller says about the price: the number, or the sum, or "count the dots"
-function priceSay(it){
-  if(it.kind==='add') return he(P(L2.costs,it.a,W[it.op==='+'?'plus':'minus'],it.b,W.dot),L.howMuch);
-  if(it.kind==='dice') return he(L2.costsDie,L.dots);
-  if(it.kind==='count') return he(L2.costsCount,L.howMany);
-  return he(P(L2.costs,it.ans,W.dot));
+  return {wares:shuffle(out).map((it,k)=>({it,price:it.ans,thing:things[k]}))};
 }
 function startShop(g){ screenId++; ['Wave','Talk','Take'].forEach(p=>{ new Image().src=SELLER(p) }); shopRound(g,0,[]) }
 function shopRound(g,r,bought){
   screenId++; homeTo=()=>pickGame(g.cat,g.level); navD=4;
   $home.hidden=false;
-  const wares=shopWares(g);
+  const shop=shopWares(g), wares=shop.wares, need=shop.pair?2:1;
+  const hello=()=>he(G(L2.buy)).concat(need===2?he(G(L2.pick2)):[]);
   $main.innerHTML=`<div class="screen shop">
     <div class="basket" aria-label="הסל">${Array.from({length:ROUNDS},(_,k)=>`<span class="slot">${bought[k]?art(PIC[bought[k]].img):''}</span>`).join('')}<img class="bag" src="${SHOP_ART.basket}" alt=""></div>
     <div class="stand" style="background-image:url(${SHOP_ART[BOY?'standBoy':'standGirl']})">
-      <div class="wares">${wares.map((w,k)=>`<button class="ware" data-k="${k}" aria-label="${PIC[w.thing].he}"><span class="thing">${art(PIC[w.thing].img)}</span><span class="tag">${tagHTML(w.it)}</span></button>`).join('')}</div></div>
+      <div class="wares" data-need="${need}">${wares.map((w,k)=>`<button class="ware" data-k="${k}" aria-label="${PIC[w.thing].he}"><span class="thing">${art(PIC[w.thing].img)}</span><span class="tag">${priceTag(w.price)}</span></button>`).join('')}</div></div>
     <div class="seller"><span class="who"><img class="art" id="who" src="${SELLER('Talk')}" alt="" draggable="false"></span><button class="bubble" id="ask"><span id="bub">${G(L2.buy)}</span></button></div>
     <div class="counter" id="tray" data-n=""></div>
     <div class="feed-btns purse" id="purse"></div>
   </div>`;
   const bub=document.getElementById('bub'), tray=document.getElementById('tray'), purse=document.getElementById('purse');
-  let pick=null, paid=[], done=false, wrongs=0;
+  let picks=[], paid=[], done=false, wrongs=0;
   const who=document.getElementById('who'), sid=screenId; let poseT=0;
   const pose=(p,after)=>{ who.src=SELLER(p); clearTimeout(poseT); if(after) poseT=setTimeout(()=>{ if(sid===screenId) who.src=SELLER(after) },2400) };
   const sum=()=>paid.reduce((a,b)=>a+b,0);
+  const total=()=>picks.reduce((a,w)=>a+w.price,0);
+  // the card this round practises: the chosen thing's card, or the pair's card when the two from it were chosen
+  const card=()=>shop.pair?(picks.map(w=>w.price).sort().join()===shop.pair.slice().sort().join()?shop.it:null):picks[0].it;
+  // what the seller says: the price, or both prices and "how much together?"
+  const priceSay=()=>{
+    if(picks.length===2) return he(P(L2.costs,picks[0].price,W.plus,picks[1].price,W.dot),L2.together);
+    return he(P(L2.costs,picks[0].price,W.dot));
+  };
+  const ready=()=>picks.length===need;
   const draw=()=>{ tray.innerHTML=paid.map(coinHTML).join('') };
-  const ask=()=>{ pose('Talk',pick?'Take':'Wave'); say(pick?priceSay(pick.it).concat(he(G(L2.pay))):he(G(L2.buy))) };
-  ask(); document.getElementById('ask').onclick=ask;
-  // choose: the thing goes to the counter and the seller names its price; choosing again starts the payment over
-  $main.querySelectorAll('.ware').forEach(b=>b.onclick=()=>{
-    if(done) return; const w=wares[+b.dataset.k];
-    $main.querySelectorAll('.ware').forEach(x=>x.classList.toggle('chosen',x===b));
-    pick=w; paid=[]; wrongs=0; draw(); tick(); burstAt(b,14);
-    const n=w.it.ans; tray.dataset.n=n;
-    const vals=BOY?(n>10||w.it.kind==='tens'?[10,5,1]:[5,1]):(n>10?[10,1]:[1]);
-    bub.innerHTML=`<span class="tag small">${tagHTML(w.it)}</span>`;
+  const ask=()=>{ pose('Talk',ready()?'Take':'Wave'); say(ready()?priceSay().concat(he(G(L2.pay))):hello()) };
+  say(hello()); poseT=setTimeout(()=>{ if(sid===screenId) who.src=SELLER('Wave') },2400);
+  document.getElementById('ask').onclick=ask;
+  const pay=()=>{
+    const n=total(); tray.dataset.n=n;
+    const vals=BOY?(n>10||g.cat.kind==='tens'?[10,5,1]:[5,1]):(n>10?[10,1]:[1]);
+    bub.innerHTML=picks.map(w=>`<span class="tag small">${priceTag(w.price)}</span>`).join('<b class="plus">+</b>');
     purse.innerHTML=`<button class="undo" id="undo" aria-label="להחזיר מטבע">↩️</button>
       ${vals.map(v=>`<button class="coinbtn" data-v="${v}" aria-label="${v}">${coinHTML(v)}</button>`).join('')}
       <button class="wand" id="fdone">${art(UI.star,'ico')} <span>${L2.paid}</span></button>`;
     purse.querySelectorAll('.coinbtn').forEach(c=>c.onclick=()=>{ if(done||paid.length>=20) return; paid.push(+c.dataset.v); draw(); blip(paid.length); say(he(numHe(sum()))) });
     document.getElementById('undo').onclick=()=>{ if(done||!paid.length) return; paid.pop(); draw(); tick(); if(paid.length) say(he(numHe(sum()))) };
     document.getElementById('fdone').onclick=()=>{
-      if(done) return;
-      if(sum()===n){ done=true; b.classList.add('sold'); pose('Talk','Wave'); tone(660,0,.1); tone(990,.1,.2);
-        if(!wrongs) gotIt(g.cat,w.it);
-        const nb=bought.concat(w.thing);
-        const slot=$main.querySelectorAll('.basket .slot')[r]; if(slot) slot.innerHTML=art(PIC[w.thing].img);
-        win(b,w.it,()=>r+1<ROUNDS?shopRound(g,r+1,nb):party(g,()=>startShop(g)),he(L2.thanks).concat(he(P(W.here,n,W.x))));
+      if(done) return; const it=card(), btns=picks.map(w=>$main.querySelector(`.ware[data-k="${wares.indexOf(w)}"]`));
+      if(sum()===n){ done=true; btns.forEach(b=>b.classList.add('sold')); pose('Talk','Wave'); tone(660,0,.1); tone(990,.1,.2);
+        if(!wrongs&&it) gotIt(g.cat,it);
+        const nb=bought.concat(picks[0].thing);
+        const slot=$main.querySelectorAll('.basket .slot')[r]; if(slot) slot.innerHTML=art(PIC[picks[0].thing].img);
+        win(btns[0],it||shop.it,()=>r+1<ROUNDS?shopRound(g,r+1,nb):party(g,()=>startShop(g)),he(L2.thanks).concat(he(P(W.here,n,W.x))));
       } else {
-        wrongs++; boop(); react('oops'); pose('Talk','Take'); if(wrongs===1) missed(g.cat,w.it);
+        wrongs++; boop(); react('oops'); pose('Talk','Take'); if(wrongs===1&&it) missed(g.cat,it);
         say(he(P(W.here,sum(),W.comma),P(W.need,n,W.dot),G(L.again)));
       }
     };
-    pose('Talk','Take'); say(priceSay(w.it).concat(he(G(L2.pay))));
+    pose('Talk','Take'); say(priceSay().concat(he(G(L2.pay))));
+  };
+  // choose: tap a thing (two in a pair round); tapping a chosen thing puts it back, and the payment starts over
+  $main.querySelectorAll('.ware').forEach(b=>b.onclick=()=>{
+    if(done) return; const w=wares[+b.dataset.k];
+    if(picks.includes(w)) picks=picks.filter(x=>x!==w);
+    else { if(picks.length===need) picks=need===1?[]:picks.slice(1); picks.push(w) }
+    $main.querySelectorAll('.ware').forEach(x=>x.classList.toggle('chosen',picks.includes(wares[+x.dataset.k])));
+    paid=[]; wrongs=0; draw(); tick(); burstAt(b,14); tray.dataset.n='';
+    if(ready()) pay();
+    else { purse.innerHTML=''; bub.innerHTML=picks.length?`<span class="tag small">${priceTag(picks[0].price)}</span><b class="plus">+</b><span class="tag small q">?</span>`:G(L2.buy);
+      pose('Talk','Wave'); say(picks.length?he(P(L2.costs,picks[0].price,W.dot),G(L2.pickMore)):hello()) }
   });
 }
 
