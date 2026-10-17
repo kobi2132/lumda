@@ -325,7 +325,12 @@ main.scrollable{-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 34
   .dress{width:min(46vw,175px)}
 }
 @media (max-height:500px) and (orientation:landscape){
-  .buddy-bar{display:none}
+  /* the companion stands in the corner beside the page, not under it, so she is never dropped for lack of height */
+  .buddy-bar{--bh:min(27vh,96px);position:fixed;bottom:0;inset-inline-start:4px;width:calc(var(--bh)*1.08*.92);height:calc(var(--bh)*1.08)}
+  body:has(#buddyBar:not([hidden])) main{padding-inline-start:110px}
+  /* more, shorter topic tiles per row, so a whole row is never sliced by the bottom edge */
+  .cats{grid-template-columns:repeat(auto-fill,minmax(92px,1fr));max-width:none;gap:8px}.cat{padding:4px 3px 5px;gap:2px}
+  .cat .pic{height:clamp(26px,9vh,36px)}.cat .en{font-size:13px;line-height:1.15}.album-btn{padding-block:4px}
   header{min-height:44px}.round-btn{width:44px;height:44px}.stars{font-size:20px;padding:2px 10px}
   .card{flex-direction:row;flex-wrap:wrap;justify-content:center;column-gap:18px;width:min(100%,560px);padding:12px}
   .card .visual{height:min(52vh,170px);width:auto;flex:0 0 auto;aspect-ratio:1}
@@ -550,6 +555,10 @@ html[data-kid="yam"] .ltr{color:#24358f}
 .ask .q.he{direction:rtl;font-family:var(--body);font-size:clamp(22px,6vw,32px)}
 @media (max-height:700px){ .pet{width:clamp(90px,24vh,130px);font-size:clamp(70px,20vh,110px)} .plate{min-height:80px} .jar{width:clamp(80px,20vh,110px)} }
 @media (max-height:500px) and (orientation:landscape){ .card .visual{width:min(56vw,420px);aspect-ratio:auto;height:min(50vh,170px)} .whats .card .visual,.card:has(.story) .visual{height:min(34vh,110px)} .feed{gap:12px} .pet{width:90px;font-size:70px} .jar{width:80px} }
+/* big things pop gently: at full pop strength the right answer grew past the screen edge and was cut */
+@keyframes popSoft{40%{transform:scale(1.1)}}
+.opt.right,.cmp .side.win,.bub.right,.pm.big.won{animation-name:popSoft}
+.stars{min-height:44px}
 @media (min-width:700px) and (min-height:700px){ .word-en.expr{font-size:76px} .story{font-size:26px} .plate{width:320px;min-height:160px} .plate .art{width:52px;height:52px} .pet{width:220px;font-size:180px} .jar{width:160px} }
 </style>
 
@@ -864,7 +873,7 @@ function burstAt(el,n){ const r=el.getBoundingClientRect(); burst(r.left+r.width
 let screenId=0;
 const later=(fn,ms)=>{ const id=screenId; setTimeout(()=>{ if(id===screenId) fn() },ms) };
 const sayThen=(parts,fn,pause=500)=>{ const id=screenId; say(parts).then(()=>setTimeout(()=>{ if(id===screenId) fn() },pause)) };
-const $main=document.getElementById('main'), $home=document.getElementById('homeBtn'); let atStart=true, homeTo=null;
+const $main=document.getElementById('main'), $home=document.getElementById('homeBtn'); let atStart=true, homeTo=null, navD=0, albumD=1, parentsD=1;
 const $stars=document.getElementById('stars'), $count=document.getElementById('starCount');
 $count.textContent=stars;
 const SPEAKER='<svg viewBox="0 0 24 24" fill="none" stroke="#b98cff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="#e8d9ff"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
@@ -931,7 +940,7 @@ document.getElementById('hdrAlbum').innerHTML=art(UI.album);
 
 /* ---------- Screens ---------- */
 function showStart(){
-  screenId++; homeTo=null;
+  screenId++; homeTo=null; navD=0;
   $home.hidden=false; atStart=true;
   $main.innerHTML=`<div class="screen">
     <div class="hello">${charHTML('big')}<h1>שלום ${NAME}!</h1></div>
@@ -950,8 +959,8 @@ document.addEventListener('visibilitychange',()=>{
 });
 const played=()=>playMs+(document.hidden?0:Date.now()-seenAt);
 const breakDue=()=>settings.breakMin>0&&played()>=settings.breakMin*60000;
-function showBreak(then){
-  playMs=0; seenAt=Date.now(); screenId++; homeTo=null; $home.hidden=false; atStart=false;
+function showBreak(then,d,back){
+  playMs=0; seenAt=Date.now(); screenId++; homeTo=back||null; navD=d; $home.hidden=false; atStart=false;
   $main.innerHTML=`<div class="screen party">${charHTML('big')}<h2>${G(L.great)}</h2><p>${G(L.rest)}</p>
     <div class="row"><button class="wand" id="more">אוקיי</button></div></div>`;
   chime(); say(he(L.rest));
@@ -959,8 +968,8 @@ function showBreak(then){
 }
 let lastCat=null; try{ lastCat=localStorage.getItem(KEY+'last') }catch(e){}
 function showCats(){
-  if(breakDue()) return showBreak(showCats);
-  screenId++; homeTo=null;
+  if(breakDue()) return showBreak(showCats,1);
+  screenId++; homeTo=null; navD=1;
   $home.hidden=true; atStart=false;
   const lc=CATS.find(c=>c.id===lastCat);
   // the topic in the middle (or the next unfinished one) glows
@@ -986,7 +995,7 @@ Object.assign(HE_SAY,{'ספירה עד 5':'סְפִירָה עַד חָמֵשׁ'
 
 /* Topic: a short path of levels, a crown at the end */
 function showTopic(cat,announce){
-  screenId++; homeTo=null;
+  screenId++; homeTo=null; navD=2;
   lastCat=cat.id; try{ localStorage.setItem(KEY+'last',cat.id) }catch(e){}
   $home.hidden=false;
   const lv=levelsOf(cat);
@@ -1019,7 +1028,7 @@ function levelPic(items){ const it=items[0];
 
 /* Learn cards: the solved picture, the number, and the voice explaining it (counting one by one where there is something to count) */
 function learn(cat,level,i){
-  screenId++; homeTo=()=>showTopic(cat);
+  screenId++; homeTo=()=>showTopic(cat); navD=3;
   $home.hidden=false;
   const items=levelsOf(cat)[level];
   const it=items[i], last=i===items.length-1;
@@ -1110,8 +1119,8 @@ const KINDS_BAL=['count','digit','dice','num20','next','add','ten','tens','story
 const KINDS_MEM=['count','digit','dice','num20','add'];
 const KINDS_FEED=['count','digit','dice'];
 function pickGame(cat,level){
-  if(breakDue()) return showBreak(()=>pickGame(cat,level));
-  screenId++; homeTo=()=>showTopic(cat);
+  if(breakDue()) return showBreak(()=>pickGame(cat,level),3,()=>showTopic(cat));
+  screenId++; homeTo=()=>showTopic(cat); navD=3;
   $home.hidden=false;
   const g=()=>makeCtx(cat,level);
   const games=[{he:'מוצאים',pic:UI.find,g:GRADS[4],run:()=>startFind(g())}];
@@ -1138,7 +1147,7 @@ function askLabel(it){
 /* ---------- Game 1: Find it (the question, three answers) ---------- */
 function startFind(g){ screenId++; findRound(g,pickTargets(g,ROUNDS),0) }
 function findRound(g,targets,r){
-  screenId++; homeTo=()=>pickGame(g.cat,g.level);
+  screenId++; homeTo=()=>pickGame(g.cat,g.level); navD=4;
   $home.hidden=false;
   const target=targets[r], cmp=target.kind==='compare';
   const opts=cmp?[0,1]:shuffle([target.ans,...nearNums(target,2)]);
@@ -1178,7 +1187,7 @@ const BALLOON_COLORS=[['#ff4f9a','#ff9ac9'],['#9566f2','#c6a4ff'],['#ffbf2e','#f
 const popAsk=it=>['count','digit','dice','num20','tens'].includes(it.kind)?he(L.popOf,numHe(it.ans)):he(...it.ask.map(G));
 function startBalloons(g){ screenId++; const t=pickTargets(g,ROUNDS); sayThen(he(L.pop),()=>balloonRound(g,t,0),300) }
 function balloonRound(g,targets,r){
-  screenId++; homeTo=()=>pickGame(g.cat,g.level);
+  screenId++; homeTo=()=>pickGame(g.cat,g.level); navD=4;
   $home.hidden=false;
   const target=targets[r];
   const nb=($main.clientWidth<520)?3:4;
@@ -1224,7 +1233,7 @@ function balloonRound(g,targets,r){
 
 /* ---------- Game 3: Memory (a picture and its number make a pair) ---------- */
 function startMemory(g){
-  screenId++; homeTo=()=>pickGame(g.cat,g.level);
+  screenId++; homeTo=()=>pickGame(g.cat,g.level); navD=4;
   $home.hidden=false;
   const picks=[];
   for(const t of pickTargets(g,12).concat(shuffle(g.pool),shuffle(g.cat.items))){ if(picks.length===3) break; if(!picks.some(p=>p.ans===t.ans)) picks.push(t) }
@@ -1262,7 +1271,7 @@ function startMemory(g){
 /* ---------- Game 4: Feed the unicorn / the dragon (give exactly as many cookies as asked) ---------- */
 function startFeed(g){ screenId++; const t=pickTargets(g,ROUNDS); feedRound(g,t,0) }
 function feedRound(g,targets,r){
-  const id=++screenId; homeTo=()=>pickGame(g.cat,g.level);
+  const id=++screenId; homeTo=()=>pickGame(g.cat,g.level); navD=4;
   $home.hidden=false;
   const target=targets[r], n=target.ans;
   $main.innerHTML=`<div class="screen">
@@ -1295,7 +1304,7 @@ function feedRound(g,targets,r){
 
 /* ---------- End of a game: level done, maybe a crown ---------- */
 function party(g,again){
-  screenId++; homeTo=()=>showTopic(g.cat);
+  screenId++; homeTo=()=>showTopic(g.cat); navD=3;
   $home.hidden=false;
   const lv=levelsOf(g.cat);
   const review=g.level<0;
@@ -1325,7 +1334,9 @@ function party(g,again){
 
 /* ---------- Sticker album ---------- */
 function showAlbum(){
-  screenId++; homeTo=null; atStart=false;
+  // one step deeper than where it was opened from (at most 2), so a tap never adds two history entries
+  if(!$main.querySelector('.album')) albumD=Math.min((atStart?0:navD)+1,2);
+  screenId++; homeTo=null; atStart=false; navD=albumD;
   $home.hidden=false;
   const got=Math.min(Math.floor(stars/PER_REWARD),REWARDS.length), full=got===REWARDS.length, left=PER_REWARD-(stars%PER_REWARD);
   const fresh=(()=>{ try{ return +(localStorage.getItem(KEY+'seen')||0) }catch(e){ return got } })();
@@ -1353,7 +1364,7 @@ function heCheckList(){
 }
 let heBad={}; try{ heBad=JSON.parse(localStorage.getItem('lumda-he-bad')||'{}') }catch(e){}
 function showHeCheck(){
-  screenId++; homeTo=showDev; atStart=false; $home.hidden=false; hush();
+  screenId++; homeTo=showDev; navD=parentsD+2; atStart=false; $home.hidden=false; hush();
   const groups=heCheckList();
   $main.innerHTML=`<div class="screen scrolls"><div class="parents">
     <h2>בדיקת העברית</h2>
@@ -1385,7 +1396,7 @@ function showHeCheck(){
   cnt();
 }
 function showDevCode(){
-  screenId++; homeTo=showParents; atStart=false; $home.hidden=false; hush();
+  screenId++; homeTo=showParents; navD=parentsD+1; atStart=false; $home.hidden=false; hush();
   $main.innerHTML=`<div class="screen scrolls"><div class="parents">
     <h2>כניסת מפתח</h2>
     <div class="pbox"><div class="pnote">הקלידו קוד:</div>
@@ -1397,7 +1408,7 @@ function showDevCode(){
   document.getElementById('dGo').onclick=go; inp.onkeydown=e=>{ if(e.key==='Enter') go() }; inp.focus();
 }
 function showDev(){
-  screenId++; homeTo=showParents; atStart=false; $home.hidden=false; hush();
+  screenId++; homeTo=showParents; navD=parentsD+1; atStart=false; $home.hidden=false; hush();
   const hv=voices.filter(v=>/^he|^iw/i.test(v.lang));
   $main.innerHTML=`<div class="screen scrolls"><div class="parents">
     <h2>עמוד מפתח</h2>
@@ -1411,7 +1422,8 @@ function showDev(){
 }
 function showParents(){
   keepTop=$main.querySelector('.parents')?$main.scrollTop:null;
-  screenId++; homeTo=null; atStart=false;
+  if(!$main.querySelector('.parents')) parentsD=Math.min((atStart?0:navD)+1,2);   // the developer pages share the .parents look
+  screenId++; homeTo=null; atStart=false; navD=parentsD;
   $home.hidden=false;
   try{ synth&&synth.cancel() }catch(e){}
   const rows=CATS.map(c=>{ const lv=levelsOf(c), d=lv.filter((_,l)=>isDone(c,l)).length;
@@ -1494,18 +1506,19 @@ function hush(){ talkId++; explainRun++; lastSay=null; try{ synth&&synth.cancel(
 /* The phone's Back button steps back inside the app, like the home button.
    History holds one entry per step away from the start screen (start 0, topics 1, a topic 2, learning or game picker 3, a game 4).
    Entries are added only right after a tap: Chrome's Back button skips entries pushed without a tap, and would then leave the app
-   (same scheme as apps/melody-english) */
+   (same scheme as apps/melody-english). A tap goes at most one step deeper (the album and the parent corner sit one step below
+   where they were opened), since Chrome also skips an entry when one tap pushes two */
 if(history.state&&history.state.lumda) try{ history.replaceState(null,'') }catch(e){}
-const navDepth=()=>{ if(atStart) return 0; if($main.querySelector('.cats')) return 1;
-  const h=homeTo?String(homeTo):''; return /pickGame|showDev/.test(h)?4:/showTopic|showParents/.test(h)?3:2 };
+const navDepth=()=>atStart?0:navD;   // every screen sets navD
 const histDepth=()=>(history.state&&history.state.d)||0;
-let syncing=false;
-const guard=()=>{ if(syncing) return; const want=navDepth(), have=histDepth();
-  try{ if(want>have) for(let k=have+1;k<=want;k++) history.pushState({lumda:1,d:k},'');
-    else if(want<have){ syncing=true; history.go(want-have) } }catch(e){} };
+let syncTo=null;   // the depth a history.go() of ours is heading to
+const syncDown=()=>{ if(syncTo!==null) return; const want=navDepth(), have=histDepth();
+  if(want<have) try{ syncTo=want; history.go(want-have) }catch(e){ syncTo=null } };
+const guard=()=>{ if(syncTo!==null) return; const want=navDepth(), have=histDepth();
+  try{ if(want>have) for(let k=have+1;k<=want;k++) history.pushState({lumda:1,d:k},''); else syncDown() }catch(e){} };
 const stepBack=()=>{ if($main.querySelector('.cats')) return showStart(); const go=homeTo; go?go():showCats() };
 addEventListener('popstate',()=>{
-  if(syncing){ syncing=false; return }
+  if(syncTo!==null){ const t=syncTo; syncTo=null; if(histDepth()===t) return }
   if(atStart) return;
   tick();
   const d=histDepth(); let n=0;
@@ -1513,9 +1526,10 @@ addEventListener('popstate',()=>{
 });
 addEventListener('click',guard);     // bubbles up after the button's own handler has changed the screen
 addEventListener('pointerup',guard); // the parent corner opens while the title is held
-new MutationObserver(()=>{ if(talkScreen!==screenId) hush(); $buddyBar.hidden=!!$main.querySelector('.pm.big'); $main.scrollTop=keepTop||0; keepTop=null; fitScreen(); requestAnimationFrame(()=>{ fitScreen(); markScroll() }) }).observe($main,{childList:true});
+new MutationObserver(()=>{ if(talkScreen!==screenId) hush(); syncDown(); $buddyBar.hidden=!!$main.querySelector('.pm.big'); $main.scrollTop=keepTop||0; keepTop=null; fitScreen(); requestAnimationFrame(()=>{ fitScreen(); markScroll() }) }).observe($main,{childList:true});
 addEventListener('resize',()=>requestAnimationFrame(()=>{ fitScreen(); markScroll() }));
 addEventListener('load',fitScreen);
+$main.addEventListener('load',()=>requestAnimationFrame(fitScreen),true);   // a picture that arrives late can make the screen taller
 $buddy.onclick=()=>{ react('happy'); burstAt($buddy,16); if(lastSay) say(lastSay) };
 showStart();
 document.documentElement.classList.add('ready');
