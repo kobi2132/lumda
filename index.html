@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>הלומדות שלי</title>
-<link rel="manifest" href="manifest.webmanifest?v=4">
+<title>לומדלי</title>
+<link rel="manifest" href="manifest.webmanifest?v=5">
 <link rel="icon" href="icon-192.png?v=2">
 <link rel="apple-touch-icon" href="icon-180.png?v=2">
-<meta name="apple-mobile-web-app-title" content="לומדות">
+<meta name="apple-mobile-web-app-title" content="לומדלי">
 <meta name="theme-color" content="#ff4f9a">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Varela+Round&display=swap">
 <style>
@@ -244,7 +244,7 @@ h1#pickTitle{margin:44px 0 0}
         <button class="btn" id="pInstall" hidden>📲 התקנה בטלפון</button>
         <p class="okline" id="pInstallHelp"></p>
         <button class="btn soft" id="pUpdate">🔄 בדיקת עדכון</button>
-        <button class="btn soft" id="pShare">🔗 שיתוף הלומדות עם חברים</button>
+        <button class="btn soft" id="pShare">🔗 שיתוף לומדלי עם חברים</button>
         <p class="okline" id="pMsg"></p></div>
       <div class="pcard"><h3>🔒 הקוד</h3><p class="note" id="pPinNote"></p>
         <button class="btn soft" id="pPin"></button><button class="btn soft" id="pPinOff" hidden>ביטול הקוד</button></div>
@@ -308,7 +308,7 @@ h1#pickTitle{margin:44px 0 0}
   <div class="chgrid" id="chGrid"></div></div></div>
 <div class="shade" id="inst" hidden><div class="page inst"><h2><span>התקנה על מסך הבית</span><button class="x" id="instX" aria-label="סגירה">✕</button></h2>
   <img class="icon" src="icon-192.png?v=2" alt="">
-  <p class="note">כך הלומדות נפתחות מהר, במסך מלא, וגם בלי אינטרנט.</p>
+  <p class="note">כך לומדלי נפתחת מהר, במסך מלא, וגם בלי אינטרנט.</p>
   <div id="instBody"></div>
   <button class="btn soft" id="instLater">אחר כך</button></div></div>
 <div class="shade" id="ask" hidden><div class="page"><h2><span id="askTitle"></span></h2><p class="note" id="askText"></p>
@@ -707,9 +707,9 @@ setTimeout(() => {
 }, 1500);
 async function installInfo(){
   $('pInstall').hidden = standalone();
-  $('pInstallHelp').textContent = standalone() ? '✓ הלומדות מותקנות בטלפון ונפתחות גם בלי אינטרנט.' : '';
+  $('pInstallHelp').textContent = standalone() ? '✓ לומדלי מותקנת בטלפון ונפתחת גם בלי אינטרנט.' : '';
   let ver = ''; try { ver = ((await caches.keys()).find(k => /^lumda-v\d+$/.test(k)) || '').replace('lumda-v', '') } catch(e){}
-  $('pVer').textContent = ver ? 'גרסה ' + ver : 'הלומדות מתעדכנות לבד כשיש אינטרנט.';
+  $('pVer').textContent = ver ? 'גרסה ' + ver : 'לומדלי מתעדכנת לבד כשיש אינטרנט.';
 }
 $('pInstall').onclick = showInstall;
 $('pUpdate').onclick = async () => {
