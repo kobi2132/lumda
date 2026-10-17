@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset=utf-8><script>/* pick the child's colors before anything paints; the app stays hidden until it has drawn the right child */try{var k=localStorage.getItem('lumda-kid');if(k)document.documentElement.dataset.kid=k}catch(e){}</script><style>html:not(.ready) .app{visibility:hidden}</style><link rel="manifest" href="../../manifest.webmanifest?v=4"><link rel="icon" href="../../icon-192.png?v=2"><link rel="apple-touch-icon" href="../../icon-180.png?v=2"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf-8><script>/* pick the child's colors before anything paints; the app stays hidden until it has drawn the right child */try{var k=localStorage.getItem('lumda-look')||localStorage.getItem('lumda-kid');if(k)document.documentElement.dataset.kid=k}catch(e){}</script><style>html:not(.ready) .app{visibility:hidden}</style><link rel="manifest" href="../../manifest.webmanifest?v=4"><link rel="icon" href="../../icon-192.png?v=2"><link rel="apple-touch-icon" href="../../icon-180.png?v=2"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>Melody's Magic English</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -522,12 +522,13 @@ html[data-kid="yam"] .ltr{color:#24358f}
 </div>
 <canvas id="fx"></canvas>
 
+<script src="../../chars.js"></script>
 <script src="../../kids.js"></script>
 <script>
 /* ---------- Who is playing ---------- */
 const KID = (window.LUMDA_KID && window.LUMDA_KID()) || (window.LUMDA_KIDS && window.LUMDA_KIDS.melody) || {id:'melody',name:'מלודי',nameEn:'Melody',gender:'f'};
 const BOY = KID.gender==='m';
-document.documentElement.dataset.kid = KID.id;
+document.documentElement.dataset.kid = KID.look || KID.id;   // 'melody' or 'yam' colors, by gender
 // Hebrew lines are written for Melody; for a boy they switch to the masculine form
 const MASC = {"שלום מלודי! בואי נלמד אנגלית!":"שלום ים! בוא נלמד אנגלית!","עכשיו נשחק! תקשיבי טוב.":"עכשיו נשחק! תקשיב טוב.","בחרי משחק":"בחר משחק",
   "תלחצי על":"תלחץ על","תפוצצי את הבלון הנכון!":"תפוצץ את הבלון הנכון!","תפוצצי את הבלון של":"תפוצץ את הבלון של","מצאי שני קלפים זהים":"מצא שני קלפים זהים",
@@ -550,7 +551,11 @@ Object.assign(HE_SAY_M,{"תקשיב ותעשה מה שסיימון אומר!":"�
 Object.assign(MASC,{"אתגר הכתר! תעני נכון על שש שאלות":"אתגר הכתר! תענה נכון על שש שאלות","המשחק הזה ייפתח בקרוב. תמשיכי ללמוד!":"המשחק הזה ייפתח בקרוב. תמשיך ללמוד!"});
 Object.assign(HE_SAY_M,{"אתגר הכתר! תענה נכון על שש שאלות":"אֶתְגַּר הַכֶּתֶר! תַּעֲנֶה נָכוֹן עַל שֵׁשׁ שְׁאֵלוֹת","המשחק הזה ייפתח בקרוב. תמשיך ללמוד!":"הַמִּשְׂחָק הַזֶּה יִפָּתַח בְּקָרוֹב. תַּמְשִׁיךְ לִלְמֹד!",
   "קיבלת כתר זהב!":"קִבַּלְתָּ כֶּתֶר זָהָב!"});
-const G = t => BOY ? (MASC[t]||t) : t;
+const G0 = t => BOY ? (MASC[t]||t) : t;
+// lines are written with Melody's name (Yam's in the masculine form); any other child sees and hears their own name
+const DEF = BOY ? 'ים' : 'מלודי', DEF_SAY = BOY ? 'יָם' : 'מֶלוֹדִי';
+const nameRe = w => new RegExp('(^|[\\s,.!?])'+w+'(?=[\\s,.!?]|$)');
+const G = t => { const r = G0(t); return t.includes('מלודי') && KID.name!==DEF ? r.replace(nameRe(DEF), '$1'+KID.name) : r };
 const NAME = KID.name, NAME_EN = KID.nameEn;
 document.getElementById('appTitle').textContent = NAME + (BOY ? ' לומד אנגלית' : ' לומדת אנגלית');
 document.title = NAME_EN + "'s Magic English";
@@ -682,8 +687,12 @@ const CHAR_BUST='img/5c09e6dbfcf3.webp';
 // Princess Melody: the whole figure on big screens, head and shoulders as the companion
 const MOUTH={"closed": "img/491cd6f1fc69.webp", "half": "img/e11a5134e240.webp", "wide": "img/ac15db3b46f3.webp"};
 const MOUTH_POS={big:'left:41.922%;top:25.184%;width:19.061%;height:7.462%',bust:'left:36.214%;top:50.478%;width:26.210%;height:14.957%'};
-const CHAR_IMG = BOY ? {big:'../../assets/kids/'+KID.id+'.webp', bust:'../../assets/kids/'+KID.id+'-bust.webp'} : {big:CHAR_FULL, bust:CHAR_BUST};
-const charHTML=(kind,cls)=>`<div class="pm ${kind} ${cls||''}"><span class="pm-in"><span class="pm-pic"><img class="pm-img" src="${kind==='big'?CHAR_IMG.big:CHAR_IMG.bust}" alt="${NAME}" draggable="false">${BOY?'':`<img class="mouth" src="${MOUTH.closed}" alt="" hidden style="${MOUTH_POS[kind==='big'?'big':'bust']}">`}</span></span><span class="pm-spark" aria-hidden="true"></span></div>`;
+// the child's character (picked on the hub's kids page); only the princess has the talking-mouth pictures
+const CHAR_IMG = KID.charBust ? {big:'../../'+KID.charBig, bust:'../../'+KID.charBust} : BOY ? {big:'../../assets/kids/yam.webp', bust:'../../assets/kids/yam-bust.webp'} : {big:CHAR_FULL, bust:CHAR_BUST};
+const TALKS = KID.charBust ? KID.mouth : !BOY;
+// each character has its own shape
+if(KID.bigAr){ const st=document.createElement('style'); st.textContent=`.pm.big{aspect-ratio:${KID.bigAr}!important}.buddy{aspect-ratio:${KID.bustAr}!important}`; document.head.appendChild(st) }
+const charHTML=(kind,cls)=>`<div class="pm ${kind} ${cls||''}"><span class="pm-in"><span class="pm-pic"><img class="pm-img" src="${kind==='big'?CHAR_IMG.big:CHAR_IMG.bust}" alt="${NAME}" draggable="false">${!TALKS?'':`<img class="mouth" src="${MOUTH.closed}" alt="" hidden style="${MOUTH_POS[kind==='big'?'big':'bust']}">`}</span></span><span class="pm-spark" aria-hidden="true"></span></div>`;
 /* Talking mouth: while the voice speaks, the mouth switches between closed, half and wide open */
 const MOUTH_SEQ=['closed','half','wide','orig','half','closed','wide','orig','closed','half'];
 let mouthTimer=null, mouthI=0;
@@ -764,6 +773,15 @@ Object.assign(HE_SAY,{"מה זה? תבחרי את המילה הנכונה":"מַ
   "שמחה":"שְׂמֵחָה","שמח":"שָׂמֵחַ","עצובה":"עֲצוּבָה","עצוב":"עָצוּב","כועסת":"כּוֹעֶסֶת","כועס":"כּוֹעֵס","מפחדת":"מְפַחֶדֶת","מפחד":"מְפַחֵד","עייפה":"עֲיֵפָה","עייף":"עָיֵף",
   "רעבה":"רְעֵבָה","רעב":"רָעֵב","שובבה":"שׁוֹבָבָה","שובב":"שׁוֹבָב","מופתעת":"מֻפְתַּעַת","מופתע":"מֻפְתָּע",
   "שלום":"שָׁלוֹם","להתראות":"לְהִתְרָאוֹת","תודה":"תּוֹדָה","בבקשה":"בְּבַקָּשָׁה","כן":"כֵּן","לא":"לֹא","אני אוהבת אותך":"אֲנִי אוֹהֶבֶת אוֹתְךָ","אני אוהב אותך":"אֲנִי אוֹהֵב אוֹתְךָ","לילה טוב":"לַיְלָה טוֹב"});
+// how a shown Hebrew line is spoken: its nikud form, with the child's own name (with the nikud the parent wrote)
+let NAMED=null;
+function heSay(text){
+  NAMED = NAMED || new Set(Object.keys(Object.assign({},HE_SAY,MASC)).filter(k=>k.includes('מלודי')).map(G0));
+  let k=text;
+  if(NAME!==DEF && nameRe(NAME).test(text)){ const c=text.replace(nameRe(NAME),'$1'+DEF); if(NAMED.has(c)) k=c }
+  const out=(BOY&&HE_SAY_M[k])||HE_SAY[k]||k, me=KID.nameSay||NAME;
+  return NAMED.has(k) && me!==DEF_SAY ? out.replace(DEF_SAY,me).replace(nameRe(DEF),'$1'+me) : out;
+}
 let liveUtts=[], talkId=0, lastSay=null, talkScreen=-1;   // keep references so the browser doesn't drop the end event
 function say(parts){
   parts = parts.map(([l,t])=>[l, l==='he'?G(t):t.replace(/Melody/g,NAME_EN).replace(new RegExp('\\b'+NAME_EN+'\\b','g'),KID.nameEnSay||NAME_EN)]);
@@ -782,7 +800,7 @@ function say(parts){
     try{ synth.cancel() }catch(e){}
     liveUtts=[];
     list.forEach(([lang,text],k)=>{
-      const u = new SpeechSynthesisUtterance(lang==='he' ? ((BOY&&HE_SAY_M[text])||HE_SAY[text]||text) : text);
+      const u = new SpeechSynthesisUtterance(lang==='he' ? heSay(text) : text);
       if(lang==='en'){ u.lang = enVoice?enVoice.lang:'en-US'; if(enVoice) u.voice=enVoice; u.rate=.78*settings.rate; u.pitch=BOY?(maleEn?1:.85):1.25; }
       else { u.lang = heVoice?heVoice.lang:'he-IL'; if(heVoice) u.voice=heVoice; u.rate=.95*settings.rate; u.pitch=BOY?(maleHe?1:.8):1.15; }
       if(k===list.length-1){ u.onend=finish; u.onerror=finish; }

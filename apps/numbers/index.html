@@ -1,4 +1,4 @@
-<!doctype html><html lang="he"><head><meta charset=utf-8><script>/* pick the child's colors before anything paints; the app stays hidden until it has drawn the right child */try{var k=localStorage.getItem('lumda-kid');if(k)document.documentElement.dataset.kid=k}catch(e){}</script><style>html:not(.ready) .app{visibility:hidden}</style><link rel="manifest" href="../../manifest.webmanifest?v=4"><link rel="icon" href="../../icon-192.png?v=2"><link rel="apple-touch-icon" href="../../icon-180.png?v=2"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html lang="he"><head><meta charset=utf-8><script>/* pick the child's colors before anything paints; the app stays hidden until it has drawn the right child */try{var k=localStorage.getItem('lumda-look')||localStorage.getItem('lumda-kid');if(k)document.documentElement.dataset.kid=k}catch(e){}</script><style>html:not(.ready) .app{visibility:hidden}</style><link rel="manifest" href="../../manifest.webmanifest?v=4"><link rel="icon" href="../../icon-192.png?v=2"><link rel="apple-touch-icon" href="../../icon-180.png?v=2"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>חשבון</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -722,12 +722,15 @@ html[data-kid="yam"] .cup{background:linear-gradient(90deg,#3f6fd8,#7fa0ff 40%,#
 </div>
 <canvas id="fx"></canvas>
 
+<script src="../../chars.js"></script>
 <script src="../../kids.js"></script>
 <script>
 /* ---------- Who is playing ---------- */
 const KID = (window.LUMDA_KID && window.LUMDA_KID()) || (window.LUMDA_KIDS && window.LUMDA_KIDS.melody) || {id:'melody',name:'מלודי',nameEn:'Melody',gender:'f'};
 const BOY = KID.gender==='m';
-document.documentElement.dataset.kid = KID.id;
+// the content follows the child's level (kindergarten or first grade); the look and wording follow gender
+const G1 = KID.level ? KID.level==='g1' : BOY;
+document.documentElement.dataset.kid = KID.look || KID.id;   // 'melody' or 'yam' colors, by gender
 const NAME = KID.name;
 document.getElementById('appTitle').textContent = NAME + (BOY ? ' לומד חשבון' : ' לומדת חשבון');
 document.title = NAME + (BOY ? ' לומד חשבון' : ' לומדת חשבון');
@@ -747,7 +750,20 @@ const OBJ=['Apple','Strawberry','Ball','Balloon','Star','Duck','Cookie','Car','F
 const HE_SAY={}, HE_SAY_M={}, MASC={};
 // a line written for Melody, with its nikud; for Yam its masculine form and nikud (when the wording or the sound differs)
 function line(f,fn,m,mn){ HE_SAY[f]=fn; if(m!==undefined){ if(m!==f) MASC[f]=m; HE_SAY_M[m]=mn } return f }
-const G = t => BOY ? (MASC[t]||t) : t;
+const G0 = t => BOY ? (MASC[t]||t) : t;
+// lines are written with Melody's name (Yam's in the masculine form); any other child sees and hears their own name
+const DEF = BOY ? 'ים' : 'מלודי', DEF_SAY = BOY ? 'יָם' : 'מֶלוֹדִי';
+const nameRe = w => new RegExp('(^|[\\s,.!?])'+w+'(?=[\\s,.!?]|$)');
+const G = t => { const r = G0(t); return t.includes('מלודי') && KID.name!==DEF ? r.replace(nameRe(DEF), '$1'+KID.name) : r };
+let NAMED=null;
+// how a shown line is spoken: its nikud form, with the child's own name (with the nikud the parent wrote)
+function heSay(text){
+  NAMED = NAMED || new Set(Object.keys(Object.assign({},HE_SAY,MASC)).filter(k=>k.includes('מלודי')).map(G0));
+  let k=text;
+  if(NAME!==DEF && nameRe(NAME).test(text)){ const c=text.replace(nameRe(NAME),'$1'+DEF); if(NAMED.has(c)) k=c }
+  const out=(BOY&&HE_SAY_M[k])||HE_SAY[k]||k, me=KID.nameSay||NAME;
+  return NAMED.has(k) && me!==DEF_SAY ? out.replace(DEF_SAY,me).replace(nameRe(DEF),'$1'+me) : out;
+}
 const NUM_HE=['אפס','אחת','שתיים','שלוש','ארבע','חמש','שש','שבע','שמונה','תשע','עשר','אחת עשרה','שתים עשרה','שלוש עשרה','ארבע עשרה','חמש עשרה','שש עשרה','שבע עשרה','שמונה עשרה','תשע עשרה'];
 const NUM_N=['אֶפֶס','אַחַת','שְׁתַּיִם','שָׁלוֹשׁ','אַרְבַּע','חָמֵשׁ','שֵׁשׁ','שֶׁבַע','שְׁמוֹנֶה','תֵּשַׁע','עֶשֶׂר','אַחַת עֶשְׂרֵה','שְׁתֵּים עֶשְׂרֵה','שְׁלוֹשׁ עֶשְׂרֵה','אַרְבַּע עֶשְׂרֵה','חֲמֵשׁ עֶשְׂרֵה','שֵׁשׁ עֶשְׂרֵה','שְׁבַע עֶשְׂרֵה','שְׁמוֹנֶה עֶשְׂרֵה','תְּשַׁע עֶשְׂרֵה'];
 const TENS_HE=['','','עשרים','שלושים','ארבעים','חמישים','שישים','שבעים','שמונים','תשעים'];
@@ -885,7 +901,7 @@ ALL_CATS.forEach(c=>{ c._lv=c.levels.map(l=>l.map((s,i)=>makeItem(c,s,i))); c.it
   c.max=Math.max(...c.items.map(x=>x.kind==='compare'?0:x.ans)); });
 const levelsOf=c=>c._lv;
 const KG_CATS=ALL_CATS.filter(c=>KG.includes(c.id)), G1_CATS=ALL_CATS.filter(c=>!KG.includes(c.id));
-let CATS=BOY?G1_CATS:KG_CATS;
+let CATS=G1?G1_CATS:KG_CATS;
 const GRADS=['#ff9ac9,#ff4f9a','#c6a4ff,#9566f2','#ffcf6b,#ff9c3a','#7fe3c4,#29b98d','#8fd0ff,#5b8dff','#ffb2e0,#d46cff'];
 const REWARDS=(BOY?['Crown','Castle','Horse','Lion','Rocket','Star','Shark','Airplane','Bear','Train','Whale','Ball','Helicopter','Octopus','Drum','Truck','Pizza','Kite','Ice cream','Sun']
   :['Crown','Unicorn','Rainbow','Butterfly','Princess','Star','Castle','Heart','Flower','Ring','Cake','Ice cream','Candy','Teddy bear','Balloon','Gift','Bunny','Cat','Dolphin','Tulip']).map(k=>PIC[k]);
@@ -893,8 +909,12 @@ const PER_REWARD=5, ROUNDS=5;
 const CHAR_FULL=E+'img/025da1c10968.webp', CHAR_BUST=E+'img/5c09e6dbfcf3.webp';
 const MOUTH={"closed": E+"img/491cd6f1fc69.webp", "half": E+"img/e11a5134e240.webp", "wide": E+"img/ac15db3b46f3.webp"};
 const MOUTH_POS={big:'left:41.922%;top:25.184%;width:19.061%;height:7.462%',bust:'left:36.214%;top:50.478%;width:26.210%;height:14.957%'};
-const CHAR_IMG = BOY ? {big:'../../assets/kids/'+KID.id+'.webp', bust:'../../assets/kids/'+KID.id+'-bust.webp'} : {big:CHAR_FULL, bust:CHAR_BUST};
-const charHTML=(kind,cls)=>`<div class="pm ${kind} ${cls||''}"><span class="pm-in"><span class="pm-pic"><img class="pm-img" src="${kind==='big'?CHAR_IMG.big:CHAR_IMG.bust}" alt="${NAME}" draggable="false">${BOY?'':`<img class="mouth" src="${MOUTH.closed}" alt="" hidden style="${MOUTH_POS[kind==='big'?'big':'bust']}">`}</span></span><span class="pm-spark" aria-hidden="true"></span></div>`;
+// the child's character (picked on the hub's kids page); only the princess has the talking-mouth pictures
+const CHAR_IMG = KID.charBust ? {big:'../../'+KID.charBig, bust:'../../'+KID.charBust} : BOY ? {big:'../../assets/kids/yam.webp', bust:'../../assets/kids/yam-bust.webp'} : {big:CHAR_FULL, bust:CHAR_BUST};
+const TALKS = KID.charBust ? KID.mouth : !BOY;
+// each character has its own shape
+if(KID.bigAr){ const st=document.createElement('style'); st.textContent=`.pm.big{aspect-ratio:${KID.bigAr}!important}.buddy{aspect-ratio:${KID.bustAr}!important}`; document.head.appendChild(st) }
+const charHTML=(kind,cls)=>`<div class="pm ${kind} ${cls||''}"><span class="pm-in"><span class="pm-pic"><img class="pm-img" src="${kind==='big'?CHAR_IMG.big:CHAR_IMG.bust}" alt="${NAME}" draggable="false">${!TALKS?'':`<img class="mouth" src="${MOUTH.closed}" alt="" hidden style="${MOUTH_POS[kind==='big'?'big':'bust']}">`}</span></span><span class="pm-spark" aria-hidden="true"></span></div>`;
 const MOUTH_SEQ=['closed','half','wide','orig','half','closed','wide','orig','closed','half'];
 let mouthTimer=null, mouthI=0;
 function setMouth(k){ document.querySelectorAll('.pm .mouth').forEach(m=>{ if(k==='orig') m.hidden=true; else { m.src=MOUTH[k]; m.hidden=false } }) }
@@ -915,7 +935,7 @@ const isDone=(cat,l)=>!!(prog.levels[cat.id]||[])[l];
 const isOpen=(cat,l)=>l===0||isDone(cat,l-1);
 const catDone=cat=>levelsOf(cat).every((_,l)=>isDone(cat,l));
 function markDone(cat,l){ const was=catDone(cat); (prog.levels[cat.id]=prog.levels[cat.id]||[])[l]=true; saveProg(); return !was&&catDone(cat) }
-function unlock(){ if(!BOY&&CATS===KG_CATS&&KG_CATS.every(catDone)) CATS=KG_CATS.concat(G1_CATS) }
+function unlock(){ if(!G1&&CATS===KG_CATS&&KG_CATS.every(catDone)) CATS=KG_CATS.concat(G1_CATS) }
 unlock();
 const wkey=(cat,it)=>cat.id+'|'+it.key;
 const weakOf=(cat,it)=>prog.weak[wkey(cat,it)]||0;
@@ -953,7 +973,7 @@ function say(parts){
     try{ synth.cancel() }catch(e){}
     liveUtts=[];
     list.forEach(([,text],k)=>{
-      const u=new SpeechSynthesisUtterance((BOY&&HE_SAY_M[text])||HE_SAY[text]||text);
+      const u=new SpeechSynthesisUtterance(heSay(text));
       u.lang=heVoice?heVoice.lang:'he-IL'; if(heVoice) u.voice=heVoice; u.rate=.95*settings.rate; u.pitch=BOY?(maleHe?1:.8):1.15;
       if(k===list.length-1){ u.onend=finish; u.onerror=finish }
       liveUtts.push(u); synth.speak(u);
@@ -1502,7 +1522,7 @@ const coinHTML=v=>`<span class="coin${v>=10?' big':v>=5?' mid':''}" style="--ci:
 const SELLER=pose=>SHOP_ART[(BOY?'sellerBoy':'sellerGirl')+pose];
 // the price tag is only ever money: Melody first sees the coins to count, and once she has the crown in "digits" she sees the number
 const DIGITS=ALL_CATS.find(c=>c.id==='digits');
-const coinTags=()=>!BOY&&!catDone(DIGITS);
+const coinTags=()=>!G1&&!catDone(DIGITS);
 function priceTag(n){
   if(coinTags()&&n<=10) return `<span class="tagcoins${n>5?' two':''}">${Array.from({length:n},()=>`<img src="${SHOP_ART.coin1}" alt="">`).join('')}</span>`;
   return `<span class="tagnum">${numHTML(n)}<img src="${SHOP_ART.coin1}" alt=""></span>`;
@@ -1572,7 +1592,7 @@ function shopRound(g,r,bought){
   document.getElementById('ask').onclick=ask;
   const pay=()=>{
     const n=total(); tray.dataset.n=n;
-    const vals=BOY?(n>10||g.cat.kind==='tens'?[10,5,1]:[5,1]):(n>10?[10,1]:[1]);
+    const vals=G1?(n>10||g.cat.kind==='tens'?[10,5,1]:[5,1]):(n>10?[10,1]:[1]);
     bub.innerHTML=picks.map(w=>`<span class="tag small">${priceTag(w.price)}</span>`).join('<b class="plus">+</b>');
     purse.innerHTML=`<button class="undo" id="undo" aria-label="להחזיר מטבע">↩️</button>
       ${vals.map(v=>`<button class="coinbtn" data-v="${v}" aria-label="${v}">${coinHTML(v)}</button>`).join('')}
@@ -1850,7 +1870,7 @@ function startPattern(g){ screenId++; patternRound(g,0) }
 function patternRound(g,r){
   screenId++; homeTo=()=>pickGame(g.cat,g.level); navD=4;
   $home.hidden=false;
-  const pats=BOY?PATTERNS_G1:PATTERNS_KG, unit=pats[(r+Math.floor(Math.random()*pats.length))%pats.length];
+  const pats=G1?PATTERNS_G1:PATTERNS_KG, unit=pats[(r+Math.floor(Math.random()*pats.length))%pats.length];
   const kinds=shuffle(OBJ).slice(0,4), len=unit.length*2+Math.min(unit.length-1,1+Math.floor(Math.random()*unit.length));
   const seq=Array.from({length:len+1},(_,j)=>kinds[unit[j%unit.length]]), ans=seq.pop();
   const opts=shuffle([...new Set([ans,...kinds.slice(0,Math.max(...unit)+1),kinds[3]])].filter(x=>x!==ans).slice(0,2).concat(ans));
