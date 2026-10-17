@@ -1,9 +1,9 @@
 // Offline support and speed.
 // Pages and scripts: network first, so a new version shows up right away; the saved copy is used offline.
 // Pictures: saved copy first (their names never change), so they load instantly after the first time.
-const CACHE = 'lumda-v41', IMG = 'lumda-img-v1';
+const CACHE = 'lumda-v42', IMG = 'lumda-img-v1';
 const FILES = ['./', 'index.html', 'apps/catalog.js', 'chars.js', 'kids.js', 'manifest.webmanifest', 'apps/melody-english/index.html', 'apps/numbers/index.html'];
-const PICS = ['assets/kids/melody.webp', 'assets/kids/yam.webp', 'assets/kids/yam-bust.webp', 'icon-192.png?v=2', 'icon-512.png?v=2'];
+const PICS = ['assets/kids/melody.webp', 'assets/kids/yam.webp', 'assets/kids/yam-bust.webp', 'logo-192.png', 'logo-512.png', 'logo-maskable-512.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));
@@ -32,7 +32,7 @@ function fillPics(){
     } catch (err) {}
   }).finally(() => { filling = null }));
 }
-const isPic = url => /\/img\/|\/assets\/|\/icon-\d+\.png/.test(url.pathname);
+const isPic = url => /\/img\/|\/assets\/|\/(icon|logo)-[\w-]+\.png/.test(url.pathname);
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
   if (e.request.method !== 'GET' || url.origin !== location.origin) return;
