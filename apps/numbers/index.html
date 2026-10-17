@@ -592,7 +592,7 @@ html[data-kid="yam"] .ltr{color:#24358f}
 .basket{display:flex;align-items:center;gap:4px;direction:rtl}
 .basket .slot{width:32px;height:32px;border-radius:9px;background:rgba(255,255,255,.55);border:2px dashed var(--lilac);display:grid;place-items:center}.basket .slot .art{width:90%;height:90%;animation:cardIn .35s}
 .basket .bag{width:46px;height:44px;object-fit:contain;margin-inline-start:4px}
-.stand{position:relative;width:min(100%,420px,50vh);aspect-ratio:360/357;background:center/100% 100% no-repeat;flex:none}
+.stand{position:relative;width:min(100%,420px,37vh);aspect-ratio:360/357;background:center/100% 100% no-repeat;flex:none}
 .wares{position:absolute;left:15%;right:15%;top:33%;bottom:4%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3%}
 .ware{border:0;background:none;padding:0;cursor:pointer;display:grid;grid-template-rows:61% 39%;justify-items:center;min-height:44px;min-width:0;transition:transform .2s,opacity .2s}
 .ware .thing{width:100%;height:100%;display:flex;align-items:flex-end;justify-content:center;transition:transform .2s,filter .2s}
@@ -604,7 +604,7 @@ html[data-kid="yam"] .ltr{color:#24358f}
 .ware.chosen .tag{background:var(--gold);border-style:solid;border-color:#fff}
 .ware.sold .thing{animation:popSoft .6s}
 .seller{display:flex;align-items:center;gap:10px;width:min(100%,420px);justify-content:center}
-.seller .who{width:clamp(100px,30vw,150px);aspect-ratio:1;flex:none;transform:scaleX(-1)}.seller .who .art{width:100%;height:100%;object-fit:contain;object-position:50% 100%}
+.seller .who{width:clamp(84px,24vw,120px);aspect-ratio:1;flex:none;transform:scaleX(-1)}.seller .who .art{width:100%;height:100%;object-fit:contain;object-position:50% 100%}
 .bubble{position:relative;background:#fff;border:3px solid var(--lilac);border-radius:20px;padding:8px 14px;min-height:56px;min-width:120px;display:grid;place-items:center;cursor:pointer;
   font:700 clamp(17px,4.8vw,22px)/1.3 var(--body);color:var(--plum);box-shadow:0 4px 0 rgba(78,31,99,.12)}
 .bubble::before{content:"";position:absolute;inset-inline-start:-12px;top:50%;margin-top:-9px;border:9px solid transparent;border-inline-end-color:var(--lilac);border-inline-start:0}
@@ -614,7 +614,7 @@ html[data-kid="yam"] .ltr{color:#24358f}
 .tagnum{display:flex;align-items:center;gap:3px;direction:ltr}.tagnum img{width:.9em;height:.9em;font-size:clamp(20px,6vw,30px)}.bubble .tagnum img{font-size:clamp(24px,7vw,34px)}
 .tagcoins{display:grid;grid-template-columns:repeat(5,auto);gap:1px;justify-content:center;direction:ltr}.tagcoins img{width:min(17px,4.3vw);height:min(17px,4.3vw)}
 .bubble .tagcoins img{width:22px;height:22px}
-.shop .counter{min-height:clamp(60px,16vw,84px)}
+.shop .counter{min-height:56px;padding:6px}.shop .counter .coin{width:clamp(28px,8vw,36px)}
 .shop .purse:empty{display:none}
 .shop .coin,.shop .coin.mid,.shop .coin.big{background:var(--ci) center/contain no-repeat;border:0;border-radius:0;box-shadow:none;filter:drop-shadow(0 2px 1px rgba(0,0,0,.25))}
 .shop .coin b{transform:translateX(-5%);color:#6b4300;text-shadow:0 0 3px #fff,0 0 2px #fff}.shop .coin.mid b{color:#353b48}
@@ -1457,7 +1457,7 @@ const L2={
   pay:line('תשלמי בדיוק את המחיר','תְּשַׁלְּמִי בְּדִיּוּק אֶת הַמְּחִיר','תשלם בדיוק את המחיר','תְּשַׁלֵּם בְּדִיּוּק אֶת הַמְּחִיר'),
   paid:line('שילמתי','שִׁלַּמְתִּי'),
   buy:line('מה תרצי לקנות?','מָה תִּרְצִי לִקְנוֹת?','מה תרצה לקנות?','מָה תִּרְצֶה לִקְנוֹת?'),
-  costs:['זה עולה','זֶה עוֹלֶה'],
+  costs:['עולה','עוֹלֶה'],
   thanks:line('תודה רבה!','תּוֹדָה רַבָּה!'),
   pick2:line('בחרי שני דברים.','בַּחֲרִי שְׁנֵי דְּבָרִים.','בחר שני דברים.','בְּחַר שְׁנֵי דְּבָרִים.'),
   pickMore:line('בחרי עוד דבר אחד.','בַּחֲרִי עוֹד דָּבָר אֶחָד.','בחר עוד דבר אחד.','בְּחַר עוֹד דָּבָר אֶחָד.'),
@@ -1509,6 +1509,23 @@ function priceTag(n){
 }
 // sums and differences: buy two things and pay for both (a+b costs a and b; a-b costs b and the answer)
 const pairShop=g=>g.cat.kind==='add';
+// money is spoken in shekels, so the number words are the masculine ones: "the balloon costs three shekels"
+const M_HE=['','אחד','שניים','שלושה','ארבעה','חמישה','שישה','שבעה','שמונה','תשעה','עשרה'];
+const M_N=['','אֶחָד','שְׁנַיִם','שְׁלוֹשָׁה','אַרְבָּעָה','חֲמִשָּׁה','שִׁשָּׁה','שִׁבְעָה','שְׁמוֹנָה','תִּשְׁעָה','עֲשָׂרָה'];
+const M_AND=['','וְאֶחָד','וּשְׁנַיִם','וּשְׁלוֹשָׁה','וְאַרְבָּעָה','וַחֲמִשָּׁה','וְשִׁשָּׁה','וְשִׁבְעָה','וּשְׁמוֹנָה','וְתִשְׁעָה'];
+const M_TEEN=['','אַחַד עָשָׂר','שְׁנֵים עָשָׂר','שְׁלוֹשָׁה עָשָׂר','אַרְבָּעָה עָשָׂר','חֲמִשָּׁה עָשָׂר','שִׁשָּׁה עָשָׂר','שִׁבְעָה עָשָׂר','שְׁמוֹנָה עָשָׂר','תִּשְׁעָה עָשָׂר'];
+const M_TEEN_HE=['','אחד עשר','שנים עשר','שלושה עשר','ארבעה עשר','חמישה עשר','שישה עשר','שבעה עשר','שמונה עשר','תשעה עשר'];
+function shekels(n){
+  if(n===1) return ['שקל אחד','שֶׁקֶל אֶחָד'];
+  if(n===2) return ['שני שקלים','שְׁנֵי שְׁקָלִים'];
+  let t,v;
+  if(n<=10){ t=M_HE[n]; v=M_N[n] } else if(n<20){ t=M_TEEN_HE[n-10]; v=M_TEEN[n-10] }
+  else if(n===100){ t='מאה'; v='מֵאָה' }
+  else { const d=Math.floor(n/10), u=n%10; t=TENS_HE[d]+(u?' ו'+M_HE[u]:''); v=TENS_N[d]+(u?' '+M_AND[u]:'') }
+  return [t+' שקלים',v+' שְׁקָלִים'];
+}
+// "the balloon" (and "and the balloon"): ה takes a kamatz before א, ע and ר
+function theThing(k,and){ const w=PIC[k], h='אער'.includes(w.he[0])?'הָ':'הַ'; return [(and?'וה':'ה')+w.he,(and?'וְ':'')+h+w.n] }
 // three things on the counter, each with its price; in a pair round two of them come from one card
 function shopWares(g){
   const things=shuffle(SHOP_ITEMS);
@@ -1545,8 +1562,8 @@ function shopRound(g,r,bought){
   const card=()=>shop.pair?(picks.map(w=>w.price).sort().join()===shop.pair.slice().sort().join()?shop.it:null):picks[0].it;
   // what the seller says: the price, or both prices and "how much together?"
   const priceSay=()=>{
-    if(picks.length===2) return he(P(L2.costs,picks[0].price,W.plus,picks[1].price,W.dot),L2.together);
-    return he(P(L2.costs,picks[0].price,W.dot));
+    if(picks.length===2) return he(P(theThing(picks[0].thing),L2.costs,shekels(picks[0].price),W.comma,theThing(picks[1].thing,1),L2.costs,shekels(picks[1].price),W.dot),L2.together);
+    return he(P(theThing(picks[0].thing),L2.costs,shekels(picks[0].price),W.dot));
   };
   const ready=()=>picks.length===need;
   const draw=()=>{ tray.innerHTML=paid.map(coinHTML).join('') };
@@ -1560,21 +1577,21 @@ function shopRound(g,r,bought){
     purse.innerHTML=`<button class="undo" id="undo" aria-label="להחזיר מטבע">↩️</button>
       ${vals.map(v=>`<button class="coinbtn" data-v="${v}" aria-label="${v}">${coinHTML(v)}</button>`).join('')}
       <button class="wand" id="fdone">${art(UI.star,'ico')} <span>${L2.paid}</span></button>`;
-    purse.querySelectorAll('.coinbtn').forEach(c=>c.onclick=()=>{ if(done||paid.length>=20) return; paid.push(+c.dataset.v); draw(); blip(paid.length); say(he(numHe(sum()))) });
-    document.getElementById('undo').onclick=()=>{ if(done||!paid.length) return; paid.pop(); draw(); tick(); if(paid.length) say(he(numHe(sum()))) };
+    purse.querySelectorAll('.coinbtn').forEach(c=>c.onclick=()=>{ if(done||paid.length>=20) return; paid.push(+c.dataset.v); draw(); blip(paid.length); say(he(P(shekels(sum())))) });
+    document.getElementById('undo').onclick=()=>{ if(done||!paid.length) return; paid.pop(); draw(); tick(); if(paid.length) say(he(P(shekels(sum())))) };
     document.getElementById('fdone').onclick=()=>{
       if(done) return; const it=card(), btns=picks.map(w=>$main.querySelector(`.ware[data-k="${wares.indexOf(w)}"]`));
       if(sum()===n){ done=true; btns.forEach(b=>b.classList.add('sold')); pose('Talk','Wave'); tone(660,0,.1); tone(990,.1,.2);
         if(!wrongs&&it) gotIt(g.cat,it);
         const nb=bought.concat(picks[0].thing);
         const slot=$main.querySelectorAll('.basket .slot')[r]; if(slot) slot.innerHTML=art(PIC[picks[0].thing].img);
-        win(btns[0],it||shop.it,()=>r+1<ROUNDS?shopRound(g,r+1,nb):party(g,()=>startShop(g)),he(L2.thanks).concat(he(P(W.here,n,W.x))));
+        win(btns[0],it||shop.it,()=>r+1<ROUNDS?shopRound(g,r+1,nb):party(g,()=>startShop(g)),he(L2.thanks).concat(he(P(W.here,shekels(n),W.x))));
       } else {
         wrongs++; boop(); react('oops'); pose('Talk','Take'); if(wrongs===1&&it) missed(g.cat,it);
-        say(he(P(W.here,sum(),W.comma),P(W.need,n,W.dot),G(L.again)));
+        say(he(P(W.here,shekels(sum()),W.comma),P(W.need,shekels(n),W.dot),G(L.again)));
       }
     };
-    pose('Talk','Take'); say(priceSay().concat(he(G(L2.pay))));
+    fitScreen(); pose('Talk','Take'); say(priceSay().concat(he(G(L2.pay))));
   };
   // choose: tap a thing (two in a pair round); tapping a chosen thing puts it back, and the payment starts over
   $main.querySelectorAll('.ware').forEach(b=>b.onclick=()=>{
@@ -1584,8 +1601,8 @@ function shopRound(g,r,bought){
     $main.querySelectorAll('.ware').forEach(x=>x.classList.toggle('chosen',picks.includes(wares[+x.dataset.k])));
     paid=[]; wrongs=0; draw(); tick(); burstAt(b,14); tray.dataset.n='';
     if(ready()) pay();
-    else { purse.innerHTML=''; bub.innerHTML=picks.length?`<span class="tag small">${priceTag(picks[0].price)}</span><b class="plus">+</b><span class="tag small q">?</span>`:G(L2.buy);
-      pose('Talk','Wave'); say(picks.length?he(P(L2.costs,picks[0].price,W.dot),G(L2.pickMore)):hello()) }
+    else { purse.innerHTML=''; fitScreen(); bub.innerHTML=picks.length?`<span class="tag small">${priceTag(picks[0].price)}</span><b class="plus">+</b><span class="tag small q">?</span>`:G(L2.buy);
+      pose('Talk','Wave'); say(picks.length?he(P(theThing(picks[0].thing),L2.costs,shekels(picks[0].price),W.dot),G(L2.pickMore)):hello()) }
   });
 }
 
