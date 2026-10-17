@@ -457,6 +457,17 @@ html[data-kid="yam"] .buddy{aspect-ratio:320/350}
 .grow .zz{position:absolute;top:-10%;right:-30%;font-size:40%;font-style:normal;animation:bob 2s ease-in-out infinite}
 .echo .ask .mini{width:clamp(48px,14vw,64px);height:clamp(48px,14vw,64px);display:grid;place-items:center;container-type:inline-size}
 .echo .ask .mini .art{width:100%;height:100%}.echo .ask .mini .emoji{font-size:70cqw}
+.game-btn.locked{filter:grayscale(.9);opacity:.55}.game-btn.wrong{animation:shake .45s}
+.new-game{gap:6px;align-items:center;font-weight:700;color:var(--plum)}.new-game .emo{font-size:30px}.new-game .art{width:32px;height:32px}
+.won.gold .art,.art.gold,.lvl-crown.gold .art{filter:drop-shadow(0 0 6px #ffbf2e) drop-shadow(0 0 2px #ffbf2e) saturate(1.4)}
+.wand.chal{background:linear-gradient(180deg,#fff3c4,var(--gold))}.wand.chal.gold{box-shadow:0 0 0 4px var(--gold),0 6px 0 #d49a12}
+.wand .gpic{display:inline-flex;width:30px;height:30px;align-items:center;justify-content:center}.wand .gpic .emo{font-size:26px;line-height:1}.wand .gpic .art{width:100%;height:100%}
+.climb{display:flex;align-items:flex-end;gap:4px;direction:ltr;height:58px}
+.climb .step{position:relative;width:clamp(26px,8vw,40px);height:calc(10px + var(--h,0px));background:#fff;border:3px solid var(--lilac);border-radius:8px 8px 4px 4px}
+.climb .step:nth-child(1){--h:0px}.climb .step:nth-child(2){--h:7px}.climb .step:nth-child(3){--h:14px}.climb .step:nth-child(4){--h:21px}.climb .step:nth-child(5){--h:28px}.climb .step:nth-child(6){--h:35px}
+.climb .step.on{background:var(--gold);border-color:#d49a12}
+.climb .me{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);width:clamp(30px,9vw,40px);height:clamp(30px,9vw,40px)}.climb .me .art{width:100%;height:100%;object-fit:contain}
+.climb .goal{font-size:clamp(30px,9vw,42px);line-height:1;margin-inline-start:4px}
 .picker.many{grid-template-columns:repeat(3,minmax(0,1fr));max-width:560px;gap:10px}
 .picker.many .game-btn{padding:12px 4px;border-radius:24px}
 .picker.many .game-btn .pic{height:clamp(46px,13vw,66px)}.picker.many .game-btn .pic .emo{font-size:clamp(38px,11vw,58px)}
@@ -536,6 +547,9 @@ Object.assign(MASC,{"תקשיבי ותעשי מה שסיימון אומר!":"ת�
   "בואי נשחק בחנות!":"בוא נשחק בחנות!","תגידי אחריי, והפרח יגדל!":"תגיד אחריי, והדרקון יתעורר!"});
 Object.assign(HE_SAY_M,{"תקשיב ותעשה מה שסיימון אומר!":"תַּקְשִׁיב וְתַעֲשֶׂה מָה שֶׁסַּיְימוֹן אוֹמֵר!","בוא נלביש את הדובי!":"בּוֹא נַלְבִּישׁ אֶת הַדּוּבִּי!",
   "בוא נשחק בחנות!":"בּוֹא נְשַׂחֵק בַּחֲנוּת!","תגיד אחריי, והדרקון יתעורר!":"תַּגִּיד אַחֲרַי, וְהַדְּרָקוֹן יִתְעוֹרֵר!"});
+Object.assign(MASC,{"אתגר הכתר! תעני נכון על שש שאלות":"אתגר הכתר! תענה נכון על שש שאלות","המשחק הזה ייפתח בקרוב. תמשיכי ללמוד!":"המשחק הזה ייפתח בקרוב. תמשיך ללמוד!"});
+Object.assign(HE_SAY_M,{"אתגר הכתר! תענה נכון על שש שאלות":"אֶתְגַּר הַכֶּתֶר! תַּעֲנֶה נָכוֹן עַל שֵׁשׁ שְׁאֵלוֹת","המשחק הזה ייפתח בקרוב. תמשיך ללמוד!":"הַמִּשְׂחָק הַזֶּה יִפָּתַח בְּקָרוֹב. תַּמְשִׁיךְ לִלְמֹד!",
+  "קיבלת כתר זהב!":"קִבַּלְתָּ כֶּתֶר זָהָב!"});
 const G = t => BOY ? (MASC[t]||t) : t;
 const NAME = KID.name, NAME_EN = KID.nameEn;
 document.getElementById('appTitle').textContent = NAME + (BOY ? ' לומד אנגלית' : ' לומדת אנגלית');
@@ -732,6 +746,8 @@ if(synth){ pickVoices(); synth.onvoiceschanged = pickVoices; }
 const HE_SAY={"שלום מלודי! בואי נלמד אנגלית!": "שָׁלוֹם מֶלוֹדִי! בּוֹאִי נִלְמַד אַנְגְּלִית!", "עכשיו נשחק! תקשיבי טוב.": "עַכְשָׁו נְשַׂחֵק! תַּקְשִׁיבִי טוֹב.", "בחרי משחק": "בַּחֲרִי מִשְׂחָק", "תלחצי על": "תִּלְחֲצִי עַל", "תפוצצי את הבלון הנכון!": "תְּפוֹצְצִי אֶת הַבָּלוֹן הַנָּכוֹן!", "תפוצצי את הבלון של": "תְּפוֹצְצִי אֶת הַבָּלוֹן שֶׁל", "מצאי שני קלפים זהים": "מִצְאִי שְׁנֵי קְלָפִים זֵהִים", "בואי נצבע שמלה לנסיכה": "בּוֹאִי נִצְבַּע שִׂמְלָה לַנְּסִיכָה", "צבעי את החולצה": "צִבְעִי אֶת הַחֻלְצָה", "צבעי את החצאית": "צִבְעִי אֶת הַחֲצָאִית", "צבעי את הפפיון": "צִבְעִי אֶת הַפַּפְּיוֹן", "צבעי את הנעליים": "צִבְעִי אֶת הַנַּעֲלַיִם", "צבעי את הכתר": "צִבְעִי אֶת הַכֶּתֶר", "זה": "זֶה", "הנה, זה": "הִנֵּה, זֶה", "נסי שוב!": "נַסִּי שׁוּב!", "קודם נשחק בשלב הזה": "קֹדֶם נְשַׂחֵק בַּשָּׁלָב הַזֶּה", "מצוין!": "מְצֻיָּן!", "איזו חכמה!": "אֵיזוֹ חֲכָמָה!", "את אלופה!": "אַתְּ אַלּוּפָה!", "את נסיכה חכמה!": "אַתְּ נְסִיכָה חֲכָמָה!", "קיבלת מדבקה!": "קִבַּלְתְּ מַדְבֵּקָה!", "פתחת שלב חדש!": "פָּתַחְתְּ שָׁלָב חָדָשׁ!", "קיבלת כתר בנושא הזה!": "קִבַּלְתְּ כֶּתֶר בַּנּוֹשֵׂא הַזֶּה!", "אספי עוד כוכבים כדי לקבל אותה": "אִסְפִי עוֹד כּוֹכָבִים כְּדֵי לְקַבֵּל אוֹתָהּ", "עוד כוכב אחד למדבקה הבאה": "עוֹד כּוֹכָב אֶחָד לַמַּדְבֵּקָה הַבָּאָה", "עוד שני כוכבים למדבקה הבאה": "עוֹד שְׁנֵי כּוֹכָבִים לַמַּדְבֵּקָה הַבָּאָה", "עוד שלושה כוכבים למדבקה הבאה": "עוֹד שְׁלוֹשָׁה כּוֹכָבִים לַמַּדְבֵּקָה הַבָּאָה", "עוד ארבעה כוכבים למדבקה הבאה": "עוֹד אַרְבָּעָה כּוֹכָבִים לַמַּדְבֵּקָה הַבָּאָה", "עוד חמישה כוכבים למדבקה הבאה": "עוֹד חֲמִשָּׁה כּוֹכָבִים לַמַּדְבֵּקָה הַבָּאָה", "נסיכות": "נְסִיכוֹת", "צבעים": "צְבָעִים", "בגדים": "בְּגָדִים", "צעצועים": "צַעֲצוּעִים", "חיות": "חַיּוֹת", "פירות": "פֵּרוֹת", "אוכל": "אֹכֶל", "משפחה": "מִשְׁפָּחָה", "הגוף שלי": "הַגּוּף שֶׁלִּי", "מספרים": "מִסְפָּרִים", "צורות": "צוּרוֹת", "טבע": "טֶבַע", "תחבורה": "תַּחְבּוּרָה", "ים": "יָם", "בבית": "בַּבַּיִת", "כתר": "כֶּתֶר", "נסיכה": "נְסִיכָה", "ארמון": "אַרְמוֹן", "שמלה": "שִׂמְלָה", "חד־קרן": "חַד־קֶרֶן", "לב": "לֵב", "כוכב": "כּוֹכָב", "קשת": "קֶשֶׁת", "טבעת": "טַבַּעַת", "פרח": "פֶּרַח", "ורוד": "וָרֹד", "אדום": "אָדֹם", "כחול": "כָּחֹל", "צהוב": "צָהֹב", "ירוק": "יָרֹק", "סגול": "סָגֹל", "כתום": "כָּתֹם", "שחור": "שָׁחֹר", "לבן": "לָבָן", "חולצה": "חֻלְצָה", "מכנסיים": "מִכְנָסַיִם", "נעליים": "נַעֲלַיִם", "כובע": "כּוֹבַע", "גרביים": "גַּרְבַּיִם", "תיק": "תִּיק", "מעיל": "מְעִיל", "משקפיים": "מִשְׁקָפַיִם", "כפפות": "כְּפָפוֹת", "דובי": "דֻּבִּי", "כדור": "כַּדּוּר", "בובה": "בֻּבָּה", "בלון": "בָּלוֹן", "עפיפון": "עֲפִיפוֹן", "פאזל": "פָּאזֶל", "תוף": "תֹּף", "מתנה": "מַתָּנָה", "צבע": "צֶבַע", "חתול": "חָתוּל", "כלב": "כֶּלֶב", "ארנב": "אַרְנָב", "סוס": "סוּס", "ציפור": "צִפּוֹר", "דג": "דָּג", "פרפר": "פַּרְפַּר", "דוב": "דֹּב", "ברווז": "בַּרְוָז", "אריה": "אַרְיֵה", "תפוח": "תַּפּוּחַ", "בננה": "בָּנָנָה", "תות": "תּוּת", "ענבים": "עֲנָבִים", "אבטיח": "אֲבַטִּיחַ", "דובדבן": "דֻּבְדְּבָן", "לימון": "לִימוֹן", "אגס": "אַגָּס", "חלב": "חָלָב", "לחם": "לֶחֶם", "ביצה": "בֵּיצָה", "גבינה": "גְּבִינָה", "פיצה": "פִּיצָה", "עוגה": "עוּגָה", "גלידה": "גְּלִידָה", "עוגייה": "עוּגִיָּה", "מים": "מַיִם", "סוכרייה": "סֻכָּרִיָּה", "אמא": "אִמָּא", "אבא": "אַבָּא", "תינוק": "תִּינוֹק", "אחות": "אָחוֹת", "אח": "אָח", "סבתא": "סַבְתָּא", "סבא": "סַבָּא", "עיניים": "עֵינַיִם", "אף": "אַף", "פה": "פֶּה", "אוזן": "אֹזֶן", "יד": "יָד", "רגל": "רֶגֶל", "שיער": "שֵׂעָר", "שיניים": "שִׁנַּיִם", "אחת": "אַחַת", "שתיים": "שְׁתַּיִם", "שלוש": "שָׁלוֹשׁ", "ארבע": "אַרְבַּע", "חמש": "חָמֵשׁ", "שש": "שֵׁשׁ", "שבע": "שֶׁבַע", "שמונה": "שְׁמוֹנֶה", "תשע": "תֵּשַׁע", "עשר": "עֶשֶׂר", "עיגול": "עִגּוּל", "ריבוע": "רִבּוּעַ", "משולש": "מְשֻׁלָּשׁ", "יהלום": "יַהֲלוֹם", "מלבן": "מַלְבֵּן", "אליפסה": "אֶלִיפְּסָה", "שמש": "שֶׁמֶשׁ", "ירח": "יָרֵחַ", "ענן": "עָנָן", "גשם": "גֶּשֶׁם", "שלג": "שֶׁלֶג", "עץ": "עֵץ", "עלה": "עָלֶה", "צבעוני": "צִבְעוֹנִי", "הר": "הַר", "מכונית": "מְכוֹנִית", "אוטובוס": "אוֹטוֹבּוּס", "רכבת": "רַכֶּבֶת", "מטוס": "מָטוֹס", "סירה": "סִירָה", "אופניים": "אוֹפַנַּיִם", "מסוק": "מַסּוֹק", "משאית": "מַשָּׂאִית", "חללית": "חֲלָלִית", "לווייתן": "לִוְיָתָן", "דולפין": "דּוֹלְפִין", "סרטן": "סַרְטָן", "צדף": "צֶדֶף", "צב": "צָב", "כריש": "כָּרִישׁ", "בית": "בַּיִת", "מיטה": "מִטָּה", "כיסא": "כִּסֵּא", "דלת": "דֶּלֶת", "אמבטיה": "אַמְבַּטְיָה", "שעון": "שָׁעוֹן", "מפתח": "מַפְתֵּחַ", "טלפון": "טֶלֶפוֹן", "ספר": "סֵפֶר", "כל הכבוד מלודי!": "כֹּל הַכָּבוֹד מֶלוֹדִי!", "וואו, נכון!": "wow, נָכוֹן!", "סיימת את כל השלבים!": "עָשִׂית אֶת כֹּל הַשְּׁלַבִּים!", "סיימת את כל השלבים וקיבלת כתר!": "עָשִׂית אֶת כֹּל הַשְּׁלַבִּים, וְקִבַּלְתְּ כֶּתֶר!", "אספת את כל המדבקות!": "יֵשׁ לָךְ אֶת כֹּל הַמַּדְבֵּקוֹת!", "תמנון": "תָּמְנוּן"};
 Object.assign(HE_SAY,{"תקשיבי ותעשי מה שסיימון אומר!":"תַּקְשִׁיבִי וְתַעֲשִׂי מָה שֶׁסַּיְימוֹן אוֹמֵר!","בואי נלביש את הדובי!":"בּוֹאִי נַלְבִּישׁ אֶת הַדּוּבִּי!",
   "בואי נשחק בחנות!":"בּוֹאִי נְשַׂחֵק בַּחֲנוּת!","תגידי אחריי, והפרח יגדל!":"תַּגִּידִי אַחֲרַי, וְהַפֶּרַח יִגְדַּל!"});
+Object.assign(HE_SAY,{"אתגר הכתר! תעני נכון על שש שאלות":"אֶתְגַּר הַכֶּתֶר! תַּעֲנִי נָכוֹן עַל שֵׁשׁ שְׁאֵלוֹת","המשחק הזה ייפתח בקרוב. תמשיכי ללמוד!":"הַמִּשְׂחָק הַזֶּה יִפָּתַח בְּקָרוֹב. תַּמְשִׁיכִי לִלְמֹד!",
+  "קיבלת כתר זהב!":"קִבַּלְתְּ כֶּתֶר זָהָב!","כוכב זהב! שני כוכבים!":"כּוֹכַב זָהָב! שְׁנֵי כּוֹכָבִים!","נפתח משחק חדש!":"נִפְתַּח מִשְׂחָק חָדָשׁ!"});
 Object.assign(HE_SAY,{"ראש":"רֹאשׁ","כתפיים":"כְּתֵפַיִם","ברכיים":"בִּרְכַּיִם","אצבעות הרגליים":"אֶצְבְּעוֹת הָרַגְלַיִם","זרוע":"זְרוֹעַ","אצבע":"אֶצְבַּע","בטן":"בֶּטֶן","כף רגל":"כַּף רֶגֶל",
   "פרה":"פָּרָה","חזיר":"חֲזִיר","כבשה":"כִּבְשָׂה","תרנגולת":"תַּרְנְגֹלֶת","צפרדע":"צְפַרְדֵּעַ","פיל":"פִּיל","קוף":"קוֹף","ג'ירפה":"גִ'ירָפָה","עכבר":"עַכְבָּר","נחש":"נָחָשׁ",
   "תפוז":"תַּפּוּז","אננס":"אֲנָנָס","אפרסק":"אֲפַרְסֵק","מנגו":"מַנְגּוֹ","קיווי":"קִיוִי","פסטה":"פַּסְטָה","אורז":"אֹרֶז","מרק":"מָרָק","כריך":"כָּרִיךְ","סלט":"סָלָט",
@@ -916,7 +932,7 @@ function showCats(){
       const lv=levelsOf(c);
       const here=c===glow;   // the topic she was in the middle of (or the next unfinished one) glows
       return `<button class="cat${here?' last':''}" data-i="${i}" style="background:linear-gradient(160deg,${GRADS[i%GRADS.length]})">
-        ${catDone(c)?`<span class="won">${art(ICON.crown())}</span>`:''}
+        ${catDone(c)?`<span class="won${goldOf(c)?' gold':''}">${art(ICON.crown())}</span>`:''}
         <span class="pic">${tileVisual(c)}</span><span class="en" dir="ltr">${c.en}</span><span class="he">${c.he}</span>
         <span class="lvdots">${lv.map((_,l)=>`<i class="${isDone(c,l)?'on':''}"></i>`).join('')}</span></button>`}).join('')}</div>
   </div>`;
@@ -925,6 +941,7 @@ function showCats(){
 }
 
 /* Topic: a short path of levels, a crown at the end */
+const goldOf=cat=>!!(prog.gold&&prog.gold[cat.id]);
 function showTopic(cat,announce){
   screenId++; homeTo=null;
   lastCat=cat.id; try{ localStorage.setItem(KEY+'last',cat.id) }catch(e){}
@@ -937,8 +954,9 @@ function showTopic(cat,announce){
       const cls=isDone(cat,l)?'done':isOpen(cat,l)?'now':'locked';
       const badge=cls==='done'?art(UI.star):cls==='locked'?art(UI.lock):'';
       return `${l?'<span class="link"></span>':''}<button class="lvl ${cls}" data-l="${l}" aria-label="שלב ${l+1}">${visual(items[0],true)}${badge?`<span class="badge">${badge}</span>`:''}</button>`}).join('')}
-      <span class="link"></span><span class="lvl-crown ${catDone(cat)?'won':''}">${art(ICON.crown())}</span></div>
-    ${now!==0?`<button class="wand" id="review">${art(UI.wand,'ico')} <span dir="ltr">Play</span></button>`:''}
+      <span class="link"></span><span class="lvl-crown ${catDone(cat)?'won':''}${goldOf(cat)?' gold':''}">${art(ICON.crown())}</span></div>
+    <div class="row">${now!==0?`<button class="wand" id="review">${art(UI.wand,'ico')} <span dir="ltr">Play</span></button>`:''}
+    ${catDone(cat)?`<button class="wand chal${goldOf(cat)?' gold':''}" id="challenge">${BOY?'🐉':'🏰'} <span dir="ltr">Challenge</span></button>`:''}</div>
   </div>`;
   const intro=[['en',cat.en],['he',cat.he]];
   if(announce) say(catDone(cat)?intro.concat([['he','קיבלת כתר בנושא הזה!']]):intro);
@@ -952,6 +970,7 @@ function showTopic(cat,announce){
     tick(); burstAt(b,24); learn(cat,l,0);
   });
   const rv=document.getElementById('review'); if(rv) rv.onclick=()=>{ tick(); pickGame(cat,-1) };
+  const ch=document.getElementById('challenge'); if(ch) ch.onclick=()=>{ tick(); startChallenge(cat) };
   if(now<0 && !announce) say([['he','סיימת את כל השלבים!']]);
 }
 
@@ -1015,8 +1034,11 @@ function distractors(g,target,n){
 
 /* ---------- Shared game bits ---------- */
 function win(el,word,next,extra){
-  chime(); burstAt(el,46); react('happy'); const gift=addStar();
-  const cheer=CHEER[Math.floor(Math.random()*CHEER.length)];
+  // now and then a golden star counts twice: a small surprise
+  const gold=Math.random()<.08;
+  chime(); burstAt(el,gold?90:46); react('happy'); const gift=addStar();
+  if(gold){ addStar(); setTimeout(()=>{ chime(); burstAt($stars,70) },350) }
+  const cheer=gold?'כוכב זהב! שני כוכבים!':CHEER[Math.floor(Math.random()*CHEER.length)];
   const lines=(extra||[['en','Yes! '+word+'!']]).concat([['he',cheer]]);
   if(next) sayThen(lines,next,600); else say(lines);
   return gift;
@@ -1040,46 +1062,56 @@ function gamesFor(cat,level){
     {en:'Memory',pic:UI.memory,g:GRADS[1],run:()=>startMemory(g())},
     {en:"What's this?",emo:'❓',g:GRADS[3],run:()=>startWhats(g())},
     {en:'Say it!',emo:'🎤',g:GRADS[2],run:()=>startSay(g())},
-    {en:'Echo',emo:BOY?'🐲':'🌷',g:GRADS[5],run:()=>startEcho(g())}];
+    {en:'Echo',emo:BOY?'🐲':'🌷',g:GRADS[5],opens:2,run:()=>startEcho(g())}];
   if(cat.id==='colors') games.push({en:BOY?'Magic Armor':'Magic Dress',pic:UI.palette,g:GRADS[5],run:()=>startDress(g())});
   if(cat.id==='actions') games.push({en:'Do it!',emo:'🤸',g:GRADS[5],run:()=>startDo(g())});
-  if(cat.id==='body') games.push({en:'Simon says',emo:'🙋',g:GRADS[0],run:()=>startSimon(g())});
-  if(cat.id==='clothes'&&canDress(ctx)) games.push({en:'Dress up',emo:'🧸',g:GRADS[3],run:()=>startDressUp(g())});
-  if((cat.id==='fruits'||cat.id==='food')&&canShop(ctx)) games.push({en:'Shop',emo:'🛒',g:GRADS[2],run:()=>startShop(g())});
-  games.forEach(x=>{ const run=x.run; x.run=()=>{ try{ localStorage.setItem(KEY+'lastGame',x.en) }catch(e){} run() } });
+  if(cat.id==='body') games.push({en:'Simon says',emo:'🙋',g:GRADS[0],opens:3,run:()=>startSimon(g())});
+  if(cat.id==='clothes'&&canDress(ctx)) games.push({en:'Dress up',emo:'🧸',g:GRADS[3],opens:4,run:()=>startDressUp(g())});
+  if((cat.id==='fruits'||cat.id==='food')&&canShop(ctx)) games.push({en:'Shop',emo:'🛒',g:GRADS[2],opens:5,run:()=>startShop(g())});
+  games.forEach(x=>{ const run=x.run; x.run=()=>{ try{ localStorage.setItem(KEY+'lastGame',x.en) }catch(e){} lastRun={cat,level,en:x.en}; run() } });
   return games;
 }
+let lastRun=null;   // the game that just ended, so the end screen can offer a different one
+const levelsDone=()=>CATS.reduce((a,c)=>a+levelsOf(c).filter((_,l)=>isDone(c,l)).length,0);
+const gameOpen=x=>!x.opens||levelsDone()>=x.opens;
+const GAME_OPENS=[{en:'Echo',emo:BOY?'🐲':'🌷',opens:2},{en:'Simon says',emo:'🙋',opens:3},{en:'Dress up',emo:'🧸',opens:4},{en:'Shop',emo:'🛒',opens:5}];
+const gamePic=x=>x.pic?art(x.pic):`<span class="emo">${x.emo}</span>`;
 function pickGame(cat,level){
   if(breakDue()) return showBreak(()=>pickGame(cat,level));
   screenId++; homeTo=()=>showTopic(cat);
   $home.hidden=false;
   const games=gamesFor(cat,level);
   let last=''; try{ last=localStorage.getItem(KEY+'lastGame')||'' }catch(e){}
-  const sug=shuffle(games.filter(x=>x.en!==last))[0];
+  const sug=shuffle(games.filter(x=>x.en!==last&&gameOpen(x)))[0];
   $main.innerHTML=`<div class="screen">
     <div class="cat-chip"><span class="chip-pic">${tileVisual(cat)}</span><span dir="ltr">${cat.en}</span></div>
     <div class="picker-title" dir="ltr">Let's play!</div>
-    <div class="picker${games.length>4?' many':''}">${games.map((x,k)=>`<button class="game-btn${x===sug?' suggest':''}" data-k="${k}" style="background:linear-gradient(160deg,${x.g})"><span class="pic">${x.pic?art(x.pic):`<span class="emo">${x.emo}</span>`}</span><span class="en" dir="ltr">${x.en}</span></button>`).join('')}</div>
+    <div class="picker${games.length>4?' many':''}">${games.map((x,k)=>`<button class="game-btn${x===sug?' suggest':''}${gameOpen(x)?'':' locked'}" data-k="${k}" style="background:linear-gradient(160deg,${x.g})"><span class="pic">${x.pic?art(x.pic):`<span class="emo">${x.emo}</span>`}</span><span class="en" dir="ltr">${x.en}</span></button>`).join('')}</div>
     ${level<0?'':`<button class="wand" id="cards">${art(ICON.book(),'ico')} <span dir="ltr">Words</span></button>`}
   </div>`;
   say([['en',"Let's play!"],['he','בחרי משחק']]);
-  $main.querySelectorAll('.game-btn').forEach(b=>b.onclick=()=>{ tick(); burstAt(b,24); games[+b.dataset.k].run() });
+  $main.querySelectorAll('.game-btn').forEach(b=>b.onclick=()=>{ const x=games[+b.dataset.k];
+    if(!gameOpen(x)){ boop(); b.classList.remove('wrong'); void b.offsetWidth; b.classList.add('wrong'); say([['he','המשחק הזה ייפתח בקרוב. תמשיכי ללמוד!']]); return }
+    tick(); burstAt(b,24); x.run() });
   if(level>=0) document.getElementById('cards').onclick=()=>{ tick(); learn(cat,level,0) };
 }
 
 /* ---------- Game 1: Find it ---------- */
 function startGame(g){
   screenId++;
-  const targets=pickTargets(g,ROUNDS);
-  sayThen([['he','עכשיו נשחק! תקשיבי טוב.']],()=>gameRound(g,targets,0),300);
+  const targets=pickTargets(g,g.rounds||ROUNDS);
+  sayThen([['he',g.challenge?'אתגר הכתר! תעני נכון על שש שאלות':'עכשיו נשחק! תקשיבי טוב.']],()=>gameRound(g,targets,0),300);
 }
+const CHAL_ROUNDS=6;
+function startChallenge(cat){ lastRun=null; startGame({cat,level:-2,pool:cat.items.slice(),challenge:true,rounds:CHAL_ROUNDS}) }
+const climbBar=(r,n)=>`<div class="climb">${Array.from({length:n},(_,k)=>`<span class="step${k<r?' on':''}">${k===r?`<span class="me">${art(CHAR_IMG.bust)}</span>`:''}</span>`).join('')}<span class="goal">${BOY?'🐉':'🏰'}</span></div>`;
 function gameRound(g,targets,r){
-  screenId++; homeTo=()=>pickGame(g.cat,g.level);
+  screenId++; homeTo=g.challenge?()=>showTopic(g.cat):()=>pickGame(g.cat,g.level);
   $home.hidden=false;
-  const target=targets[r];
+  const target=targets[r], n=g.rounds||ROUNDS;
   const opts=shuffle([target,...distractors(g,target,2)]);
   $main.innerHTML=`<div class="screen">
-    ${roundBar(r)}
+    ${g.challenge?climbBar(r,n):roundBar(r)}
     ${askBtn(target.L?'?':target.en)}
     <div class="options">${opts.map((o,k)=>`<button class="opt" data-k="${k}" aria-label="${o.he}">${visual(o,true)}</button>`).join('')}</div>
   </div>`;
@@ -1094,7 +1126,7 @@ function gameRound(g,targets,r){
     if(o===target){
       done=true; b.classList.remove('hint'); b.classList.add('right');
       if(!wrongs) gotIt(g.cat,target);
-      win(b,target.en,()=> r+1<ROUNDS ? gameRound(g,targets,r+1) : party(g,()=>startGame(g)));
+      win(b,target.en,()=> r+1<n ? gameRound(g,targets,r+1) : party(g,()=>g.challenge?startChallenge(g.cat):startGame(g)));
     } else {
       wrongs++; b.classList.remove('wrong'); void b.offsetWidth; b.classList.add('wrong');
       miss(g,target,o,wrongs,()=>btns[opts.indexOf(target)].classList.add('hint'));
@@ -1653,29 +1685,36 @@ function party(g,again,hero){
   $home.hidden=false;
   const lv=levelsOf(g.cat);
   const review=g.level<0;   // practice of all learned words: no level to mark
-  const firstTime=!review&&!isDone(g.cat,g.level);
+  const firstTime=!review&&!isDone(g.cat,g.level), before=levelsDone();
   const crowned=!review&&markDone(g.cat,g.level);
+  const fresh=GAME_OPENS.filter(x=>x.opens>before&&x.opens<=levelsDone());
+  if(g.challenge){ prog.gold=prog.gold||{}; prog.gold[g.cat.id]=1; saveProg() }
+  const run=lastRun&&lastRun.cat===g.cat?lastRun:null;
+  const other=g.challenge||!run?null:shuffle(gamesFor(g.cat,run.level).filter(x=>x.en!==run.en&&gameOpen(x)))[0];
   const opened=firstTime && g.level+1<lv.length;
   const got=newStickers.splice(0);
   $main.innerHTML=`<div class="screen party">
     ${hero && !crowned ? hero : charHTML('big',crowned?'won':'')}
-    <h2 dir="ltr">${crowned?(BOY?(g.cat.id==='kingdom'?'King of the castle':'King of '+g.cat.en):'Queen of '+g.cat.en)+'!':'Super Star!'}</h2>
-    <p>${crowned?'קיבלת כתר! '+art(ICON.crown(),'inl'):G('כל הכבוד מלודי!')+' '+art(UI.star,'inl')}</p>
+    <h2 dir="ltr">${g.challenge?'Golden crown!':crowned?(BOY?(g.cat.id==='kingdom'?'King of the castle':'King of '+g.cat.en):'Queen of '+g.cat.en)+'!':'Super Star!'}</h2>
+    <p>${g.challenge?G('קיבלת כתר זהב!')+' '+art(ICON.crown(),'inl gold'):crowned?'קיבלת כתר! '+art(ICON.crown(),'inl'):G('כל הכבוד מלודי!')+' '+art(UI.star,'inl')}</p>
+    ${fresh.length?`<div class="next-stk new-game">${fresh.map(gamePic).join('')} <span>נפתח משחק חדש!</span></div>`:''}
     ${got.length?`<div class="next-stk new-stk"><span class="gift">${art(ICON.gift())}</span>${got.map(r=>art(r.img)).join('')}</div>`:''}
     <div class="row">
-      <button class="wand" id="again">${art(UI.wand,'ico')} <span dir="ltr">Again</span></button>
+      ${other?`<button class="wand" id="again"><span class="gpic">${gamePic(other)}</span> <span dir="ltr">${other.en}</span></button>`:`<button class="wand" id="again">${art(UI.wand,'ico')} <span dir="ltr">Again</span></button>`}
       <button class="play" id="more" style="animation:none">${PLAY}<span dir="ltr">${opened?'Next':'More'}</span></button>
     </div>
   </div>`;
   chime(); setTimeout(chime,350);
   for(let k=0;k<(crowned?9:5);k++) setTimeout(()=>burst(Math.random()*innerWidth,innerHeight*(.2+Math.random()*.4),40),k*260);
   const lines=[['en','You are a super star!'],['he','כל הכבוד מלודי!']];
-  if(crowned) lines.push(['he','סיימת את כל השלבים וקיבלת כתר!']);
+  if(g.challenge) lines.push(['he','קיבלת כתר זהב!']);
+  else if(crowned) lines.push(['he','סיימת את כל השלבים וקיבלת כתר!']);
   else if(opened) lines.push(['he','פתחת שלב חדש!']);
   else lines.push(['he','את נסיכה חכמה!']);
+  if(fresh.length) lines.push(['he','נפתח משחק חדש!']);
   if(got.length){ lines.push(['he','קיבלת מדבקה!']); got.forEach(r=>lines.push(['en',r.en+'!'])); setTimeout(()=>burstAt($stars,60),700) }
   say(lines);
-  document.getElementById('again').onclick=()=>{ tick(); again() };
+  document.getElementById('again').onclick=()=>{ tick(); other?other.run():again() };
   document.getElementById('more').onclick=()=>{ tick(); opened ? learn(g.cat,g.level+1,0) : showTopic(g.cat) };
 }
 
