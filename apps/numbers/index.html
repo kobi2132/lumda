@@ -710,7 +710,7 @@ function makeItem(cat,spec,i){
       it.ask=[{more:L.more,less:L.less,big:L.big,small:L.small}[m]];
       it.done=dig?P(pick,W[m==='big'?'bigger':'smaller']):P(W.here,a,W.comma,W.there,b,W.dot);
       it.done2=dig?null:P(W[m]);
-      it.label=dig?a+' , '+b:''; break }
+      it.label=''; break }
     case 'next': { const [s,k,step]=spec, st=step||1; it.seq=[0,1,2,3].map(j=>s+j*st); it.k=k; it.ans=it.seq[k]; it.step=st;
       it.key=it.seq.map((x,j)=>j===k?'?':x).join(','); it.ask=[L.missing]; it.qt=it.key.replace(/,/g,', '); break }
     case 'add': { const m=/^(\d+)([+-])(\d+)$/.exec(spec), a=+m[1], o=m[2], b=+m[3]; it.a=a; it.b=b; it.op=o; it.ans=o==='+'?a+b:a-b; it.obj=nextObj();
@@ -1491,16 +1491,20 @@ $main.addEventListener('scroll',markScroll,{passive:true});
 let keepTop=null;
 // a new screen silences whatever the previous screen was still saying
 function hush(){ talkId++; explainRun++; lastSay=null; try{ synth&&synth.cancel() }catch(e){} document.documentElement.classList.remove('talking'); stopMouth() }
-/* The phone's Back button steps back inside the app, like the home button: one extra history entry is kept while away from the start screen */
+/* The phone's Back button steps back inside the app, like the home button: one extra history entry is kept while away from the start screen.
+   Chrome's Back button skips an entry that was left by a pushState made without a tap, so the entry is only ever added right after a tap
+   (never from the Back handler itself); otherwise every second Back press would leave the app */
 if(history.state&&history.state.lumda) try{ history.replaceState(null,'') }catch(e){}
 const guard=()=>{ if(!atStart&&!(history.state&&history.state.lumda)) try{ history.pushState({lumda:1},'') }catch(e){} };
+addEventListener('click',guard);     // bubbles up after the button's own handler has changed the screen
+addEventListener('pointerup',guard); // the parent corner opens while the title is held
 addEventListener('popstate',()=>{
   if(atStart) return;
   tick();
   if($main.querySelector('.cats')) return showStart();
   const go=homeTo; go?go():showCats();
 });
-new MutationObserver(()=>{ guard(); if(talkScreen!==screenId) hush(); $buddyBar.hidden=!!$main.querySelector('.pm.big'); $main.scrollTop=keepTop||0; keepTop=null; fitScreen(); requestAnimationFrame(()=>{ fitScreen(); markScroll() }) }).observe($main,{childList:true});
+new MutationObserver(()=>{ if(talkScreen!==screenId) hush(); $buddyBar.hidden=!!$main.querySelector('.pm.big'); $main.scrollTop=keepTop||0; keepTop=null; fitScreen(); requestAnimationFrame(()=>{ fitScreen(); markScroll() }) }).observe($main,{childList:true});
 addEventListener('resize',()=>requestAnimationFrame(()=>{ fitScreen(); markScroll() }));
 addEventListener('load',fitScreen);
 $buddy.onclick=()=>{ react('happy'); burstAt($buddy,16); if(lastSay) say(lastSay) };
