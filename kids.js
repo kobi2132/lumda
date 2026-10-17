@@ -44,4 +44,20 @@
   }
   build();
 })();
+/* Settings shared by all the apps (set in the hub's parents area): voice, speed, microphone, break reminder.
+   The first time, they are taken from an app's own saved settings, so nothing a parent chose is lost. */
+(function(){
+  const DEF = { voice: true, rate: 1, mic: true, breakMin: 20 }, KEYS = Object.keys(DEF);
+  window.LUMDA_SETTINGS = function(){
+    let s = null;
+    try { s = JSON.parse(localStorage.getItem('lumda-settings')) } catch(e){}
+    if (!s || typeof s !== 'object') {
+      s = {};
+      try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i);
+        if (k && /-settings$/.test(k) && k !== 'lumda-settings') { const o = JSON.parse(localStorage.getItem(k)); if (o && 'voice' in o) { s = o; break } } } } catch(e){}
+    }
+    const out = Object.assign({}, DEF); KEYS.forEach(k => { if (k in s) out[k] = s[k] }); return out;
+  };
+  window.LUMDA_SAVE_SETTINGS = function(o){ try { localStorage.setItem('lumda-settings', JSON.stringify(Object.assign(window.LUMDA_SETTINGS(), o))) } catch(e){} };
+})();
 window.LUMDA_KID = function(){ try { return window.LUMDA_KIDS[localStorage.getItem('lumda-kid')] || null } catch(e){ return null } };
