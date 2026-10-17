@@ -65,7 +65,11 @@ button{font:inherit;color:inherit}
 .nokids{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;color:#fff;text-align:center;font-family:var(--display);font-size:24px;padding-bottom:10vh}
 /* greeting, "who's playing?" and the parents button */
 #pick{position:relative}
-h1#pickTitle{margin:44px 0 0}
+/* the app's logo and name at the top */
+.brand{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 52px}
+.brand img{height:clamp(56px,11vh,110px);width:auto;filter:drop-shadow(0 4px 6px rgba(40,10,60,.25));-webkit-user-drag:none}
+.brand span{font-family:var(--display);font-weight:700;font-size:clamp(34px,9vw,52px);color:var(--plum);letter-spacing:.5px;text-shadow:0 2px 0 rgba(255,255,255,.7)}
+h1#pickTitle{margin:6px 0 0;font-size:clamp(28px,7.5vw,48px)}
 .sub{margin:4px 0 10px;text-align:center;font-family:var(--display);font-weight:600;font-size:clamp(22px,6vw,34px);color:var(--plum)}
 .parentsBtn{position:absolute;top:0;inset-inline-start:0;width:48px;height:48px;padding:0;border:3px solid rgba(255,255,255,.8);border-radius:50%;
   background:rgba(255,255,255,.35);font-size:24px;line-height:1;cursor:pointer;display:grid;place-items:center}
@@ -175,7 +179,8 @@ h1#pickTitle{margin:44px 0 0}
   .kids.many .kid .fig{height:min(44vh,440px)} .kids.many .kid .name{font-size:clamp(18px,3vw,34px)} }
 @media (orientation:landscape) and (max-height:520px){ .kid .fig{height:min(60vh,300px)} h1{margin:4px 0 8px;font-size:30px}
   .kids.many .kid .fig{height:min(54vh,300px)} .kids.many .kid .name{font-size:18px;padding:3px 12px} }
-@media (orientation:landscape) and (max-height:520px){ h1#pickTitle{margin:2px 0 0;font-size:26px} .sub{font-size:18px;margin:0 0 4px}
+@media (orientation:landscape) and (max-height:520px){ .brand{position:absolute;top:0;inset-inline-end:0;padding:0;min-height:44px} .brand img{height:44px} .brand span{font-size:26px}
+  h1#pickTitle{margin:2px 0 0;font-size:26px} .sub{font-size:18px;margin:0 0 4px}
   .kids{padding-bottom:2vh} .kid{gap:4px} .kid .fig,.kids.many .kid .fig{height:min(48vh,240px)} .kid .name{font-size:24px;padding:2px 20px} .kid .kstars{font-size:15px} }
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 </style>
@@ -184,6 +189,7 @@ h1#pickTitle{margin:44px 0 0}
 <div class="wrap">
   <section id="pick">
     <button class="parentsBtn" id="parentsBtn" aria-label="אזור ההורים">⚙️</button>
+    <div class="brand"><img src="assets/brand/logo-1.webp" alt=""><span>לומדלי</span></div>
     <h1 id="pickTitle"></h1>
     <p class="sub" id="pickSub">מי משחק היום?</p>
     <div class="kids" id="kids"></div>
