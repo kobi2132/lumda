@@ -435,6 +435,28 @@ html[data-kid="yam"] .buddy{aspect-ratio:320/350}
 .chip-pic .ltr{font-size:15px}.chip-pic .emoji{font-size:24px}
 .opt .emoji{font-size:52cqw}
 .game-btn .pic .emo{font-size:clamp(46px,14vw,72px);line-height:1;display:flex;align-items:center}
+.game-btn.suggest{animation:breathe 1.8s ease-in-out infinite;border-color:var(--gold);box-shadow:0 0 0 4px rgba(255,191,46,.45),0 6px 0 rgba(78,31,99,.2)}
+.dress-row{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;max-width:560px}
+.teddy-wrap{display:flex;justify-content:center;width:100%}.teddy{height:min(36vh,300px);width:auto}
+.teddy-wrap.big .teddy{max-height:40vh;width:auto}
+.options.four{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.opt .cloth{width:80%;height:80%}
+.shelf{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;width:100%;max-width:520px;background:linear-gradient(180deg,#fff7e6,#ffe2b8);
+  border-radius:24px;padding:10px;border:4px solid #fff;box-shadow:0 6px 0 rgba(78,31,99,.15)}
+.ware{aspect-ratio:1;border:0;background:none;padding:2px;cursor:pointer;container-type:inline-size;display:grid;place-items:center}
+.ware .art{width:92%;height:92%}.ware .emoji{font-size:60cqw}
+.ware.gone{visibility:hidden}.ware.wrong{animation:shake .45s}
+.basket-row{display:flex;align-items:center;gap:14px;width:100%;max-width:520px}
+.basket{flex:1;min-height:clamp(80px,22vw,110px);display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:4px;padding:8px 10px;
+  background:linear-gradient(180deg,#e9b886,#c98a52);border-radius:18px 18px 40px 40px;border:4px solid #fff;box-shadow:0 6px 0 rgba(78,31,99,.2)}
+.basket .ware{width:clamp(38px,11vw,54px)}
+.mic.ok{width:clamp(84px,22vw,110px)}.mic.wrong{animation:shake .45s}
+.grow{font-size:clamp(70px,24vw,130px);line-height:1;position:relative;transition:transform .4s}
+.grow.s0{transform:scale(.6)}.grow.s1{transform:scale(.7)}.grow.s2{transform:scale(.8)}.grow.s3{transform:scale(.9)}.grow.s4,.grow.s5{transform:scale(1)}
+.grow.up{animation:pop .6s}.grow.big{font-size:clamp(110px,34vw,180px)}
+.grow .zz{position:absolute;top:-10%;right:-30%;font-size:40%;font-style:normal;animation:bob 2s ease-in-out infinite}
+.echo .ask .mini{width:clamp(48px,14vw,64px);height:clamp(48px,14vw,64px);display:grid;place-items:center;container-type:inline-size}
+.echo .ask .mini .art{width:100%;height:100%}.echo .ask .mini .emoji{font-size:70cqw}
 .picker.many{grid-template-columns:repeat(3,minmax(0,1fr));max-width:560px;gap:10px}
 .picker.many .game-btn{padding:12px 4px;border-radius:24px}
 .picker.many .game-btn .pic{height:clamp(46px,13vw,66px)}.picker.many .game-btn .pic .emo{font-size:clamp(38px,11vw,58px)}
@@ -510,6 +532,10 @@ const HE_SAY_M = {"שלום ים! בוא נלמד אנגלית!":"שָׁלוֹם
   "סיימת את כל השלבים!":"עָשִׂיתָ אֶת כֹּל הַשְּׁלַבִּים!","סיימת את כל השלבים וקיבלת כתר!":"עָשִׂיתָ אֶת כֹּל הַשְּׁלַבִּים, וְקִבַּלְתָּ כֶּתֶר!",
   "אספת את כל המדבקות!":"יֵשׁ לְךָ אֶת כֹּל הַמַּדְבֵּקוֹת!","בוא נצבע שריון לאביר":"בּוֹא נִצְבַּע שִׁרְיוֹן לָאַבִּיר","צבע את הקסדה":"צְבַע אֶת הַקַּסְדָּה",
   "צבע את השריון":"צְבַע אֶת הַשִּׁרְיוֹן","צבע את המגן":"צְבַע אֶת הַמָּגֵן","צבע את הגלימה":"צְבַע אֶת הַגְּלִימָה","צבע את המגפיים":"צְבַע אֶת הַמַּגָּפַיִם"};
+Object.assign(MASC,{"תקשיבי ותעשי מה שסיימון אומר!":"תקשיב ותעשה מה שסיימון אומר!","בואי נלביש את הדובי!":"בוא נלביש את הדובי!",
+  "בואי נשחק בחנות!":"בוא נשחק בחנות!","תגידי אחריי, והפרח יגדל!":"תגיד אחריי, והדרקון יתעורר!"});
+Object.assign(HE_SAY_M,{"תקשיב ותעשה מה שסיימון אומר!":"תַּקְשִׁיב וְתַעֲשֶׂה מָה שֶׁסַּיְימוֹן אוֹמֵר!","בוא נלביש את הדובי!":"בּוֹא נַלְבִּישׁ אֶת הַדּוּבִּי!",
+  "בוא נשחק בחנות!":"בּוֹא נְשַׂחֵק בַּחֲנוּת!","תגיד אחריי, והדרקון יתעורר!":"תַּגִּיד אַחֲרַי, וְהַדְּרָקוֹן יִתְעוֹרֵר!"});
 const G = t => BOY ? (MASC[t]||t) : t;
 const NAME = KID.name, NAME_EN = KID.nameEn;
 document.getElementById('appTitle').textContent = NAME + (BOY ? ' לומד אנגלית' : ' לומדת אנגלית');
@@ -704,6 +730,8 @@ if(synth){ pickVoices(); synth.onvoiceschanged = pickVoices; }
 
 /* How each Hebrew text is spoken (chosen on the phone in the pronunciation check); the screen keeps the plain spelling */
 const HE_SAY={"שלום מלודי! בואי נלמד אנגלית!": "שָׁלוֹם מֶלוֹדִי! בּוֹאִי נִלְמַד אַנְגְּלִית!", "עכשיו נשחק! תקשיבי טוב.": "עַכְשָׁו נְשַׂחֵק! תַּקְשִׁיבִי טוֹב.", "בחרי משחק": "בַּחֲרִי מִשְׂחָק", "תלחצי על": "תִּלְחֲצִי עַל", "תפוצצי את הבלון הנכון!": "תְּפוֹצְצִי אֶת הַבָּלוֹן הַנָּכוֹן!", "תפוצצי את הבלון של": "תְּפוֹצְצִי אֶת הַבָּלוֹן שֶׁל", "מצאי שני קלפים זהים": "מִצְאִי שְׁנֵי קְלָפִים זֵהִים", "בואי נצבע שמלה לנסיכה": "בּוֹאִי נִצְבַּע שִׂמְלָה לַנְּסִיכָה", "צבעי את החולצה": "צִבְעִי אֶת הַחֻלְצָה", "צבעי את החצאית": "צִבְעִי אֶת הַחֲצָאִית", "צבעי את הפפיון": "צִבְעִי אֶת הַפַּפְּיוֹן", "צבעי את הנעליים": "צִבְעִי אֶת הַנַּעֲלַיִם", "צבעי את הכתר": "צִבְעִי אֶת הַכֶּתֶר", "זה": "זֶה", "הנה, זה": "הִנֵּה, זֶה", "נסי שוב!": "נַסִּי שׁוּב!", "קודם נשחק בשלב הזה": "קֹדֶם נְשַׂחֵק בַּשָּׁלָב הַזֶּה", "מצוין!": "מְצֻיָּן!", "איזו חכמה!": "אֵיזוֹ חֲכָמָה!", "את אלופה!": "אַתְּ אַלּוּפָה!", "את נסיכה חכמה!": "אַתְּ נְסִיכָה חֲכָמָה!", "קיבלת מדבקה!": "קִבַּלְתְּ מַדְבֵּקָה!", "פתחת שלב חדש!": "פָּתַחְתְּ שָׁלָב חָדָשׁ!", "קיבלת כתר בנושא הזה!": "קִבַּלְתְּ כֶּתֶר בַּנּוֹשֵׂא הַזֶּה!", "אספי עוד כוכבים כדי לקבל אותה": "אִסְפִי עוֹד כּוֹכָבִים כְּדֵי לְקַבֵּל אוֹתָהּ", "עוד כוכב אחד למדבקה הבאה": "עוֹד כּוֹכָב אֶחָד לַמַּדְבֵּקָה הַבָּאָה", "עוד שני כוכבים למדבקה הבאה": "עוֹד שְׁנֵי כּוֹכָבִים לַמַּדְבֵּקָה הַבָּאָה", "עוד שלושה כוכבים למדבקה הבאה": "עוֹד שְׁלוֹשָׁה כּוֹכָבִים לַמַּדְבֵּקָה הַבָּאָה", "עוד ארבעה כוכבים למדבקה הבאה": "עוֹד אַרְבָּעָה כּוֹכָבִים לַמַּדְבֵּקָה הַבָּאָה", "עוד חמישה כוכבים למדבקה הבאה": "עוֹד חֲמִשָּׁה כּוֹכָבִים לַמַּדְבֵּקָה הַבָּאָה", "נסיכות": "נְסִיכוֹת", "צבעים": "צְבָעִים", "בגדים": "בְּגָדִים", "צעצועים": "צַעֲצוּעִים", "חיות": "חַיּוֹת", "פירות": "פֵּרוֹת", "אוכל": "אֹכֶל", "משפחה": "מִשְׁפָּחָה", "הגוף שלי": "הַגּוּף שֶׁלִּי", "מספרים": "מִסְפָּרִים", "צורות": "צוּרוֹת", "טבע": "טֶבַע", "תחבורה": "תַּחְבּוּרָה", "ים": "יָם", "בבית": "בַּבַּיִת", "כתר": "כֶּתֶר", "נסיכה": "נְסִיכָה", "ארמון": "אַרְמוֹן", "שמלה": "שִׂמְלָה", "חד־קרן": "חַד־קֶרֶן", "לב": "לֵב", "כוכב": "כּוֹכָב", "קשת": "קֶשֶׁת", "טבעת": "טַבַּעַת", "פרח": "פֶּרַח", "ורוד": "וָרֹד", "אדום": "אָדֹם", "כחול": "כָּחֹל", "צהוב": "צָהֹב", "ירוק": "יָרֹק", "סגול": "סָגֹל", "כתום": "כָּתֹם", "שחור": "שָׁחֹר", "לבן": "לָבָן", "חולצה": "חֻלְצָה", "מכנסיים": "מִכְנָסַיִם", "נעליים": "נַעֲלַיִם", "כובע": "כּוֹבַע", "גרביים": "גַּרְבַּיִם", "תיק": "תִּיק", "מעיל": "מְעִיל", "משקפיים": "מִשְׁקָפַיִם", "כפפות": "כְּפָפוֹת", "דובי": "דֻּבִּי", "כדור": "כַּדּוּר", "בובה": "בֻּבָּה", "בלון": "בָּלוֹן", "עפיפון": "עֲפִיפוֹן", "פאזל": "פָּאזֶל", "תוף": "תֹּף", "מתנה": "מַתָּנָה", "צבע": "צֶבַע", "חתול": "חָתוּל", "כלב": "כֶּלֶב", "ארנב": "אַרְנָב", "סוס": "סוּס", "ציפור": "צִפּוֹר", "דג": "דָּג", "פרפר": "פַּרְפַּר", "דוב": "דֹּב", "ברווז": "בַּרְוָז", "אריה": "אַרְיֵה", "תפוח": "תַּפּוּחַ", "בננה": "בָּנָנָה", "תות": "תּוּת", "ענבים": "עֲנָבִים", "אבטיח": "אֲבַטִּיחַ", "דובדבן": "דֻּבְדְּבָן", "לימון": "לִימוֹן", "אגס": "אַגָּס", "חלב": "חָלָב", "לחם": "לֶחֶם", "ביצה": "בֵּיצָה", "גבינה": "גְּבִינָה", "פיצה": "פִּיצָה", "עוגה": "עוּגָה", "גלידה": "גְּלִידָה", "עוגייה": "עוּגִיָּה", "מים": "מַיִם", "סוכרייה": "סֻכָּרִיָּה", "אמא": "אִמָּא", "אבא": "אַבָּא", "תינוק": "תִּינוֹק", "אחות": "אָחוֹת", "אח": "אָח", "סבתא": "סַבְתָּא", "סבא": "סַבָּא", "עיניים": "עֵינַיִם", "אף": "אַף", "פה": "פֶּה", "אוזן": "אֹזֶן", "יד": "יָד", "רגל": "רֶגֶל", "שיער": "שֵׂעָר", "שיניים": "שִׁנַּיִם", "אחת": "אַחַת", "שתיים": "שְׁתַּיִם", "שלוש": "שָׁלוֹשׁ", "ארבע": "אַרְבַּע", "חמש": "חָמֵשׁ", "שש": "שֵׁשׁ", "שבע": "שֶׁבַע", "שמונה": "שְׁמוֹנֶה", "תשע": "תֵּשַׁע", "עשר": "עֶשֶׂר", "עיגול": "עִגּוּל", "ריבוע": "רִבּוּעַ", "משולש": "מְשֻׁלָּשׁ", "יהלום": "יַהֲלוֹם", "מלבן": "מַלְבֵּן", "אליפסה": "אֶלִיפְּסָה", "שמש": "שֶׁמֶשׁ", "ירח": "יָרֵחַ", "ענן": "עָנָן", "גשם": "גֶּשֶׁם", "שלג": "שֶׁלֶג", "עץ": "עֵץ", "עלה": "עָלֶה", "צבעוני": "צִבְעוֹנִי", "הר": "הַר", "מכונית": "מְכוֹנִית", "אוטובוס": "אוֹטוֹבּוּס", "רכבת": "רַכֶּבֶת", "מטוס": "מָטוֹס", "סירה": "סִירָה", "אופניים": "אוֹפַנַּיִם", "מסוק": "מַסּוֹק", "משאית": "מַשָּׂאִית", "חללית": "חֲלָלִית", "לווייתן": "לִוְיָתָן", "דולפין": "דּוֹלְפִין", "סרטן": "סַרְטָן", "צדף": "צֶדֶף", "צב": "צָב", "כריש": "כָּרִישׁ", "בית": "בַּיִת", "מיטה": "מִטָּה", "כיסא": "כִּסֵּא", "דלת": "דֶּלֶת", "אמבטיה": "אַמְבַּטְיָה", "שעון": "שָׁעוֹן", "מפתח": "מַפְתֵּחַ", "טלפון": "טֶלֶפוֹן", "ספר": "סֵפֶר", "כל הכבוד מלודי!": "כֹּל הַכָּבוֹד מֶלוֹדִי!", "וואו, נכון!": "wow, נָכוֹן!", "סיימת את כל השלבים!": "עָשִׂית אֶת כֹּל הַשְּׁלַבִּים!", "סיימת את כל השלבים וקיבלת כתר!": "עָשִׂית אֶת כֹּל הַשְּׁלַבִּים, וְקִבַּלְתְּ כֶּתֶר!", "אספת את כל המדבקות!": "יֵשׁ לָךְ אֶת כֹּל הַמַּדְבֵּקוֹת!", "תמנון": "תָּמְנוּן"};
+Object.assign(HE_SAY,{"תקשיבי ותעשי מה שסיימון אומר!":"תַּקְשִׁיבִי וְתַעֲשִׂי מָה שֶׁסַּיְימוֹן אוֹמֵר!","בואי נלביש את הדובי!":"בּוֹאִי נַלְבִּישׁ אֶת הַדּוּבִּי!",
+  "בואי נשחק בחנות!":"בּוֹאִי נְשַׂחֵק בַּחֲנוּת!","תגידי אחריי, והפרח יגדל!":"תַּגִּידִי אַחֲרַי, וְהַפֶּרַח יִגְדַּל!"});
 Object.assign(HE_SAY,{"ראש":"רֹאשׁ","כתפיים":"כְּתֵפַיִם","ברכיים":"בִּרְכַּיִם","אצבעות הרגליים":"אֶצְבְּעוֹת הָרַגְלַיִם","זרוע":"זְרוֹעַ","אצבע":"אֶצְבַּע","בטן":"בֶּטֶן","כף רגל":"כַּף רֶגֶל",
   "פרה":"פָּרָה","חזיר":"חֲזִיר","כבשה":"כִּבְשָׂה","תרנגולת":"תַּרְנְגֹלֶת","צפרדע":"צְפַרְדֵּעַ","פיל":"פִּיל","קוף":"קוֹף","ג'ירפה":"גִ'ירָפָה","עכבר":"עַכְבָּר","נחש":"נָחָשׁ",
   "תפוז":"תַּפּוּז","אננס":"אֲנָנָס","אפרסק":"אֲפַרְסֵק","מנגו":"מַנְגּוֹ","קיווי":"קִיוִי","פסטה":"פַּסְטָה","אורז":"אֹרֶז","מרק":"מָרָק","כריך":"כָּרִיךְ","סלט":"סָלָט",
@@ -964,7 +992,7 @@ function hlWord(it){ const k=it.w.toLowerCase().indexOf(it.L.toLowerCase()); ret
 /* ---------- Game context: this level's words + a few earlier ones, weak words first ---------- */
 function makeCtx(cat,level){
   const lv=levelsOf(cat);
-  return {cat,level,pool:level<0 ? lv.filter((_,l)=>isDone(cat,l)).flat() : lv[level]};
+  return {cat,level,pool:level===-2 ? cat.items.slice() : level<0 ? lv.filter((_,l)=>isDone(cat,l)).flat() : lv[level]};
 }
 // choose n targets, favoring words she missed; repeats allowed (never twice in a row) when the pool is small
 function pickTargets(g,n){
@@ -1003,23 +1031,35 @@ function miss(g,target,chosen,wrongs,showHint){
   else say([['he','זה'],['en',chosen.en],['he','נסי שוב!']]);
 }
 
-function pickGame(cat,level){
-  if(breakDue()) return showBreak(()=>pickGame(cat,level));
-  screenId++; homeTo=()=>showTopic(cat);
-  $home.hidden=false;
-  const g=()=>makeCtx(cat,level);
+// every game that fits this topic and level; each run remembers itself so the next picker suggests a different one
+function gamesFor(cat,level){
+  const g=()=>makeCtx(cat,level), ctx=g();
   const games=[
     {en:'Find it',pic:UI.find,g:GRADS[4],run:()=>startGame(g())},
     {en:'Balloons',pic:UI.balloons,g:GRADS[0],run:()=>startBalloons(g())},
     {en:'Memory',pic:UI.memory,g:GRADS[1],run:()=>startMemory(g())},
-  ];
-  games.push({en:"What's this?",emo:'❓',g:GRADS[3],run:()=>startWhats(g())},{en:'Say it!',emo:'🎤',g:GRADS[2],run:()=>startSay(g())});
+    {en:"What's this?",emo:'❓',g:GRADS[3],run:()=>startWhats(g())},
+    {en:'Say it!',emo:'🎤',g:GRADS[2],run:()=>startSay(g())},
+    {en:'Echo',emo:BOY?'🐲':'🌷',g:GRADS[5],run:()=>startEcho(g())}];
   if(cat.id==='colors') games.push({en:BOY?'Magic Armor':'Magic Dress',pic:UI.palette,g:GRADS[5],run:()=>startDress(g())});
   if(cat.id==='actions') games.push({en:'Do it!',emo:'🤸',g:GRADS[5],run:()=>startDo(g())});
+  if(cat.id==='body') games.push({en:'Simon says',emo:'🙋',g:GRADS[0],run:()=>startSimon(g())});
+  if(cat.id==='clothes'&&canDress(ctx)) games.push({en:'Dress up',emo:'🧸',g:GRADS[3],run:()=>startDressUp(g())});
+  if((cat.id==='fruits'||cat.id==='food')&&canShop(ctx)) games.push({en:'Shop',emo:'🛒',g:GRADS[2],run:()=>startShop(g())});
+  games.forEach(x=>{ const run=x.run; x.run=()=>{ try{ localStorage.setItem(KEY+'lastGame',x.en) }catch(e){} run() } });
+  return games;
+}
+function pickGame(cat,level){
+  if(breakDue()) return showBreak(()=>pickGame(cat,level));
+  screenId++; homeTo=()=>showTopic(cat);
+  $home.hidden=false;
+  const games=gamesFor(cat,level);
+  let last=''; try{ last=localStorage.getItem(KEY+'lastGame')||'' }catch(e){}
+  const sug=shuffle(games.filter(x=>x.en!==last))[0];
   $main.innerHTML=`<div class="screen">
     <div class="cat-chip"><span class="chip-pic">${tileVisual(cat)}</span><span dir="ltr">${cat.en}</span></div>
     <div class="picker-title" dir="ltr">Let's play!</div>
-    <div class="picker${games.length>4?' many':''}">${games.map((x,k)=>`<button class="game-btn" data-k="${k}" style="background:linear-gradient(160deg,${x.g})"><span class="pic">${x.pic?art(x.pic):`<span class="emo">${x.emo}</span>`}</span><span class="en" dir="ltr">${x.en}</span></button>`).join('')}</div>
+    <div class="picker${games.length>4?' many':''}">${games.map((x,k)=>`<button class="game-btn${x===sug?' suggest':''}" data-k="${k}" style="background:linear-gradient(160deg,${x.g})"><span class="pic">${x.pic?art(x.pic):`<span class="emo">${x.emo}</span>`}</span><span class="en" dir="ltr">${x.en}</span></button>`).join('')}</div>
     ${level<0?'':`<button class="wand" id="cards">${art(ICON.book(),'ico')} <span dir="ltr">Words</span></button>`}
   </div>`;
   say([['en',"Let's play!"],['he','בחרי משחק']]);
@@ -1363,6 +1403,250 @@ function doRound(g,targets,r){
   });
 }
 
+/* ---------- Game 8: Simon says (body: tap the part Simon names, then do it yourself) ---------- */
+const SIMON={Eyes:'Close your eyes',Nose:'Touch your nose',Mouth:'Open your mouth',Ear:'Touch your ear',Hand:'Wave your hand',Foot:'Stamp your foot',
+  Hair:'Touch your hair',Teeth:'Show your teeth',Head:'Touch your head',Shoulders:'Touch your shoulders',Knees:'Touch your knees',Toes:'Touch your toes',
+  Arm:'Raise your arm',Leg:'Lift your leg',Finger:'Wiggle your finger',Tummy:'Pat your tummy'};
+function startSimon(g){ screenId++; const t=pickTargets(g,ROUNDS); sayThen([['he','תקשיבי ותעשי מה שסיימון אומר!']],()=>simonRound(g,t,0),300) }
+function simonRound(g,targets,r){
+  const id=++screenId; homeTo=()=>pickGame(g.cat,g.level);
+  $home.hidden=false;
+  const target=targets[r], cmd=SIMON[target.en]||'Touch your '+target.en.toLowerCase();
+  const opts=shuffle([target,...distractors(g,target,2)]);
+  $main.innerHTML=`<div class="screen">
+    ${roundBar(r)}
+    ${askBtn('Simon says')}
+    <div class="options">${opts.map((o,k)=>`<button class="opt" data-k="${k}" aria-label="${o.he}">${visual(o,true)}</button>`).join('')}</div>
+  </div>`;
+  const ask=()=>say([['en','Simon says: '+cmd+'!']]);
+  ask();
+  document.getElementById('ask').onclick=ask;
+  let done=false, wrongs=0;
+  const btns=[...$main.querySelectorAll('.opt')];
+  btns.forEach(b=>b.onclick=()=>{
+    if(done||id!==screenId) return;
+    const o=opts[+b.dataset.k];
+    if(o===target){
+      done=true; b.classList.remove('hint'); b.classList.add('right');
+      if(!wrongs) gotIt(g.cat,target);
+      chime(); burstAt(b,30); react('happy');
+      // now the child does it: the picture big, five beats, then the star
+      setTimeout(()=>{ if(id!==screenId) return;
+        $main.innerHTML=`<div class="screen doit">${roundBar(r)}
+          <div class="card enter" id="card"><div class="visual">${visual(target)}</div><div class="word-en">${cmd}!</div></div>
+          <div class="round" id="beat">${starRow(0,5)}</div></div>`;
+        const card=document.getElementById('card');
+        say([['en','Now you! '+cmd+'!']]).then(()=>{
+          let k=0; const beat=()=>{ if(id!==screenId) return;
+            if(k===5){ win(card,target.en,()=> r+1<ROUNDS ? simonRound(g,targets,r+1) : party(g,()=>startSimon(g)),[['en','Great job!']]); return }
+            k++; document.getElementById('beat').innerHTML=starRow(k,5); tick(); react('happy'); setTimeout(beat,750) };
+          setTimeout(beat,300);
+        });
+      },700);
+    } else {
+      wrongs++; b.classList.remove('wrong'); void b.offsetWidth; b.classList.add('wrong');
+      miss(g,target,o,wrongs,()=>btns[opts.indexOf(target)].classList.add('hint'));
+    }
+  });
+}
+
+/* ---------- Game 9: Dress up the teddy ("Put on the red hat!": a color and a piece of clothing) ---------- */
+const CLOTH_ICON={
+  Hat:'<ellipse cx="50" cy="72" rx="44" ry="11"/><path d="M26 72 Q26 30 50 28 Q74 30 74 72Z"/><path d="M27 62 H73 V70 H27Z" fill="rgba(0,0,0,.18)"/>',
+  Shirt:'<path d="M30 20 L44 14 Q50 22 56 14 L70 20 L90 36 L78 48 L70 42 L70 88 L30 88 L30 42 L22 48 L10 36Z"/>',
+  Pants:'<path d="M26 12 H74 L82 90 H58 L50 40 L42 90 H18Z"/><path d="M26 12 H74 V20 H26Z" fill="rgba(0,0,0,.18)"/>',
+  Shoes:'<path d="M2 74 Q2 36 18 36 L28 36 Q32 54 42 57 Q48 60 48 70 L48 78 H2Z"/><path d="M52 74 Q52 36 68 36 L78 36 Q82 54 92 57 Q98 60 98 70 L98 78 H52Z"/><path d="M2 72 H48 V78 H2Z M52 72 H98 V78 H52Z" fill="rgba(0,0,0,.25)"/><path d="M14 44 H26 M64 44 H76" stroke="#fff" stroke-width="3"/>',
+  Dress:'<path d="M34 6 H41 L44 18 H56 L59 6 H66 L63 30 Q61 36 67 40 L92 92 H8 L33 40 Q39 36 37 30Z"/><path d="M37 38 H63 V44 H37Z" fill="rgba(255,255,255,.45)"/>',
+  Socks:'<path d="M14 10 H34 V56 L46 64 Q52 70 46 78 Q42 84 34 82 L16 74 Q10 70 12 62 L14 56Z"/><path d="M56 10 H76 V56 L88 64 Q94 70 88 78 Q84 84 76 82 L58 74 Q52 70 54 62 L56 56Z"/><path d="M14 10 H34 V18 H14Z M56 10 H76 V18 H56Z" fill="rgba(255,255,255,.5)"/>',
+  Bag:'<path d="M34 40 Q34 14 50 14 Q66 14 66 40" fill="none" stroke="currentColor" stroke-width="7"/><rect x="16" y="36" width="68" height="52" rx="12"/><rect x="42" y="48" width="16" height="10" rx="3" fill="rgba(255,255,255,.6)"/>',
+  Coat:'<path d="M32 12 L46 8 L50 24 L54 8 L68 12 L90 34 L80 48 L72 40 L74 94 L26 94 L28 40 L20 48 L10 34Z"/><path d="M49 26 V94" stroke="rgba(0,0,0,.25)" stroke-width="2"/><g fill="#fff"><circle cx="56" cy="44" r="3.5"/><circle cx="56" cy="60" r="3.5"/><circle cx="56" cy="76" r="3.5"/></g>',
+  Glasses:'<g fill="none" stroke="currentColor" stroke-width="7"><circle cx="28" cy="55" r="18"/><circle cx="72" cy="55" r="18"/><path d="M46 52 Q50 46 54 52"/><path d="M11 50 L4 42 M89 50 L96 42"/></g><g fill="rgba(160,210,255,.35)"><circle cx="28" cy="55" r="15"/><circle cx="72" cy="55" r="15"/></g>',
+  Gloves:'<path d="M8 90 V52 Q8 32 24 32 Q38 32 38 48 V60 L44 52 Q50 48 53 56 L40 80 V90Z"/><path d="M92 90 V52 Q92 32 76 32 Q62 32 62 48 V60 L56 52 Q50 48 47 56 L60 80 V90Z"/>'
+};
+const clothSVG=(en,c)=>`<svg class="cloth" viewBox="0 0 100 100" style="color:${c}" fill="${c}" stroke="rgba(0,0,0,.18)" stroke-width="1.5">${CLOTH_ICON[en]}</svg>`;
+// where each piece sits on the teddy (teddy coordinates); torso pieces stack in the order they were put on
+const WEAR={
+  Pants:c=>`<path d="M56 184 Q100 172 144 184 L144 236 L104 236 L100 204 L96 236 L56 236Z" fill="${c}"/>`,
+  Socks:c=>`<g fill="${c}"><rect x="58" y="224" width="38" height="18" rx="7"/><rect x="104" y="224" width="38" height="18" rx="7"/></g>`,
+  Shoes:c=>`<g fill="${c}"><ellipse cx="76" cy="244" rx="26" ry="13"/><ellipse cx="124" cy="244" rx="26" ry="13"/></g>`,
+  Shirt:c=>`<svg x="44" y="94" width="112" height="112" viewBox="0 0 100 100" fill="${c}">${CLOTH_ICON.Shirt}</svg>`,
+  Coat:c=>`<svg x="40" y="92" width="120" height="124" viewBox="0 0 100 100" fill="${c}">${CLOTH_ICON.Coat}</svg>`,
+  Dress:c=>`<svg x="36" y="96" width="128" height="132" viewBox="0 0 100 100" fill="${c}">${CLOTH_ICON.Dress}</svg>`,
+  Gloves:c=>`<g fill="${c}"><circle cx="36" cy="182" r="16"/><circle cx="164" cy="182" r="16"/></g>`,
+  Bag:c=>`<svg x="146" y="150" width="54" height="54" viewBox="0 0 100 100" fill="${c}" style="color:${c}">${CLOTH_ICON.Bag}</svg>`,
+  Glasses:c=>`<g fill="none" stroke="${c}" stroke-width="5"><circle cx="84" cy="58" r="13"/><circle cx="116" cy="58" r="13"/><path d="M97 56 Q100 52 103 56"/></g>`,
+  Hat:c=>`<svg x="52" y="-26" width="96" height="70" viewBox="0 10 100 72" fill="${c}">${CLOTH_ICON.Hat}</svg>`
+};
+const WEAR_ORDER=['Pants','Socks','Shoes','Shirt','Dress','Coat','Gloves','Bag','Glasses','Hat'];
+const TEDDY=worn=>`<svg class="teddy" viewBox="0 -28 200 290" aria-label="דובי">
+  <g fill="#c98a52"><ellipse cx="52" cy="150" rx="15" ry="34" transform="rotate(28 52 150)"/><ellipse cx="148" cy="150" rx="15" ry="34" transform="rotate(-28 148 150)"/>
+    <ellipse cx="78" cy="218" rx="20" ry="26"/><ellipse cx="122" cy="218" rx="20" ry="26"/><ellipse cx="76" cy="242" rx="22" ry="12"/><ellipse cx="124" cy="242" rx="22" ry="12"/>
+    <ellipse cx="100" cy="160" rx="48" ry="56"/></g>
+  <ellipse cx="100" cy="166" rx="28" ry="34" fill="#e9b886"/>
+  ${WEAR_ORDER.filter(k=>worn[k]&&k!=='Hat'&&k!=='Glasses').map(k=>WEAR[k](worn[k])).join('')}
+  <g fill="#c98a52"><circle cx="64" cy="28" r="17"/><circle cx="136" cy="28" r="17"/><circle cx="100" cy="64" r="42"/></g>
+  <g fill="#e9b886"><circle cx="64" cy="28" r="9"/><circle cx="136" cy="28" r="9"/><ellipse cx="100" cy="80" rx="19" ry="14"/></g>
+  <g fill="#4a2c1a"><circle cx="84" cy="58" r="5.5"/><circle cx="116" cy="58" r="5.5"/><ellipse cx="100" cy="73" rx="7.5" ry="5.5"/></g>
+  <path d="M92 84 Q100 91 108 84" fill="none" stroke="#4a2c1a" stroke-width="3" stroke-linecap="round"/>
+  <g fill="#ff9aa8" opacity=".55"><circle cx="74" cy="76" r="6"/><circle cx="126" cy="76" r="6"/></g>
+  ${['Glasses','Hat'].filter(k=>worn[k]).map(k=>WEAR[k](worn[k])).join('')}
+</svg>`;
+const WEAR_COLORS=()=>CATS.find(c=>c.id==='colors').items.filter(c=>['Pink','Red','Blue','Yellow','Green','Purple','Orange'].includes(c.en));
+const canDress=g=>g.pool.some(x=>CLOTH_ICON[x.en]);
+function startDressUp(g){
+  screenId++;
+  const clothes=g.cat.items.filter(x=>CLOTH_ICON[x.en]);
+  // this level's clothes first, then others, five different pieces in all, each in its own color
+  const plan=[]; for(const t of pickTargets({cat:g.cat,pool:g.pool.filter(x=>CLOTH_ICON[x.en])},12)){ if(!plan.includes(t)) plan.push(t); if(plan.length===5) break }
+  for(const c of shuffle(clothes)){ if(plan.length===5) break; if(!plan.includes(c)) plan.push(c) }
+  const cols=shuffle(WEAR_COLORS());
+  const steps=plan.map((item,k)=>({item,color:cols[k%cols.length]}));
+  sayThen([['en','Dress up!'],['he','בואי נלביש את הדובי!']],()=>dressUpRound(g,steps,0,{}),300);
+}
+function dressUpRound(g,steps,r,worn){
+  const id=++screenId; homeTo=()=>pickGame(g.cat,g.level);
+  $home.hidden=false;
+  const {item,color}=steps[r], name=x=>(x.color.en+' '+x.item.en).toLowerCase();
+  const clothes=g.cat.items.filter(x=>CLOTH_ICON[x.en]), cols=WEAR_COLORS();
+  const otherItem=shuffle(clothes.filter(x=>x!==item)), otherCol=shuffle(cols.filter(x=>x!==color));
+  const opts=shuffle([{item,color},{item,color:otherCol[0]},{item:otherItem[0],color},{item:otherItem[1],color:otherCol[1]}]);
+  const right=opts.find(o=>o.item===item&&o.color===color);
+  $main.innerHTML=`<div class="screen dressup">
+    ${roundBar(r)}
+    ${askBtn('?')}
+    <div class="dress-row"><div class="teddy-wrap" id="teddy">${TEDDY(worn)}</div>
+      <div class="options four">${opts.map((o,k)=>`<button class="opt" data-k="${k}" aria-label="${o.color.he} ${o.item.he}">${clothSVG(o.item.en,o.color.c)}</button>`).join('')}</div></div>
+  </div>`;
+  const line='Put on the '+name({item,color})+'!';
+  const ask=()=>say([['en',line]]);
+  ask();
+  document.getElementById('ask').onclick=ask;
+  let done=false, wrongs=0;
+  const btns=[...$main.querySelectorAll('.opt')];
+  btns.forEach(b=>b.onclick=()=>{
+    if(done||id!==screenId) return;
+    const o=opts[+b.dataset.k];
+    if(o===right){
+      done=true; b.classList.remove('hint'); b.classList.add('right');
+      worn[item.en]=color.c; document.getElementById('teddy').innerHTML=TEDDY(worn);
+      if(!wrongs) gotIt(g.cat,item);
+      const t=document.getElementById('teddy');
+      win(t,name(o),()=> r+1<steps.length ? dressUpRound(g,steps,r+1,worn) : party(g,()=>startDressUp(g),`<div class="teddy-wrap big">${TEDDY(worn)}</div>`),[['en','Yes! The '+name(o)+'!']]);
+    } else {
+      wrongs++; b.classList.remove('wrong'); void b.offsetWidth; b.classList.add('wrong');
+      boop(); react('oops');
+      if(wrongs===1) missed(g.cat,item);
+      if(wrongs>=2){ btns[opts.indexOf(right)].classList.add('hint'); say([['en','This is the '+name(o)+'.'],['he','הנה, זה'],['en','the '+name(right)+'!']]) }
+      else say([['en','This is the '+name(o)+'.'],['he','נסי שוב!'],['en',line]]);
+    }
+  });
+}
+
+/* ---------- Game 10: The shop ("Give me three apples!": count them into the basket) ---------- */
+const PLURAL={Strawberry:'strawberries',Cherry:'cherries',Candy:'candies',Peach:'peaches',Sandwich:'sandwiches',Mango:'mangoes'};
+const COUNTABLE=new Set(['Apple','Banana','Strawberry','Watermelon','Cherry','Lemon','Pear','Orange','Pineapple','Peach','Mango','Kiwi','Egg','Pizza','Cake','Ice cream','Cookie','Candy','Sandwich']);
+const many=(it,n)=>n===1?it.en.toLowerCase():(PLURAL[it.en]||it.en.toLowerCase()+'s');
+const cap=s=>s[0].toUpperCase()+s.slice(1);
+const canShop=g=>g.pool.some(x=>COUNTABLE.has(x.en));
+function startShop(g){
+  screenId++;
+  const pool=g.pool.filter(x=>COUNTABLE.has(x.en));
+  const targets=pickTargets({cat:g.cat,pool},ROUNDS);
+  const ns=[]; for(let k=0;k<ROUNDS;k++){ let n; do{ n=1+Math.floor(Math.random()*5) }while(n===ns[k-1]); ns.push(n) }
+  sayThen([['en','The shop!'],['he','בואי נשחק בחנות!']],()=>shopRound(g,targets,ns,0),300);
+}
+function shopRound(g,targets,ns,r){
+  const id=++screenId; homeTo=()=>pickGame(g.cat,g.level);
+  $home.hidden=false;
+  const target=targets[r], n=ns[r];
+  const others=g.cat.items.filter(x=>x!==target&&COUNTABLE.has(x.en)), other=shuffle(others)[0];
+  const shelf=shuffle(Array(Math.min(n+2,7)).fill(target).concat(other?Array(3).fill(other):[]));
+  $main.innerHTML=`<div class="screen shop">
+    ${roundBar(r)}
+    ${askBtn('?')}
+    <div class="shelf">${shelf.map((it,k)=>`<button class="ware" data-k="${k}" aria-label="${it.he}">${visual(it,true)}</button>`).join('')}</div>
+    <div class="basket-row"><div class="basket" id="basket" aria-label="סל"></div><button class="mic ok" id="ok" aria-label="סיימתי">${CHECK}</button></div>
+  </div>`;
+  const line='Give me '+DIGIT[n]+' '+many(target,n)+'!';
+  const ask=()=>say([['en',line]]);
+  ask();
+  document.getElementById('ask').onclick=ask;
+  const basket=document.getElementById('basket'), ok=document.getElementById('ok');
+  let inBasket=[], done=false, wrongs=0;
+  const draw=()=>{ basket.innerHTML=inBasket.map((k,i)=>`<button class="ware in" data-i="${i}" aria-label="החזרה">${visual(shelf[k],true)}</button>`).join('');
+    basket.querySelectorAll('.ware').forEach(b=>b.onclick=()=>{ if(done) return; tick(); const k=inBasket.splice(+b.dataset.i,1)[0];
+      $main.querySelector(`.shelf .ware[data-k="${k}"]`).classList.remove('gone'); draw() }) };
+  $main.querySelectorAll('.shelf .ware').forEach(b=>b.onclick=()=>{
+    if(done||id!==screenId||b.classList.contains('gone')) return;
+    const it=shelf[+b.dataset.k];
+    if(it!==target){ boop(); b.classList.remove('wrong'); void b.offsetWidth; b.classList.add('wrong'); say([['he','זה'],['en',it.en]]); return }
+    b.classList.add('gone'); inBasket.push(+b.dataset.k); draw(); tick();
+    try{ synth&&synth.cancel() }catch(e){} say([['en',cap(DIGIT[inBasket.length])+'!']]);
+  });
+  ok.onclick=()=>{
+    if(done||id!==screenId) return;
+    const c=inBasket.length;
+    if(c===n){ done=true; ok.classList.add('done'); if(!wrongs) gotIt(g.cat,target);
+      win(basket,line,()=> r+1<ROUNDS ? shopRound(g,targets,ns,r+1) : party(g,()=>startShop(g)),[['en','Thank you! '+cap(DIGIT[n])+' '+many(target,n)+'!']]); return }
+    wrongs++; if(wrongs===1) missed(g.cat,target); boop(); react('oops');
+    ok.classList.remove('wrong'); void ok.offsetWidth; ok.classList.add('wrong');
+    if(wrongs>=2) document.getElementById('ask').querySelector('.q').textContent=n;
+    say(c<n?[['en','More, please! '+line]]:[['en','Too many! '+line]]);
+  };
+}
+
+/* ---------- Game 11: Echo (hear it, say it back: a flower grows, a dragon wakes up) ---------- */
+const ECHO_STAGES = BOY ? ['🥚','🥚','🐣','🐲','🐉'] : ['🌱','🌿','🌷','🌸','💐'];
+function startEcho(g){ screenId++; echoRound(g,pickTargets(g,ROUNDS),0,0) }
+function echoRound(g,targets,r,tries){
+  const id=++screenId; homeTo=()=>pickGame(g.cat,g.level);
+  $home.hidden=false;
+  const target=targets[r], live=settings.mic&&!!SR&&!srOff&&navigator.onLine!==false;
+  const word=target.L?target.L+'!':target.en+'!';
+  $main.innerHTML=`<div class="screen echo">
+    ${roundBar(r)}
+    <div class="grow s${r}" id="grow"><span>${ECHO_STAGES[r]}</span>${BOY&&r<3?'<i class="zz">💤</i>':''}</div>
+    <button class="ask" id="ask">${SPEAKER}<span class="q">${target.L||target.en}</span><span class="mini">${visual(target,true)}</span></button>
+    <button class="mic" id="mic" aria-label="${live?'מיקרופון':'אמרתי'}">${live?MIC:CHECK}</button>
+    <div class="heard" id="heard"></div>
+    ${live?'':`<div class="say-note">אומרים את המילה בקול ולוחצים על הכפתור.</div>`}
+  </div>`;
+  const mic=document.getElementById('mic'), heard=document.getElementById('heard'), grow=document.getElementById('grow');
+  const model=()=>say([['en',word]]);
+  say((r===0&&!tries?[['he','תגידי אחריי, והפרח יגדל!']]:[]).concat([['en',word]])).then(()=>{ if(id===screenId&&!busy&&!done) mic.classList.add('hint') });
+  document.getElementById('ask').onclick=()=>{ if(!busy) model() };
+  const next=()=> r+1<ROUNDS ? echoRound(g,targets,r+1,0) : party(g,()=>startEcho(g),`<div class="grow big"><span>${ECHO_STAGES[ROUNDS-1]}</span></div>`);
+  let busy=false, done=false;
+  const good=extra=>{ done=true; mic.classList.remove('hint','listen'); mic.classList.add('done'); mic.innerHTML=CHECK;
+    grow.innerHTML=`<span>${ECHO_STAGES[Math.min(r+1,ROUNDS-1)]}</span>`; grow.className='grow s'+(r+1)+' up';
+    win(grow,target.en,next,extra) };
+  if(!live){ mic.onclick=()=>{ if(!done){ tick(); good([['en',word]]) } }; return }
+  mic.onclick=()=>{
+    if(busy||done) return; busy=true; mic.classList.remove('hint');
+    try{ synth&&synth.cancel() }catch(e){}
+    const rec=new SR(); rec.lang='en-US'; rec.interimResults=false; rec.maxAlternatives=5;
+    let got=false;
+    rec.onresult=e=>{
+      got=true; if(id!==screenId) return;
+      if(!e.results.length||!e.results[0].length){ got=false; return }
+      const alts=[...e.results[0]].map(a=>a.transcript);
+      heard.textContent='“'+alts[0]+'”';
+      if(alts.some(a=>heardIt(a,target))){ gotIt(g.cat,target); good() }
+      else if(++tries>=2) good([['en','Good try! '+word]]);
+      else { boop(); react('oops'); say([['he','כמעט! תקשיבי שוב'],['en',word]]).then(()=>{ if(id===screenId&&!done&&!busy) mic.classList.add('hint') }) }
+    };
+    rec.onerror=e=>{ if(['not-allowed','service-not-allowed','network','audio-capture','language-not-supported'].includes(e.error)) srOff=true };
+    rec.onend=()=>{
+      busy=false; mic.classList.remove('listen'); if(id!==screenId||got||done) return;
+      if(srOff) echoRound(g,targets,r,tries);
+      else if(++tries>=2) good([['en','Good try! '+word]]);
+      else { say([['he','לא שמעתי. נסי שוב!']]); mic.classList.add('hint') }
+    };
+    try{ rec.start() }catch(e){ busy=false; srOff=true; echoRound(g,targets,r,tries); return }
+    mic.classList.add('listen');
+  };
+}
+
 /* ---------- End of a game: level done, maybe a crown ---------- */
 function party(g,again,hero){
   screenId++; homeTo=()=>showTopic(g.cat);
@@ -1474,6 +1758,7 @@ function showDevCode(){
   const inp=document.getElementById('dCode'), go=()=>{ if(inp.value==='2132'){ try{ sessionStorage.setItem('lumda-dev','1') }catch(e){} showDev() } else { document.getElementById('dMsg').textContent='קוד שגוי'; inp.value=''; inp.focus() } };
   document.getElementById('dGo').onclick=go; inp.onkeydown=e=>{ if(e.key==='Enter') go() }; inp.focus();
 }
+let devCat='body';
 function showDev(){
   screenId++; homeTo=showParents; atStart=false; $home.hidden=false; hush();
   const he=voices.filter(v=>/^he|^iw/i.test(v.lang)), en=voices.filter(v=>/^en/i.test(v.lang));
@@ -1481,11 +1766,19 @@ function showDev(){
     <h2>עמוד מפתח</h2>
     <div class="pbox"><h3>בדיקות קול</h3>
       <div class="pbtns"><button class="pbtn" id="dHe">בדיקת העברית</button><button class="pbtn" id="dLetters">השמעת כל האותיות</button></div></div>
+    <div class="pbox"><h3>הפעלת משחקים</h3>
+      <div class="pnote">כל משחק עם כל המילים של הנושא. ההתקדמות לא משתנה.</div>
+      <select id="dCat" style="font:inherit;font-size:16px;margin:8px 0;padding:6px 10px;border:2px solid var(--lilac);border-radius:12px;width:100%">${CATS.map(c=>`<option value="${c.id}"${c.id===devCat?' selected':''}>${c.he} (${c.en})</option>`).join('')}</select>
+      <div class="pbtns" id="dGames"></div></div>
     <div class="pbox"><h3>קולות בטלפון</h3>
       <div class="pnote">עברית: ${he.length?he.map(v=>v.name+(v===heVoice?' ✓':'')).join(', '):'אין'}</div>
       <div class="pnote">אנגלית: ${en.length} קולות${enVoice?', בשימוש: '+enVoice.name:''}</div></div>
   </div></div>`;
   document.getElementById('dHe').onclick=()=>showHeCheck();
+  const sel=document.getElementById('dCat'), list=()=>{ const cat=CATS.find(c=>c.id===sel.value); devCat=cat.id; const gs=gamesFor(cat,-2);
+    const box=document.getElementById('dGames'); box.innerHTML=gs.map((x,k)=>`<button class="pbtn" data-k="${k}" dir="ltr">${x.en}</button>`).join('');
+    box.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{ tick(); gs[+b.dataset.k].run() }) };
+  sel.onchange=list; list();
   document.getElementById('dLetters').onclick=()=>{ talkScreen=screenId; say('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(L=>['en',L+'!'])) };
 }
 function showParents(){
