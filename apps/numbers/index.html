@@ -1491,19 +1491,28 @@ $main.addEventListener('scroll',markScroll,{passive:true});
 let keepTop=null;
 // a new screen silences whatever the previous screen was still saying
 function hush(){ talkId++; explainRun++; lastSay=null; try{ synth&&synth.cancel() }catch(e){} document.documentElement.classList.remove('talking'); stopMouth() }
-/* The phone's Back button steps back inside the app, like the home button: one extra history entry is kept while away from the start screen.
-   Chrome's Back button skips an entry that was left by a pushState made without a tap, so the entry is only ever added right after a tap
-   (never from the Back handler itself); otherwise every second Back press would leave the app */
+/* The phone's Back button steps back inside the app, like the home button.
+   History holds one entry per step away from the start screen (start 0, topics 1, a topic 2, learning or game picker 3, a game 4).
+   Entries are added only right after a tap: Chrome's Back button skips entries pushed without a tap, and would then leave the app
+   (same scheme as apps/melody-english) */
 if(history.state&&history.state.lumda) try{ history.replaceState(null,'') }catch(e){}
-const guard=()=>{ if(!atStart&&!(history.state&&history.state.lumda)) try{ history.pushState({lumda:1},'') }catch(e){} };
-addEventListener('click',guard);     // bubbles up after the button's own handler has changed the screen
-addEventListener('pointerup',guard); // the parent corner opens while the title is held
+const navDepth=()=>{ if(atStart) return 0; if($main.querySelector('.cats')) return 1;
+  const h=homeTo?String(homeTo):''; return /pickGame|showDev/.test(h)?4:/showTopic|showParents/.test(h)?3:2 };
+const histDepth=()=>(history.state&&history.state.d)||0;
+let syncing=false;
+const guard=()=>{ if(syncing) return; const want=navDepth(), have=histDepth();
+  try{ if(want>have) for(let k=have+1;k<=want;k++) history.pushState({lumda:1,d:k},'');
+    else if(want<have){ syncing=true; history.go(want-have) } }catch(e){} };
+const stepBack=()=>{ if($main.querySelector('.cats')) return showStart(); const go=homeTo; go?go():showCats() };
 addEventListener('popstate',()=>{
+  if(syncing){ syncing=false; return }
   if(atStart) return;
   tick();
-  if($main.querySelector('.cats')) return showStart();
-  const go=homeTo; go?go():showCats();
+  const d=histDepth(); let n=0;
+  while(navDepth()>d&&n++<6) stepBack();
 });
+addEventListener('click',guard);     // bubbles up after the button's own handler has changed the screen
+addEventListener('pointerup',guard); // the parent corner opens while the title is held
 new MutationObserver(()=>{ if(talkScreen!==screenId) hush(); $buddyBar.hidden=!!$main.querySelector('.pm.big'); $main.scrollTop=keepTop||0; keepTop=null; fitScreen(); requestAnimationFrame(()=>{ fitScreen(); markScroll() }) }).observe($main,{childList:true});
 addEventListener('resize',()=>requestAnimationFrame(()=>{ fitScreen(); markScroll() }));
 addEventListener('load',fitScreen);
