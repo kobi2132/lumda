@@ -1,5 +1,5 @@
 /* The children who play. Every app can read the current child with LUMDA_KID() and adapt name, wording, voice and look.
-   The list lives on the phone (localStorage 'lumda-kids', edited in the hub's hidden kids page); Melody and Yam are the default.
+   The list lives on the phone (localStorage 'lumda-kids', edited in the hub's parents area). A new phone starts empty; Melody and Yam come from the developer page.
    Each saved kid: {id, name, nameEn, nameSay (Hebrew with nikud, for the voice), nameEnSay (how the English voice should say it), gender 'f'|'m', level 'kg'|'g1', char}.
    gender picks the colors, wording and voice; char picks the character (from chars.js, loaded before this file); level picks the content (kindergarten or first grade). */
 (function(){
@@ -33,7 +33,9 @@
   }
   window.LUMDA_KIDS_LIST = function(){
     try { const s = JSON.parse(localStorage.getItem('lumda-kids')); if (Array.isArray(s)) return s.filter(k => k && k.id && k.name) } catch(e){}
-    return DEFAULTS.map(k => Object.assign({}, k));
+    // nothing saved yet: a phone where Melody or Yam already played keeps them; a new phone starts with no children
+    try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && DEFAULTS.some(d => k.startsWith(d.id + '-'))) return DEFAULTS.map(d => Object.assign({}, d)) } } catch(e){}
+    return [];
   };
   window.LUMDA_SAVE_KIDS = function(list){
     try { localStorage.setItem('lumda-kids', JSON.stringify(list)) } catch(e){}

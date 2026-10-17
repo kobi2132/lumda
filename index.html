@@ -62,7 +62,7 @@ button{font:inherit;color:inherit}
 .kids.rows2 .kid .fig{height:min(30vh,56vw,360px)}
 .kid img{width:100%;height:100%;object-fit:contain;object-position:50% 100%}
 .kids.many .kid .name{font-size:clamp(18px,5.4vw,34px);padding:4px 14px;max-width:100%;overflow-wrap:anywhere}
-.nokids{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;color:#fff;text-align:center;font-family:var(--display);font-size:24px;padding-bottom:10vh}
+.nokids{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;color:var(--plum);text-align:center;font-family:var(--display);font-size:24px;padding-bottom:10vh}
 /* greeting, "who's playing?" and the parents button */
 #pick{position:relative}
 /* the app's logo and name at the top */
@@ -201,7 +201,6 @@ h1#pickTitle{margin:6px 0 0;font-size:clamp(28px,7.5vw,48px)}
       <p class="note">כאן מוסיפים, עורכים ומסירים ילדים. הרשימה וההתקדמות שמורות רק בטלפון הזה.</p>
       <div id="rows"></div>
       <button class="btn" id="addKid">➕ הוספת ילד</button>
-      <button class="btn soft" id="restoreKids" hidden>החזרת מלודי וים</button>
     </div>
   </section>
   <section id="pin" hidden>
@@ -254,7 +253,7 @@ h1#pickTitle{margin:6px 0 0;font-size:clamp(28px,7.5vw,48px)}
         <p class="okline" id="pMsg"></p></div>
       <div class="pcard"><h3>🔒 הקוד</h3><p class="note" id="pPinNote"></p>
         <button class="btn soft" id="pPin"></button><button class="btn soft" id="pPinOff" hidden>ביטול הקוד</button></div>
-      <div class="pcard"><h3>🗑️ איפוס</h3><p class="note">מוחק את כל הילדים, ההתקדמות וההגדרות, ומחזיר את מלודי וים. כדאי לשמור גיבוי לפני.</p>
+      <div class="pcard"><h3>🗑️ איפוס</h3><p class="note">מוחק את כל הילדים, ההתקדמות וההגדרות. כדאי לשמור גיבוי לפני.</p>
         <button class="btn red" id="pReset">איפוס של הכול</button></div>
       <button class="btn soft" id="pDev">🔧 מפתח</button>
     </div>
@@ -377,7 +376,7 @@ function showPick(){
   // up to two in a row on a phone (more children go to more rows); all in one row when the phone is sideways
   box.style.setProperty('--n', n); box.style.setProperty('--cols', Math.min(n, 2));
   box.classList.toggle('many', n > 2); box.classList.toggle('rows2', n > 2);
-  box.hidden = !n; $('nokids').hidden = !!n;
+  box.hidden = !n; $('nokids').hidden = !!n; $('pickSub').hidden = !n;
   box.innerHTML = kids.map(k =>
     `<button class="kid" data-k="${esc(k.id)}" aria-label="${esc(k.name)}"><span class="fig"><img src="${k.img}" alt="" draggable="false"></span><span class="name" data-look="${k.look}">${esc(k.name)}</span><span class="kstars">${starsOf(k.id) ? '⭐ ' + starsOf(k.id) : ''}</span></button>`).join('');
   box.querySelectorAll('.kid').forEach(b => b.onclick = async () => {
@@ -433,7 +432,6 @@ function showManage(){
     : '<p class="note">אין ילדים ברשימה.</p>';
   $('rows').querySelectorAll('[data-edit]').forEach(b => b.onclick = () => { try { history.pushState({kid:1}, '') } catch(e){} showEdit(KIDS[b.dataset.edit]) });
   $('rows').querySelectorAll('[data-del]').forEach(b => b.onclick = () => askRemove(KIDS[b.dataset.del]));
-  $('restoreKids').hidden = DEFAULT_IDS.every(id => KIDS[id]);
 }
 $('manageX').onclick = () => history.back();
 $('pManage').onclick = () => { try { history.pushState({kids:1}, '') } catch(e){} showManage() };
@@ -442,11 +440,12 @@ $('addKid').onclick = () => { try { history.pushState({kid:1}, '') } catch(e){} 
 $('firstKid').onclick = () => goParents();
 
 function saveList(list){ window.LUMDA_SAVE_KIDS(list); KIDS = window.LUMDA_KIDS }
-$('restoreKids').onclick = () => {
+// Melody and Yam (Jacob's niece and nephew) are added from the developer page
+function addDefaults(){
   const list = window.LUMDA_KIDS_LIST();
   const missing = (window.LUMDA_DEFAULT_KIDS || []).filter(d => !list.some(k => k.id === d.id)).map(d => Object.assign({}, d));
-  saveList(missing.concat(list)); showManage();
-};
+  saveList(missing.concat(list));
+}
 
 /* A small question card, used for removing a child and for restoring a backup */
 function ask(o){
@@ -865,11 +864,13 @@ function showDev(){
   }
   const vs = synth ? synth.getVoices() : [], he = vs.filter(v => /^(he|iw)/i.test(v.lang)), en = vs.filter(v => /^en/i.test(v.lang));
   const keys = []; try { for(let i = 0; i < localStorage.length; i++){ const k = localStorage.key(i); const ours = k.startsWith('lumda-') || Object.keys(KIDS).concat(DEFAULT_IDS).some(id => k.startsWith(id + '-')); if(ours) keys.push(k + ' (' + (localStorage.getItem(k) || '').length + ')') } } catch(e){}
-  $('devBody').innerHTML = `<div class="pcard"><h3>קולות</h3><p class="note">עברית: ${he.length ? he.map(v => esc(v.name)).join(', ') : 'אין'}</p><p class="note">אנגלית: ${en.length} קולות</p>
+  $('devBody').innerHTML = `<div class="pcard"><h3>מלודי וים</h3>${DEFAULT_IDS.every(id => KIDS[id]) ? '<p class="note">מלודי וים כבר ברשימה.</p>' : '<button class="btn" id="dAdd">➕ הוספת מלודי וים</button>'}</div>
+    <div class="pcard"><h3>קולות</h3><p class="note">עברית: ${he.length ? he.map(v => esc(v.name)).join(', ') : 'אין'}</p><p class="note">אנגלית: ${en.length} קולות</p>
     <div class="chips">${Object.values(KIDS).map(k => `<button data-w="${esc(k.id)}">🔊 ${esc(k.name)}</button>`).join('')}</div></div>
     <div class="pcard"><h3>הודעות למפתח</h3>${devMsgs().length ? devMsgs().slice().reverse().map(m => `<div class="msg"><small>${esc(new Date(m.at).toLocaleString('he-IL'))} · גרסה ${esc(m.ver || '?')} · ${esc(m.kids || '')}</small>${esc(m.text)}</div>`).join('') + '<button class="btn soft" id="dCopy">העתקת ההודעות</button><p class="okline" id="dCopyOk"></p>' : '<p class="note">אין הודעות.</p>'}</div>
     <div class="pcard"><h3>נתונים שמורים</h3><p class="note" dir="ltr" style="text-align:left;word-break:break-all">${keys.sort().map(esc).join('<br>')}</p></div>`;
   $('devBody').querySelectorAll('[data-w]').forEach(b => b.onclick = () => welcome(KIDS[b.dataset.w]));
+  if($('dAdd')) $('dAdd').onclick = () => { addDefaults(); showDev() };
   if($('dCopy')) $('dCopy').onclick = async () => { try { await navigator.clipboard.writeText(devMsgs().map(m => m.at + ' (' + (m.ua || '') + ')\n' + m.text).join('\n\n')); $('dCopyOk').textContent = 'הועתק.' } catch(e){ $('dCopyOk').textContent = 'לא הצלחתי להעתיק.' } };
 }
 

@@ -729,7 +729,9 @@ html[data-kid="yam"] .cup{background:linear-gradient(90deg,#3f6fd8,#7fa0ff 40%,#
 <script src="../../kids.js"></script>
 <script>
 /* ---------- Who is playing ---------- */
-const KID = (window.LUMDA_KID && window.LUMDA_KID()) || (window.LUMDA_KIDS && window.LUMDA_KIDS.melody) || {id:'melody',name:'מלודי',nameEn:'Melody',gender:'f'};
+// the child picked in the hub (or the first child); with no children yet, the hub is where they're added
+const KID = (window.LUMDA_KID && window.LUMDA_KID()) || Object.values(window.LUMDA_KIDS || {})[0] || null;
+if(!KID){ location.replace('../../index.html'); throw new Error('no child yet') }
 const BOY = KID.gender==='m';
 // the content follows the child's level (kindergarten or first grade); the look and wording follow gender
 const G1 = KID.level ? KID.level==='g1' : BOY;
