@@ -617,7 +617,10 @@ html[data-kid="yam"] .ltr{color:#24358f}
 .shop .counter{min-height:56px;padding:6px}.shop .counter .coin{width:clamp(28px,8vw,36px)}
 .shop .purse:empty{display:none}
 .shop .coin,.shop .coin.mid,.shop .coin.big{background:var(--ci) center/contain no-repeat;border:0;border-radius:0;box-shadow:none;filter:drop-shadow(0 2px 1px rgba(0,0,0,.25))}
-.shop .coin b{transform:translateX(-5%);color:#6b4300;text-shadow:0 0 3px #fff,0 0 2px #fff}.shop .coin.mid b{color:#353b48}
+.shop .coin b{color:#2f3542;text-shadow:0 0 3px #fff,0 0 2px #fff}.shop .coin.big b{color:#5a3b00;text-shadow:0 0 3px #fff3c4,0 0 2px #fff3c4}
+/* real shekels: the 1 is the smallest, the 10 the biggest */
+.shop .coinbtn .coin{width:56px}.shop .coinbtn .coin.mid{width:62px}.shop .coinbtn .coin.big{width:68px}
+.shop .counter .coin.mid{transform:scale(1.1)}.shop .counter .coin.big{transform:scale(1.22)}.shop .counter{gap:7px}
 /* frog */
 .pond{position:relative;width:100%;max-width:560px;align-self:center;padding-top:clamp(46px,13vw,64px);direction:ltr}
 .pads{display:grid;grid-template-columns:repeat(11,1fr);gap:2px;background:linear-gradient(180deg,#9fe3ff,#5bc3f0);border-radius:999px;padding:6px 4px;border:3px solid #fff;box-shadow:0 5px 0 rgba(78,31,99,.15)}
@@ -1513,7 +1516,7 @@ const L2={
 const cubes=n=>n===1?line('קובייה אחת','קֻבִּיָּה אַחַת'):n===2?line('שתי קוביות','שְׁתֵּי קֻבִּיּוֹת'):P(n,['קוביות','קֻבִּיּוֹת']);
 const FROG_IMG=E+'img/f6bd162e133b.webp';
 // the shop's own pictures (this app's img/, listed in img/list.json for offline)
-const SHOP_ART={"sellerGirlWave":"img/559d8e4410d1.webp","sellerGirlTalk":"img/bbedce5af592.webp","sellerGirlTake":"img/44427446b1bc.webp","sellerBoyWave":"img/76145bf81429.webp","sellerBoyTalk":"img/33a6392c7188.webp","sellerBoyTake":"img/6ff2eca20f1e.webp","standGirl":"img/85c5637fe897.webp","standBoy":"img/b71a017ff5ee.webp","basket":"img/97d3c0a547be.webp","coin1":"img/a9c877aef173.webp","coin5":"img/1eb449aa51cc.webp","coin10":"img/372d3f2ef586.webp"};   // the frog from the English app's animals
+const SHOP_ART={"sellerGirlWave":"img/559d8e4410d1.webp","sellerGirlTalk":"img/bbedce5af592.webp","sellerGirlTake":"img/44427446b1bc.webp","sellerBoyWave":"img/76145bf81429.webp","sellerBoyTalk":"img/33a6392c7188.webp","sellerBoyTake":"img/6ff2eca20f1e.webp","standGirl":"img/85c5637fe897.webp","standBoy":"img/b71a017ff5ee.webp","basket":"img/97d3c0a547be.webp","coin1":"img/1a1bc4c7a364.webp","coin5":"img/5da4efc1c8f0.webp","coin10":"img/7b74d21c368c.webp"};   // the frog from the English app's animals
 
 /* ---------- Game 5: The shop (pay the price with coins) ---------- */
 const SHOP_ITEMS=['Apple','Ball','Cake','Teddy bear','Ice cream','Kite','Drum','Balloon','Candy','Pizza','Train','Truck','Gift','Book'];
