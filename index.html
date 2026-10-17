@@ -63,7 +63,54 @@ button{font:inherit;color:inherit}
 .kid img{width:100%;height:100%;object-fit:contain;object-position:50% 100%}
 .kids.many .kid .name{font-size:clamp(18px,5.4vw,34px);padding:4px 14px;max-width:100%;overflow-wrap:anywhere}
 .nokids{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;color:#fff;text-align:center;font-family:var(--display);font-size:24px;padding-bottom:10vh}
-h1.hold{transition:transform 2s linear;transform:scale(1.06)}
+/* greeting, "who's playing?" and the parents button */
+#pick{position:relative}
+h1#pickTitle{margin:44px 0 0}
+.sub{margin:4px 0 10px;text-align:center;font-family:var(--display);font-weight:600;font-size:clamp(22px,6vw,34px);color:var(--plum)}
+.parentsBtn{position:absolute;top:0;inset-inline-end:0;min-height:44px;padding:6px 16px;border:3px solid rgba(255,255,255,.8);border-radius:999px;
+  background:rgba(255,255,255,.35);color:var(--plum);font-size:16px;cursor:pointer;display:flex;align-items:center;gap:6px}
+.parentsBtn:active{transform:translateY(2px)}
+.kid .kstars{font-family:var(--display);font-weight:700;font-size:clamp(16px,4.4vw,22px);color:var(--plum);background:rgba(255,255,255,.7);border-radius:999px;padding:2px 12px;margin-top:-2px}
+.kid .kstars:empty{display:none}
+
+/* Parents' code */
+#pin:not([hidden]){flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center}
+#pin .page{max-width:380px;text-align:center}
+#pin h2 span{text-align:center}
+.dots{display:flex;justify-content:center;gap:16px;margin:14px 0 6px;direction:ltr}
+.dots i{width:22px;height:22px;border-radius:50%;border:3px solid #c48ae6;display:block}
+.dots i.on{background:#e0307f;border-color:#e0307f}
+.dots.shake{animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+.mathq{font-family:var(--display);font-size:34px;direction:ltr;margin:8px 0}
+.typed{font-family:var(--display);font-size:30px;min-height:42px;direction:ltr;letter-spacing:4px}
+.keys{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px auto 0;max-width:300px;direction:ltr}
+.keys button{min-height:60px;border:0;border-radius:18px;background:#faf3fd;box-shadow:0 4px 0 #d9c2e8;font-family:var(--display);font-size:28px;cursor:pointer}
+.keys button:active{transform:translateY(3px);box-shadow:0 1px 0 #d9c2e8}
+.keys button.ok{background:linear-gradient(180deg,#ff8fc0,#e0307f);color:#fff;box-shadow:0 4px 0 #a8226a}
+.linkbtn{border:0;background:none;color:#b0208a;font-weight:700;font-size:16px;margin-top:14px;cursor:pointer;min-height:44px;text-decoration:underline}
+
+/* Parents area */
+.pcard{margin-top:14px;padding:14px;border-radius:20px;background:#faf3fd}
+.pcard h3{margin:0 0 8px;font-family:var(--display);font-size:22px}
+.pcard .note{margin:0 0 8px}
+.pcard .btn{margin-top:10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{min-height:46px;padding:6px 16px;border:3px solid #ead6f5;border-radius:999px;background:#fff;font-size:17px;cursor:pointer}
+.chips button[aria-pressed=true]{border-color:#e0307f;background:#ffe9f4;font-weight:700}
+.chips+.lbl,.lbl{display:block;font-weight:700;font-size:16px;margin:12px 0 6px}
+.mini{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.mini img{width:44px;height:52px;object-fit:contain;flex:none}
+.mini b{font-family:var(--display);font-size:20px}
+.prog{background:#fff;border-radius:16px;padding:10px 12px;margin-bottom:10px}
+.prog .ph{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.prog .ph img{width:40px;height:46px;object-fit:contain}
+.prog .ph b{flex:1;font-family:var(--display);font-size:20px}
+.prow2{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;align-items:center;font-size:15px;margin-top:6px}
+.prow2 .bar{grid-column:1/-1;height:10px;border-radius:5px;background:#f0e2f8;overflow:hidden}
+.prow2 .bar i{display:block;height:100%;background:linear-gradient(90deg,#ff8fc0,#e0307f)}
+.prow2 small{opacity:.75}
+.okline{font-size:15px;line-height:1.5;margin:8px 0 0}
 
 /* Kids page (hidden: hold the title for 2 seconds). Everything here is for parents. */
 .page{max-width:620px;width:100%;margin:0 auto;background:#fff;border-radius:26px;padding:18px 16px 22px;box-shadow:0 8px 0 rgba(40,10,60,.18);color:#4e1f63}
@@ -117,26 +164,81 @@ h1.hold{transition:transform 2s linear;transform:scale(1.06)}
   .kids.many .kid .fig{height:min(44vh,440px)} .kids.many .kid .name{font-size:clamp(18px,3vw,34px)} }
 @media (orientation:landscape) and (max-height:520px){ .kid .fig{height:min(60vh,300px)} h1{margin:4px 0 8px;font-size:30px}
   .kids.many .kid .fig{height:min(54vh,300px)} .kids.many .kid .name{font-size:18px;padding:3px 12px} }
+@media (orientation:landscape) and (max-height:520px){ h1#pickTitle{margin:2px 0 0;font-size:26px} .sub{font-size:18px;margin:0 0 4px}
+  .kids{padding-bottom:2vh} .kid{gap:4px} .kid .fig,.kids.many .kid .fig{height:min(48vh,240px)} .kid .name{font-size:24px;padding:2px 20px} .kid .kstars{font-size:15px} }
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <section id="pick">
-    <h1 id="pickTitle">מי משחק היום?</h1>
+    <button class="parentsBtn" id="parentsBtn" aria-label="אזור ההורים">🔒 הורים</button>
+    <h1 id="pickTitle"></h1>
+    <p class="sub" id="pickSub">מי משחק היום?</p>
     <div class="kids" id="kids"></div>
-    <div class="nokids" id="nokids" hidden><span>עוד אין ילדים בלומדות</span><button class="btn" id="firstKid" style="max-width:320px">➕ הוספת ילד</button></div>
+    <div class="nokids" id="nokids" hidden><span>בואו נוסיף את הילד הראשון</span><button class="btn" id="firstKid" style="max-width:320px">➕ הוספת ילד</button></div>
   </section>
   <section id="manage" hidden>
     <div class="page">
-      <h2><span>הילדים בלומדות</span><button class="x" id="manageX" aria-label="סגירה">✕</button></h2>
+      <h2><span>הילדים בלומדות</span><button class="x" id="manageX" aria-label="חזרה">✕</button></h2>
       <p class="note">כאן מוסיפים, עורכים ומסירים ילדים. הרשימה וההתקדמות שמורות רק בטלפון הזה.</p>
       <div id="rows"></div>
       <button class="btn" id="addKid">➕ הוספת ילד</button>
       <button class="btn soft" id="restoreKids" hidden>החזרת מלודי וים</button>
-      <button class="btn soft" id="backupKids">💾 שמירת גיבוי (כל הילדים וההתקדמות)</button>
-      <button class="btn soft" id="loadKids">📂 שחזור מגיבוי</button>
-      <input type="file" id="loadFile" accept="application/json,.json" hidden>
+    </div>
+  </section>
+  <section id="pin" hidden>
+    <div class="page">
+      <h2><span id="pinTitle"></span><button class="x" id="pinX" aria-label="סגירה">✕</button></h2>
+      <p class="note" id="pinNote"></p>
+      <div class="mathq" id="pinQ" hidden></div>
+      <div class="dots" id="pinDots"><i></i><i></i><i></i><i></i></div>
+      <div class="typed" id="pinTyped" hidden></div>
+      <p class="err" id="pinErr"></p>
+      <div class="keys" id="pinKeys"></div>
+      <button class="linkbtn" id="pinAlt"></button>
+    </div>
+  </section>
+  <section id="parents" hidden>
+    <div class="page">
+      <h2><span>אזור ההורים</span><button class="x" id="parentsX" aria-label="סגירה">✕</button></h2>
+      <p class="note">ההגדרות כאן משפיעות על כל הלומדות. הכול שמור רק בטלפון הזה.</p>
+      <div class="pcard"><h3>👧👦 הילדים</h3><div id="pKids"></div><button class="btn" id="pManage">עריכת הילדים</button></div>
+      <div class="pcard"><h3>⭐ ההתקדמות</h3><div id="pProg"></div><p class="note">פירוט מלא, ומה כדאי לתרגל, יש בפינת ההורים שבתוך כל לומדה.</p></div>
+      <div class="pcard"><h3>🔊 קול ודיבור</h3>
+        <div class="chips" id="sVoice"><button data-v="1">דיבור פועל</button><button data-v="0">בלי דיבור</button></div>
+        <span class="lbl">מהירות הדיבור</span><div class="chips" id="sRate"><button data-v=".8">איטי</button><button data-v="1">רגיל</button></div>
+        <span class="lbl">מיקרופון (במשחקי דיבור)</span><div class="chips" id="sMic"><button data-v="1">עם מיקרופון</button><button data-v="0">בלי מיקרופון</button></div>
+        <p class="okline">הזיהוי נעשה בשרתים של גוגל. בלי מיקרופון הילד אומר את המילה ולוחץ על כפתור.</p>
+        <p class="okline" id="sHe"></p>
+        <button class="btn soft" id="sTest">🔊 בדיקת קול</button></div>
+      <div class="pcard"><h3>⏰ זמן מסך</h3><span class="lbl" style="margin-top:0">תזכורת להפסקה אחרי</span>
+        <div class="chips" id="sBreak"><button data-v="15">15 דקות</button><button data-v="20">20 דקות</button><button data-v="30">30 דקות</button><button data-v="0">בלי תזכורת</button></div>
+        <p class="okline">התזכורת מגיעה רק בין משחקים, אף פעם לא באמצע.</p></div>
+      <div class="pcard"><h3>📚 הלומדות של כל ילד</h3><p class="note">לחיצה מסתירה לומדה מהילד או מחזירה אותה.</p><div id="pApps"></div></div>
+      <div class="pcard"><h3>💾 גיבוי ושחזור</h3>
+        <p class="note">קובץ אחד עם כל הילדים, ההתקדמות וההגדרות. ניקוי נתונים של הדפדפן מוחק הכול, אז כדאי לשמור גיבוי מדי פעם. אפשר גם להעביר אותו לטלפון אחר.</p>
+        <button class="btn soft" id="backupKids">💾 שמירת גיבוי</button>
+        <button class="btn soft" id="loadKids">📂 שחזור מגיבוי</button>
+        <input type="file" id="loadFile" accept="application/json,.json" hidden></div>
+      <div class="pcard"><h3>📲 התקנה ועדכון</h3>
+        <p class="note" id="pVer"></p>
+        <button class="btn" id="pInstall" hidden>📲 התקנה בטלפון</button>
+        <p class="okline" id="pInstallHelp"></p>
+        <button class="btn soft" id="pUpdate">🔄 בדיקת עדכון</button>
+        <button class="btn soft" id="pShare">🔗 שיתוף הלומדות עם חברים</button>
+        <p class="okline" id="pMsg"></p></div>
+      <div class="pcard"><h3>🔒 הקוד</h3><p class="note" id="pPinNote"></p>
+        <button class="btn soft" id="pPin"></button><button class="btn soft" id="pPinOff" hidden>ביטול הקוד</button></div>
+      <div class="pcard"><h3>🗑️ איפוס</h3><p class="note">מוחק את כל הילדים, ההתקדמות וההגדרות, ומחזיר את מלודי וים. כדאי לשמור גיבוי לפני.</p>
+        <button class="btn red" id="pReset">איפוס של הכול</button></div>
+      <button class="btn soft" id="pDev">🔧 מפתח</button>
+    </div>
+  </section>
+  <section id="dev" hidden>
+    <div class="page">
+      <h2><span>עמוד מפתח</span><button class="x" id="devX" aria-label="סגירה">✕</button></h2>
+      <div id="devBody"></div>
     </div>
   </section>
   <section id="edit" hidden>
@@ -211,9 +313,11 @@ function welcome(kid){
   return new Promise(done => {
     if(!synth){ setTimeout(done,900); return }
     try { synth.cancel() } catch(e){}
+    const set = window.LUMDA_SETTINGS();
+    if(!set.voice){ setTimeout(done,900); return }
     const u = new SpeechSynthesisUtterance(kid.welcomeSay || kid.welcome);
     const v = heVoice(kid.voice); u.lang = v ? v.lang : 'he-IL'; if(v) u.voice = v;
-    u.rate = .95; u.pitch = kid.voice==='male' && !(v && /male/i.test(v.name)) ? .8 : 1.15;
+    u.rate = .95 * (set.rate || 1); u.pitch = kid.voice==='male' && !(v && /male/i.test(v.name)) ? .8 : 1.15;
     let fin = false; const end = () => { if(!fin){ fin = true; done() } };
     u.onend = end; u.onerror = end; setTimeout(end, 3500);
     synth.speak(u);
@@ -228,9 +332,16 @@ function theme(kid){
 }
 
 let view = 'pick';
-function only(id){ ['pick','list','manage','edit'].forEach(s => $(s).hidden = s !== id); view = id; scrollTo(0, 0) }
+function only(id){ ['pick','list','manage','edit','pin','parents','dev'].forEach(s => $(s).hidden = s !== id); view = id; scrollTo(0, 0) }
+// the greeting follows the time of day
+function greeting(){
+  const h = new Date().getHours();
+  return h >= 5 && h < 12 ? 'בוקר טוב! ☀️' : h >= 12 && h < 17 ? 'צהריים טובים! 🌤️' : h >= 17 && h < 21 ? 'ערב טוב! 🌆' : 'לילה טוב! 🌙';
+}
+// all of a child's stars, in every app (each app keeps them under a key that starts with the child's id and ends with "stars")
+function starsOf(id){ let n = 0; progressKeys(id).forEach(k => { if(/stars$/.test(k)) n += parseInt(localStorage.getItem(k) || '0', 10) || 0 }); return n }
 function showPick(){
-  theme(null); only('pick');
+  theme(null); only('pick'); $('pickTitle').textContent = greeting();
   const box = $('kids'); box.classList.remove('picked');
   if(history.state && history.state.list) try { history.replaceState(null, '') } catch(e){}
   const kids = Object.values(KIDS), n = kids.length;
@@ -239,7 +350,7 @@ function showPick(){
   box.classList.toggle('many', n > 2); box.classList.toggle('rows2', n > 2);
   box.hidden = !n; $('nokids').hidden = !!n;
   box.innerHTML = kids.map(k =>
-    `<button class="kid" data-k="${esc(k.id)}" aria-label="${esc(k.name)}"><span class="fig"><img src="${k.img}" alt="" draggable="false"></span><span class="name" data-look="${k.look}">${esc(k.name)}</span></button>`).join('');
+    `<button class="kid" data-k="${esc(k.id)}" aria-label="${esc(k.name)}"><span class="fig"><img src="${k.img}" alt="" draggable="false"></span><span class="name" data-look="${k.look}">${esc(k.name)}</span><span class="kstars">${starsOf(k.id) ? '⭐ ' + starsOf(k.id) : ''}</span></button>`).join('');
   box.querySelectorAll('.kid').forEach(b => b.onclick = async () => {
     if(box.classList.contains('picked')) return;
     const kid = KIDS[b.dataset.k];
@@ -251,12 +362,14 @@ function showPick(){
   });
 }
 
+// the apps a child can have (a parent can hide some of them in the parents area)
+const appsOf = kid => APPS.filter(a => !a.kids || a.kids.includes(kid.id) || !DEFAULT_IDS.includes(kid.id));
 function showList(kid){
   theme(kid); only('list');
   if(!(history.state && history.state.list)) try { history.pushState({list:1}, '') } catch(e){}
   $('meImg').src = kid.img; $('hi').textContent = 'שלום ' + kid.name;
   // a catalog entry's kids list names Melody and Yam; children added on the phone get every app
-  const list = APPS.filter(a => !a.kids || a.kids.includes(kid.id) || !DEFAULT_IDS.includes(kid.id));
+  const list = appsOf(kid).filter(a => !(kid.hide || []).includes(a.id));
   const grid = $('grid');
   grid.innerHTML = list.length ? '' : `<div class="empty"><span class="big">⚔️🐉</span>${kid.gender==='m' ? 'הלומדות שלך בדרך, אביר!' : 'הלומדות שלך בדרך!'}</div>`;
   list.forEach(a => {
@@ -274,20 +387,13 @@ function showList(kid){
 $('switch').onclick = () => { try { sessionStorage.removeItem('lumda-kid') } catch(e){} showPick() };
 // the phone's Back button: a child's list or the kids page goes back to "who's playing?", the kid form goes back to the kids page
 addEventListener('popstate', () => {
+  $('ask').hidden = true;
   if(view === 'list'){ try { sessionStorage.removeItem('lumda-kid') } catch(e){} showPick() }
-  else if(view === 'manage') showPick();
-  else if(view === 'edit'){ $('chars').hidden = true; editDone() }
+  else if(view === 'pin' && pinChange){ pinChange = false; showParents() }
+  else if(view === 'parents' || view === 'pin') showPick();
+  else if(view === 'manage' || view === 'dev') showParents();
+  else if(view === 'edit'){ $('chars').hidden = true; showManage() }
 });
-
-/* ---------- Kids page: hold the title for 2 seconds (like the parents corner in the apps) ---------- */
-const title = $('pickTitle');
-let holdT = null, held = false;
-title.addEventListener('pointerdown', () => { held = false; title.classList.add('hold'); holdT = setTimeout(() => { held = true; try { navigator.vibrate && navigator.vibrate(30) } catch(e){} }, 2000) });
-const unhold = () => { clearTimeout(holdT); title.classList.remove('hold') };
-['pointerleave','pointercancel'].forEach(ev => title.addEventListener(ev, () => { unhold(); held = false }));
-// the step is added right after the finger lifts, so the phone's Back button keeps it
-title.addEventListener('pointerup', () => { unhold(); if(held){ held = false; try { history.pushState({kids:1}, '') } catch(e){} showManage() } });
-title.addEventListener('contextmenu', e => e.preventDefault());
 
 const levelName = l => (LEVELS[l] || LEVELS.kg || {he:''}).he;
 function showManage(){
@@ -301,10 +407,10 @@ function showManage(){
   $('restoreKids').hidden = DEFAULT_IDS.every(id => KIDS[id]);
 }
 $('manageX').onclick = () => history.back();
+$('pManage').onclick = () => { try { history.pushState({kids:1}, '') } catch(e){} showManage() };
 $('addKid').onclick = () => { try { history.pushState({kid:1}, '') } catch(e){} showEdit(null) };
-// with nobody on the list, "who's playing?" offers to add a child (and Back returns there)
-$('firstKid').onclick = () => { try { history.pushState({kids:1}, '') } catch(e){} fromEmpty = true; showEdit(null) };
-let fromEmpty = false;
+// with nobody on the list, "who's playing?" leads to the parents area, where children are added
+$('firstKid').onclick = () => goParents();
 
 function saveList(list){ window.LUMDA_SAVE_KIDS(list); KIDS = window.LUMDA_KIDS }
 $('restoreKids').onclick = () => {
@@ -335,7 +441,7 @@ function askRemove(kid){
 
 /* Backup of all children and their progress in one file */
 $('backupKids').onclick = () => {
-  const data = { 'lumda-kids': JSON.stringify(window.LUMDA_KIDS_LIST()) };
+  const data = { 'lumda-kids': JSON.stringify(window.LUMDA_KIDS_LIST()), 'lumda-settings': JSON.stringify(window.LUMDA_SETTINGS()) };
   Object.keys(KIDS).forEach(id => progressKeys(id).forEach(k => { data[k] = localStorage.getItem(k) }));
   const blob = new Blob([JSON.stringify({ lumda: 'kids', v: 1, saved: new Date().toISOString(), data }, null, 1)], { type: 'application/json' });
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'lumda-kids-backup-' + new Date().toISOString().slice(0,10) + '.json';
@@ -349,8 +455,10 @@ $('loadFile').onchange = async () => {
   if(!d || d.lumda !== 'kids' || !d.data || !d.data['lumda-kids']){ ask({ title: 'הקובץ לא מתאים', text: 'זה לא קובץ גיבוי של רשימת הילדים.', yes: 'הבנתי', then: () => {} }); return }
   ask({ title: 'לשחזר מהגיבוי?', text: 'רשימת הילדים וההתקדמות שבקובץ יחליפו את מה ששמור בטלפון.', yes: 'שחזור',
     then: () => {
-      Object.keys(d.data).forEach(k => { if(k === 'lumda-kids' || /^[\w-]+$/.test(k)) store(k, String(d.data[k])) });
-      window.LUMDA_SAVE_KIDS(JSON.parse(d.data['lumda-kids'])); KIDS = window.LUMDA_KIDS; showManage();
+      // only the lumda's own keys: the settings and each child's progress (other sites on this address keep theirs)
+      let ids = []; try { ids = JSON.parse(d.data['lumda-kids']).map(k => k.id) } catch(e){}
+      Object.keys(d.data).forEach(k => { if(k === 'lumda-settings' || ids.some(id => k.startsWith(id + '-'))) store(k, String(d.data[k])) });
+      window.LUMDA_SAVE_KIDS(JSON.parse(d.data['lumda-kids'])); KIDS = window.LUMDA_KIDS; showParents();
     } });
 };
 
@@ -394,7 +502,6 @@ $('kName').oninput = () => { if($('kSay').dataset.auto) $('kSay').value = $('kNa
 $('kNameEn').oninput = () => { if($('kSayEn').dataset.auto) $('kSayEn').value = $('kNameEn').value.trim() };
 $('kSay').oninput = () => { $('kSay').dataset.auto = '' };
 $('kSayEn').oninput = () => { $('kSayEn').dataset.auto = '' };
-function editDone(){ if(fromEmpty){ fromEmpty = false; showPick() } else showManage() }
 $('editX').onclick = $('cancelKid').onclick = () => history.back();
 $('saveKid').onclick = () => {
   // a name pasted with nikud is shown without it, and its nikud is kept for the voice
@@ -427,9 +534,183 @@ function speak(text, lang){
   synth.speak(u);
 }
 
+/* ---------- Parents area: the 🔒 button, behind a code the parent chooses ---------- */
+const getPin = () => { try { return localStorage.getItem('lumda-pin') || '' } catch(e){ return '' } };
+// the code is asked once per visit (until the lumda is closed)
+const unlocked = () => { try { return sessionStorage.getItem('lumda-parent') === '1' } catch(e){ return false } };
+const unlock = () => { try { sessionStorage.setItem('lumda-parent', '1') } catch(e){} };
+function goParents(){
+  try { history.pushState({par:1}, '') } catch(e){}
+  if(unlocked()) showParents();
+  else if(getPin()) showPin('enter');
+  else { let skip = false; try { skip = sessionStorage.getItem('lumda-pin-skip') === '1' } catch(e){} skip ? (unlock(), showParents()) : showPin('set1') }
+}
+$('parentsBtn').onclick = () => goParents();
+
+let pinMode = 'enter', pinBuf = '', pinFirst = '', pinAns = 0, pinChange = false;
+function showPin(mode){
+  pinMode = mode; pinBuf = ''; theme(null); only('pin'); $('pinErr').textContent = '';
+  const math = mode === 'forgot';
+  $('pinQ').hidden = $('pinTyped').hidden = !math; $('pinDots').hidden = math;
+  if(math){ const a = 6 + Math.floor(Math.random() * 4), b = 12 + Math.floor(Math.random() * 8); pinAns = a * b; $('pinQ').textContent = b + ' × ' + a + ' = ?' }
+  const T = {
+    enter: ['אזור ההורים', 'הקלידו את הקוד', 'שכחתי את הקוד'],
+    set1: [getPin() ? 'קוד חדש' : 'בחירת קוד להורים', 'בחרו קוד של 4 ספרות. הוא ישמור על אזור ההורים מפני לחיצות של הילדים.', getPin() ? '' : 'אחר כך'],
+    set2: ['שוב את אותו קוד', 'הקלידו את הקוד פעם נוספת, לאישור.', ''],
+    forgot: ['שכחתי את הקוד', 'פתרו את התרגיל, ואז בוחרים קוד חדש.', '']
+  }[mode];
+  $('pinTitle').textContent = T[0]; $('pinNote').textContent = T[1]; $('pinAlt').textContent = T[2]; $('pinAlt').hidden = !T[2];
+  $('pinKeys').innerHTML = [1,2,3,4,5,6,7,8,9].map(n => `<button data-n="${n}">${n}</button>`).join('') + '<button data-n="del" aria-label="מחיקה">⌫</button><button data-n="0">0</button>'
+    + (math ? '<button data-n="ok" class="ok" aria-label="אישור">✓</button>' : '<span></span>');
+  $('pinKeys').querySelectorAll('button').forEach(b => b.onclick = () => pinKey(b.dataset.n));
+  pinShow();
+}
+function pinShow(){
+  $('pinDots').querySelectorAll('i').forEach((d, i) => d.classList.toggle('on', i < pinBuf.length));
+  $('pinTyped').textContent = pinBuf;
+}
+function pinWrong(msg){
+  $('pinErr').textContent = msg; pinBuf = ''; pinShow();
+  const d = $(pinMode === 'forgot' ? 'pinTyped' : 'pinDots'); d.classList.remove('shake'); void d.offsetWidth; d.classList.add('shake');
+}
+function pinKey(n){
+  $('pinErr').textContent = '';
+  if(n === 'del'){ pinBuf = pinBuf.slice(0, -1); pinShow(); return }
+  if(n === 'ok'){ if(+pinBuf === pinAns) showPin('set1'); else pinWrong('לא נכון, נסו שוב'); return }
+  if(pinBuf.length >= 4) return;
+  pinBuf += n; pinShow();
+  if(pinMode === 'forgot' || pinBuf.length < 4) return;
+  setTimeout(() => {
+    if(pinMode === 'enter'){ if(pinBuf === getPin()){ unlock(); showParents() } else pinWrong('הקוד לא נכון') }
+    else if(pinMode === 'set1'){ pinFirst = pinBuf; showPin('set2') }
+    else if(pinMode === 'set2'){
+      if(pinBuf !== pinFirst){ pinWrong('הקודים לא זהים. בחרו שוב.'); setTimeout(() => showPin('set1'), 900); return }
+      store('lumda-pin', pinFirst); unlock();
+      // a code changed from the parents area goes back to it (its own step comes off the history)
+      pinChange ? history.back() : showParents();
+    }
+  }, 150);
+}
+$('pinAlt').onclick = () => {
+  if(pinMode === 'enter') showPin('forgot');
+  else if(pinMode === 'set1'){ try { sessionStorage.setItem('lumda-pin-skip', '1') } catch(e){} unlock(); showParents() }
+};
+$('parentsX').onclick = $('pinX').onclick = () => history.back();
+
+const SET_BOX = { sVoice: 'voice', sRate: 'rate', sMic: 'mic', sBreak: 'breakMin' };
+const ago = t => { if(!t) return ''; const d = Math.floor((Date.now() - t) / 86400000); return d <= 0 ? 'היום' : d === 1 ? 'אתמול' : 'לפני ' + d + ' ימים' };
+function summaryOf(id, app){ try { return JSON.parse(localStorage.getItem(id + '-summary-' + app)) } catch(e){ return null } }
+function showParents(){
+  theme(null); only('parents');
+  const kids = Object.values(KIDS);
+  $('pKids').innerHTML = kids.length ? kids.map(k => `<div class="mini"><img src="${k.img}" alt=""><b>${esc(k.name)}</b><small>${k.gender==='m'?'בן':'בת'} · ${levelName(k.level)}</small></div>`).join('') : '<p class="note">עוד אין ילדים. לחצו "עריכת הילדים" כדי להוסיף.</p>';
+  $('pManage').textContent = kids.length ? 'עריכת הילדים' : '➕ הוספת ילד';
+  // progress: each app keeps a short summary for this page
+  $('pProg').innerHTML = kids.length ? kids.map(k => {
+    const rows = appsOf(k).filter(a => !(k.hide || []).includes(a.id)).map(a => {
+      const sm = summaryOf(k.id, a.id), subj = SUBJECTS[a.subject], nm = subj ? subj.he : a.title;
+      if(!sm) return `<div class="prow2"><span>${a.icon} ${esc(nm)}</span><small>אין עדיין נתונים. הם יופיעו אחרי המשחק הבא.</small></div>`;
+      return `<div class="prow2"><span>${a.icon} ${esc(nm)}</span><small>${sm.done}/${sm.total} שלבים · ${sm.topics} נושאים עם כתר · ⭐ ${sm.stars}${sm.at ? ' · ' + ago(sm.at) : ''}</small><span class="bar"><i style="width:${sm.total ? Math.round(sm.done / sm.total * 100) : 0}%"></i></span></div>`;
+    }).join('');
+    return `<div class="prog"><div class="ph"><img src="${k.img}" alt=""><b>${esc(k.name)}</b><span>⭐ ${starsOf(k.id)}</span></div>${rows}</div>`;
+  }).join('') : '<p class="note">אין עדיין התקדמות.</p>';
+  // the settings every app reads
+  const set = window.LUMDA_SETTINGS();
+  Object.entries(SET_BOX).forEach(([box, key]) => $(box).querySelectorAll('button').forEach(b => {
+    const v = key === 'voice' || key === 'mic' ? b.dataset.v === '1' : +b.dataset.v;
+    b.setAttribute('aria-pressed', set[key] === v || (key === 'rate' && v < 1 && set.rate < 1));
+    b.onclick = () => { window.LUMDA_SAVE_SETTINGS({ [key]: v }); showParents(); if(key === 'rate') testVoice() };
+  }));
+  heCheck();
+  // which apps each child sees
+  $('pApps').innerHTML = kids.map(k => `<span class="lbl">${esc(k.name)}</span><div class="chips">${appsOf(k).map(a => `<button data-k="${esc(k.id)}" data-a="${esc(a.id)}" aria-pressed="${!(k.hide || []).includes(a.id)}">${a.icon} ${esc((SUBJECTS[a.subject] || {}).he || a.title)}</button>`).join('')}</div>`).join('');
+  $('pApps').querySelectorAll('button').forEach(b => b.onclick = () => {
+    const list = window.LUMDA_KIDS_LIST(), k = list.find(x => x.id === b.dataset.k); if(!k) return;
+    const h = new Set(k.hide || []); h.has(b.dataset.a) ? h.delete(b.dataset.a) : h.add(b.dataset.a); k.hide = [...h];
+    saveList(list); showParents();
+  });
+  installInfo();
+  const pin = getPin();
+  $('pPinNote').textContent = pin ? 'אזור ההורים נפתח עם קוד של 4 ספרות. שכחתם? בכניסה יש "שכחתי את הקוד".' : 'אין קוד, וכל אחד יכול להיכנס לכאן. כדאי לבחור קוד.';
+  $('pPin').textContent = pin ? 'שינוי הקוד' : 'בחירת קוד'; $('pPinOff').hidden = !pin;
+}
+$('pPin').onclick = () => { try { history.pushState({pin:1}, '') } catch(e){} pinChange = true; showPin('set1') };
+$('pPinOff').onclick = () => ask({ title: 'לבטל את הקוד?', text: 'כל אחד יוכל להיכנס לאזור ההורים.', yes: 'ביטול הקוד', then: () => { store('lumda-pin', null); showParents() } });
+
+/* Is there a Hebrew voice (and a male one, for boys)? Many phones have none, and then only English is heard. */
+function heCheck(){
+  const vs = (synth && synth.getVoices() || []), he = vs.filter(v => /^(he|iw)/i.test(v.lang));
+  $('sHe').textContent = !synth ? 'הדפדפן הזה לא יודע לדבר.' : !vs.length ? '' :
+    !he.length ? '⚠️ אין בטלפון קול עברי, ולכן הלומדות לא ידברו בעברית. אפשר להוסיף קול בהגדרות הטלפון: נגישות, המרת טקסט לדיבור, ושם להוריד עברית.' :
+    '✓ יש בטלפון קול עברי.' + (Object.values(KIDS).some(k => k.voice === 'male') && !he.some(v => /male(?!.*female)|asaf|avri|david|guy/i.test(v.name)) ? ' אין קול גברי, אז לבנים הקול נשמע נמוך יותר.' : '');
+}
+if(synth) synth.addEventListener && synth.addEventListener('voiceschanged', () => { if(view === 'parents') heCheck() });
+function testVoice(){
+  if(!synth) return; const set = window.LUMDA_SETTINGS(); if(!set.voice) return;
+  try { synth.cancel() } catch(e){}
+  const u = new SpeechSynthesisUtterance('שָׁלוֹם! כָּךְ נִשְׁמָע הַקּוֹל.'), v = heVoice('female');
+  u.lang = v ? v.lang : 'he-IL'; if(v) u.voice = v; u.rate = .95 * (set.rate || 1); synth.speak(u);
+}
+$('sTest').onclick = testVoice;
+
+/* Install and update */
+let installEv = null;
+addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEv = e; if(view === 'parents') installInfo() });
+async function installInfo(){
+  const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  $('pInstall').hidden = !installEv || standalone;
+  $('pInstallHelp').textContent = standalone ? '✓ הלומדות מותקנות בטלפון ונפתחות גם בלי אינטרנט.' : installEv ? '' : 'כדי להתקין: בתפריט של הדפדפן (⋮ או שיתוף) בוחרים "הוספה למסך הבית".';
+  let ver = ''; try { ver = ((await caches.keys()).find(k => /^lumda-v\d+$/.test(k)) || '').replace('lumda-v', '') } catch(e){}
+  $('pVer').textContent = ver ? 'גרסה ' + ver : 'הלומדות מתעדכנות לבד כשיש אינטרנט.';
+}
+$('pInstall').onclick = async () => { if(!installEv) return; installEv.prompt(); try { await installEv.userChoice } catch(e){} installEv = null; installInfo() };
+$('pUpdate').onclick = async () => {
+  $('pMsg').textContent = 'בודק...';
+  try { const r = await navigator.serviceWorker.getRegistration(); if(r) await r.update() } catch(e){}
+  if(!navigator.onLine){ $('pMsg').textContent = 'אין אינטרנט כרגע. נסו שוב אחר כך.'; return }
+  $('pMsg').textContent = 'מעדכן...'; setTimeout(() => location.reload(), 800);
+};
+const SITE = location.origin + location.pathname.replace(/index\.html$/, '');
+$('pShare').onclick = async () => {
+  try { if(navigator.share){ await navigator.share({ title: 'הלומדות', text: 'לומדות לילדים: אנגלית, חשבון ועוד', url: SITE }); return } } catch(e){ if(e && e.name === 'AbortError') return }
+  try { await navigator.clipboard.writeText(SITE); $('pMsg').textContent = 'הקישור הועתק: ' + SITE } catch(e){ $('pMsg').textContent = SITE }
+};
+
+/* Reset everything: only the lumda's own keys (other sites on this address keep their data) */
+$('pReset').onclick = () => ask({ title: 'לאפס הכול?', text: 'כל הילדים, ההתקדמות וההגדרות יימחקו. אי אפשר לבטל.', yes: 'איפוס', danger: true, then: () => {
+  const ids = new Set(Object.keys(KIDS).concat(DEFAULT_IDS));
+  ids.forEach(id => progressKeys(id).forEach(k => store(k, null)));
+  ['lumda-kids', 'lumda-kid', 'lumda-look', 'lumda-settings', 'lumda-he-bad'].forEach(k => store(k, null));
+  try { sessionStorage.removeItem('lumda-kid') } catch(e){}
+  window.LUMDA_SAVE_KIDS(window.LUMDA_KIDS_LIST()); KIDS = window.LUMDA_KIDS; showParents();
+} });
+
+/* Developer page (code 2132, like in the apps) */
+$('pDev').onclick = () => { try { history.pushState({dev:1}, '') } catch(e){} showDev() };
+$('devX').onclick = () => history.back();
+function showDev(){
+  theme(null); only('dev');
+  let ok = false; try { ok = sessionStorage.getItem('lumda-dev') === '1' } catch(e){}
+  if(!ok){
+    $('devBody').innerHTML = '<div class="f"><label for="dCode">קוד מפתח</label><input type="text" id="dCode" inputmode="numeric" autocomplete="off" maxlength="8" dir="ltr"></div><p class="err" id="dErr"></p><button class="btn" id="dGo">כניסה</button>';
+    const go = () => { if($('dCode').value === '2132'){ try { sessionStorage.setItem('lumda-dev', '1') } catch(e){} showDev() } else { $('dErr').textContent = 'קוד שגוי'; $('dCode').value = '' } };
+    $('dGo').onclick = go; $('dCode').onkeydown = e => { if(e.key === 'Enter') go() }; return;
+  }
+  const vs = synth ? synth.getVoices() : [], he = vs.filter(v => /^(he|iw)/i.test(v.lang)), en = vs.filter(v => /^en/i.test(v.lang));
+  const keys = []; try { for(let i = 0; i < localStorage.length; i++){ const k = localStorage.key(i); const ours = k.startsWith('lumda-') || Object.keys(KIDS).concat(DEFAULT_IDS).some(id => k.startsWith(id + '-')); if(ours) keys.push(k + ' (' + (localStorage.getItem(k) || '').length + ')') } } catch(e){}
+  $('devBody').innerHTML = `<div class="pcard"><h3>קולות</h3><p class="note">עברית: ${he.length ? he.map(v => esc(v.name)).join(', ') : 'אין'}</p><p class="note">אנגלית: ${en.length} קולות</p>
+    <div class="chips">${Object.values(KIDS).map(k => `<button data-w="${esc(k.id)}">🔊 ${esc(k.name)}</button>`).join('')}</div></div>
+    <div class="pcard"><h3>נתונים שמורים</h3><p class="note" dir="ltr" style="text-align:left;word-break:break-all">${keys.sort().map(esc).join('<br>')}</p></div>`;
+  $('devBody').querySelectorAll('[data-w]').forEach(b => b.onclick = () => welcome(KIDS[b.dataset.w]));
+}
+
 // coming back from an app in the same visit: stay with the same child
 let back = null; try { back = KIDS[sessionStorage.getItem('lumda-kid')] } catch(e){}
-back ? showList(back) : showPick();
+// an app's "general settings" button opens the parents area (Back returns to the app)
+if(/[?&]parents\b/.test(location.search)){
+  try { history.replaceState(null, '', location.pathname) } catch(e){}
+  unlocked() ? showParents() : getPin() ? showPin('enter') : (unlock(), showParents());
+} else back ? showList(back) : showPick();
 
 if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').then(() => navigator.serviceWorker.ready).then(r => r.active && r.active.postMessage('fill')).catch(()=>{});
 </script>

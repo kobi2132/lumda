@@ -715,12 +715,14 @@ function stopMouth(){ if(mouthTimer) clearInterval(mouthTimer); mouthTimer=null;
 const KEY = KID.id==='melody' ? 'melody-' : KID.id+'-english-';
 let stars = 0;
 try{ stars = parseInt(localStorage.getItem(KEY+'stars')||'0',10)||0 }catch(e){}
-function saveStars(){ try{ localStorage.setItem(KEY+'stars',String(stars)) }catch(e){} }
+function saveStars(){ try{ localStorage.setItem(KEY+'stars',String(stars)) }catch(e){} saveSummary(true) }
 let prog={levels:{},weak:{}};
 try{ const raw=JSON.parse(localStorage.getItem(KEY+'progress')||'null'); if(raw&&raw.levels&&raw.weak) prog=raw }catch(e){}
-function saveProg(){ try{ localStorage.setItem(KEY+'progress',JSON.stringify(prog)) }catch(e){} }
+function saveProg(){ try{ localStorage.setItem(KEY+'progress',JSON.stringify(prog)) }catch(e){} saveSummary() }
 let settings={voice:true,rate:1,heHelp:true,mic:true,breakMin:20};
 try{ Object.assign(settings,JSON.parse(localStorage.getItem(KEY+'settings')||'{}')) }catch(e){}
+// voice, speed, microphone and the break reminder are set for all the apps in the hub's parents area
+if(window.LUMDA_SETTINGS) Object.assign(settings,window.LUMDA_SETTINGS());
 function saveSettings(){ try{ localStorage.setItem(KEY+'settings',JSON.stringify(settings)) }catch(e){} }
 
 /* Levels: split each topic into balanced groups of about 5 words */
@@ -739,6 +741,14 @@ const isDone=(cat,l)=>!!(prog.levels[cat.id]||[])[l];
 const isOpen=(cat,l)=>l===0||isDone(cat,l-1);
 const catDone=cat=>levelsOf(cat).every((_,l)=>isDone(cat,l));
 function markDone(cat,l){ const was=catDone(cat); (prog.levels[cat.id]=prog.levels[cat.id]||[])[l]=true; saveProg(); return !was&&catDone(cat) }
+// a short summary for the parents area in the hub (it doesn't open the apps); the key starts with the child's id like all progress
+function saveSummary(played){ try{
+  const lv=CATS.map(c=>levelsOf(c).filter((_,l)=>isDone(c,l)).length), tot=CATS.map(c=>levelsOf(c).length);
+  const old=JSON.parse(localStorage.getItem(KID.id+'-summary-melody-english')||'{}');
+  localStorage.setItem(KID.id+'-summary-melody-english',JSON.stringify({stars,stickers:Math.min(Math.floor(stars/PER_REWARD),REWARDS.length),of:REWARDS.length,
+    done:lv.reduce((a,b)=>a+b,0),total:tot.reduce((a,b)=>a+b,0),topics:lv.filter((d,i)=>d===tot[i]).length,topicsOf:CATS.length,at:played?Date.now():(old.at||0)}));
+}catch(e){} }
+saveSummary();
 const wkey=(cat,it)=>cat.id+'|'+it.en;
 const weakOf=(cat,it)=>prog.weak[wkey(cat,it)]||0;
 function missed(cat,it){ prog.weak[wkey(cat,it)]=Math.min(weakOf(cat,it)+1,5); saveProg() }
@@ -1892,51 +1902,20 @@ function showParents(){
       <div class="pnote">${stars} כוכבים, ${Math.min(Math.floor(stars/PER_REWARD),REWARDS.length)} מתוך ${REWARDS.length} מדבקות</div>${rows}</div>
     <div class="pbox"><h3>מילים שכדאי לתרגל</h3>
       ${weak.length?`<div class="weak">${weak.map(w=>`<span>${w}</span>`).join('')}</div>`:`<div class="pnote">${BOY?'אין כרגע מילים שהוא מתקשה בהן.':'אין כרגע מילים שהיא מתקשה בהן.'}</div>`}</div>
-    <div class="pbox"><h3>קול</h3>
-      <div class="pbtns"><button class="pbtn ${settings.voice?'on':''}" data-voice="1">דיבור פועל</button><button class="pbtn ${settings.voice?'':'on'}" data-voice="0">בלי דיבור</button></div>
-      <div class="pbtns" style="margin-top:8px"><button class="pbtn ${settings.rate<1?'on':''}" data-rate=".8">איטי</button><button class="pbtn ${settings.rate===1?'on':''}" data-rate="1">רגיל</button></div>
-      <div class="pnote" style="margin-top:6px">${voices.length?(heVoice?'יש בטלפון קול עברי.':(BOY?'אין בטלפון קול עברי, ולכן הוא שומע רק אנגלית.':'אין בטלפון קול עברי, ולכן היא שומעת רק אנגלית.')):''}</div></div>
     <div class="pbox"><h3>למידה</h3>
       <div class="pnote">תרגום לעברית בכרטיסי המילים. כשהמילים כבר מוכרות, אפשר לכבות ולתת לאנגלית לעמוד לבד.</div>
-      <div class="pbtns" style="margin-top:6px"><button class="pbtn ${settings.heHelp?'on':''}" data-he="1">עם עברית</button><button class="pbtn ${settings.heHelp?'':'on'}" data-he="0">רק אנגלית</button></div>
-      <div class="pnote" style="margin-top:12px">משחק "Say it!" משתמש במיקרופון. הזיהוי נעשה בשרתים של גוגל, ובלי מיקרופון הילד אומר את המילה ולוחץ על כפתור.</div>
-      <div class="pbtns" style="margin-top:6px"><button class="pbtn ${settings.mic?'on':''}" data-mic="1">עם מיקרופון</button><button class="pbtn ${settings.mic?'':'on'}" data-mic="0">בלי מיקרופון</button></div>
-      <div class="pnote" style="margin-top:12px">תזכורת להפסקה אחרי:</div>
-      <div class="pbtns" style="margin-top:6px">${[15,20,30,0].map(m=>`<button class="pbtn ${settings.breakMin===m?'on':''}" data-break="${m}">${m?m+' דקות':'בלי תזכורת'}</button>`).join('')}</div></div>
-    <div class="pbox"><h3>גיבוי</h3>
-      <div class="pnote">ההתקדמות נשמרת רק בטלפון הזה, וניקוי נתונים של הדפדפן מוחק אותה. כדאי לשמור גיבוי מדי פעם.</div>
-      <div class="pbtns" style="margin-top:8px"><button class="pbtn" id="pExport">שמירת גיבוי לקובץ</button><button class="pbtn" id="pImport">שחזור מקובץ</button></div>
-      <input type="file" id="pFile" accept="application/json,.json" hidden></div>
+      <div class="pbtns" style="margin-top:6px"><button class="pbtn ${settings.heHelp?'on':''}" data-he="1">עם עברית</button><button class="pbtn ${settings.heHelp?'':'on'}" data-he="0">רק אנגלית</button></div></div>
+    <div class="pbox"><h3>הגדרות כלליות</h3>
+      <div class="pnote">קול, מהירות דיבור, מיקרופון, תזכורת הפסקה וגיבוי נמצאים באזור ההורים במסך הבית, ומשפיעים על כל הלומדות.</div>
+      <div class="pbtns" style="margin-top:8px"><button class="pbtn" id="pGeneral">⚙️ הגדרות כלליות</button></div></div>
     <div class="pbox"><h3>איפוס</h3>
-      <div class="pbtns"><button class="pbtn danger" id="pReset">מחיקת כל ההתקדמות</button></div></div>
+      <div class="pbtns"><button class="pbtn danger" id="pReset">מחיקת ההתקדמות בלומדה הזו</button></div></div>
     <div class="pbtns" style="justify-content:center"><button class="pbtn" id="pDev">🔧 מפתח</button></div>
   </div></div>`;
-  $main.querySelectorAll('[data-voice]').forEach(b=>b.onclick=()=>{ settings.voice=b.dataset.voice==='1'; saveSettings(); showParents() });
   $main.querySelectorAll('[data-he]').forEach(b=>b.onclick=()=>{ settings.heHelp=b.dataset.he==='1'; saveSettings(); showParents() });
-  $main.querySelectorAll('[data-mic]').forEach(b=>b.onclick=()=>{ settings.mic=b.dataset.mic==='1'; srOff=false; saveSettings(); showParents() });
-  $main.querySelectorAll('[data-break]').forEach(b=>b.onclick=()=>{ settings.breakMin=+b.dataset.break; saveSettings(); showParents() });
   document.getElementById('pDev').onclick=()=>{ let ok=false; try{ ok=sessionStorage.getItem('lumda-dev')==='1' }catch(e){} ok?showDev():showDevCode() };
-  $main.querySelectorAll('[data-rate]').forEach(b=>b.onclick=()=>{ settings.rate=+b.dataset.rate; saveSettings(); showParents(); say([['en','Hello '+NAME_EN+'!']]) });
-  document.getElementById('pExport').onclick=()=>{
-    let seen=0; try{ seen=+(localStorage.getItem(KEY+'seen')||0) }catch(e){}
-    const data={app:'melody-english',kid:KID.id,saved:new Date().toISOString(),stars,prog,seen,settings};
-    const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(data)],{type:'application/json'}));
-    a.download=KID.id+'-english-backup-'+new Date().toISOString().slice(0,10)+'.json'; document.body.appendChild(a); a.click(); a.remove();
-  };
-  const file=document.getElementById('pFile');
-  document.getElementById('pImport').onclick=()=>file.click();
-  file.onchange=async()=>{
-    try{
-      const d=JSON.parse(await file.files[0].text());
-      if(d.app!=='melody-english'||(d.kid||'melody')!==KID.id||!d.prog||!d.prog.levels) throw 0;
-      d.prog.weak=d.prog.weak||{};
-      if(!confirm('לשחזר את הגיבוי? ההתקדמות הנוכחית תוחלף.')) return;
-      stars=+d.stars||0; prog=d.prog; saveStars(); saveProg();
-      try{ localStorage.setItem(KEY+'seen',String(+d.seen||0)) }catch(e){}
-      if(d.settings){ Object.assign(settings,d.settings); saveSettings() }
-      $count.textContent=stars; showParents();
-    }catch(e){ alert('הקובץ הזה לא נראה כמו גיבוי של הלומדה.') }
-  };
+  // the general settings live in the hub's parents area (it asks for the parents' code)
+  document.getElementById('pGeneral').onclick=()=>{ hush(); location.href='../../index.html?parents' };
   document.getElementById('pReset').onclick=()=>{
     if(!confirm('למחוק את כל הכוכבים, המדבקות והשלבים?')) return;
     stars=0; prog={levels:{},weak:{}}; saveStars(); saveProg();
