@@ -336,7 +336,7 @@ function only(id){ ['pick','list','manage','edit','pin','parents','dev'].forEach
 // the greeting follows the time of day
 function greeting(){
   const h = new Date().getHours();
-  return h >= 5 && h < 12 ? 'בוקר טוב! ☀️' : h >= 12 && h < 17 ? 'צהריים טובים! 🌤️' : h >= 17 && h < 21 ? 'ערב טוב! 🌆' : 'לילה טוב! 🌙';
+  return h >= 5 && h < 12 ? 'בוקר טוב!' : h >= 12 && h < 17 ? 'צהריים טובים!' : h >= 17 && h < 21 ? 'ערב טוב!' : 'לילה טוב!';
 }
 // all of a child's stars, in every app (each app keeps them under a key that starts with the child's id and ends with "stars")
 function starsOf(id){ let n = 0; progressKeys(id).forEach(k => { if(/stars$/.test(k)) n += parseInt(localStorage.getItem(k) || '0', 10) || 0 }); return n }
