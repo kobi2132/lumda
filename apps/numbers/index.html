@@ -1545,7 +1545,15 @@ function shekels(n){
   return [t+' שקלים',v+' שְׁקָלִים'];
 }
 // "the balloon" (and "and the balloon"): ה takes a kamatz before א, ע and ר
-function theThing(k,and){ const w=PIC[k], h='אער'.includes(w.he[0])?'הָ':'הַ'; return [(and?'וה':'ה')+w.he,(and?'וְ':'')+h+w.n] }
+// "costs" agrees with the thing: עוֹלֶה for a balloon, עוֹלָה for a candy
+const SHOP_FEM=['Cake','Ice cream','Candy','Pizza','Train','Truck','Gift'];
+const costs=k=>SHOP_FEM.includes(k)?['עולה','עוֹלָה']:L2.costs;
+function theThing(k,and){
+  const w=PIC[k], g='אער'.includes(w.he[0]);
+  // after הַ the first letter takes a dagesh (הַסֻּכָּרִיָּה)
+  const n=g||w.n.slice(0,3).includes('\u05BC')?w.n:w.n[0]+'\u05BC'+w.n.slice(1);
+  return [(and?'וה':'ה')+w.he,(and?'וְ':'')+(g?'הָ':'הַ')+n];
+}
 // three things on the counter, each with its price; in a pair round two of them come from one card
 function shopWares(g){
   const things=shuffle(SHOP_ITEMS);
@@ -1582,8 +1590,8 @@ function shopRound(g,r,bought){
   const card=()=>shop.pair?(picks.map(w=>w.price).sort().join()===shop.pair.slice().sort().join()?shop.it:null):picks[0].it;
   // what the seller says: the price, or both prices and "how much together?"
   const priceSay=()=>{
-    if(picks.length===2) return he(P(theThing(picks[0].thing),L2.costs,shekels(picks[0].price),W.comma,theThing(picks[1].thing,1),L2.costs,shekels(picks[1].price),W.dot),L2.together);
-    return he(P(theThing(picks[0].thing),L2.costs,shekels(picks[0].price),W.dot));
+    if(picks.length===2) return he(P(theThing(picks[0].thing),costs(picks[0].thing),shekels(picks[0].price),W.comma,theThing(picks[1].thing,1),costs(picks[1].thing),shekels(picks[1].price),W.dot),L2.together);
+    return he(P(theThing(picks[0].thing),costs(picks[0].thing),shekels(picks[0].price),W.dot));
   };
   const ready=()=>picks.length===need;
   const draw=()=>{ tray.innerHTML=paid.map(coinHTML).join('') };
@@ -1622,7 +1630,7 @@ function shopRound(g,r,bought){
     paid=[]; wrongs=0; draw(); tick(); burstAt(b,14); tray.dataset.n='';
     if(ready()) pay();
     else { purse.innerHTML=''; fitScreen(); bub.innerHTML=picks.length?`<span class="tag small">${priceTag(picks[0].price)}</span><b class="plus">+</b><span class="tag small q">?</span>`:G(L2.buy);
-      pose('Talk','Wave'); say(picks.length?he(P(theThing(picks[0].thing),L2.costs,shekels(picks[0].price),W.dot),G(L2.pickMore)):hello()) }
+      pose('Talk','Wave'); say(picks.length?he(P(theThing(picks[0].thing),costs(picks[0].thing),shekels(picks[0].price),W.dot),G(L2.pickMore)):hello()) }
   });
 }
 
