@@ -1,7 +1,7 @@
 // Offline support and speed.
 // Pages and scripts: network first, so a new version shows up right away; the saved copy is used offline.
 // Pictures: saved copy first (their names never change), so they load instantly after the first time.
-const CACHE = 'lumda-v20', IMG = 'lumda-img-v1';
+const CACHE = 'lumda-v21', IMG = 'lumda-img-v1';
 const FILES = ['./', 'index.html', 'apps/catalog.js', 'kids.js', 'manifest.webmanifest', 'apps/melody-english/index.html', 'apps/numbers/index.html'];
 const PICS = ['assets/kids/melody.webp', 'assets/kids/yam.webp', 'assets/kids/yam-bust.webp', 'icon-192.png?v=2', 'icon-512.png?v=2'];
 
@@ -20,8 +20,12 @@ let filling = null;
 function fillPics(){
   return filling || (filling = caches.open(IMG).then(async c => {
     try {
-      const list = await (await fetch('apps/melody-english/img/list.json', { cache: 'no-cache' })).json();
-      for (const u of PICS.concat(list.map(f => 'apps/melody-english/' + f))) if (!(await c.match(u))) await c.add(u).catch(() => {});
+      let all = PICS;
+      for (const app of ['melody-english', 'numbers']) {
+        const list = await (await fetch('apps/' + app + '/img/list.json', { cache: 'no-cache' })).json().catch(() => []);
+        all = all.concat(list.map(f => 'apps/' + app + '/' + f));
+      }
+      for (const u of all) if (!(await c.match(u))) await c.add(u).catch(() => {});
     } catch (err) {}
   }).finally(() => { filling = null }));
 }

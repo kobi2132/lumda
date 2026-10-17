@@ -590,22 +590,21 @@ html[data-kid="yam"] .ltr{color:#24358f}
 /* shop stand */
 .screen.shop{gap:10px}
 .basket{display:flex;align-items:center;gap:4px;direction:rtl}
-.basket .slot{width:30px;height:30px;border-radius:9px;background:rgba(255,255,255,.55);border:2px dashed var(--lilac);display:grid;place-items:center}.basket .slot .art{width:90%;height:90%;animation:cardIn .35s}
-.basket .bag{font-size:30px;line-height:1;margin-inline-start:4px}
-.stand{width:min(100%,420px);background:#fff;border:4px solid #fff;border-radius:0 0 22px 22px;box-shadow:0 6px 0 rgba(78,31,99,.15);position:relative;padding:0 8px 10px;margin-top:6px}
-.awning{height:34px;margin:0 -12px 10px;border-radius:12px 12px 0 0;background:repeating-linear-gradient(90deg,var(--rose) 0 26px,color-mix(in srgb,var(--rose) 25%,#fff) 26px 52px);
-  -webkit-mask:radial-gradient(circle 13px at 13px 21px,#000 98%,transparent) 0 0/26px 34px repeat-x,linear-gradient(#000,#000) 0 0/100% 21px no-repeat;
-  mask:radial-gradient(circle 13px at 13px 21px,#000 98%,transparent) 0 0/26px 34px repeat-x,linear-gradient(#000,#000) 0 0/100% 21px no-repeat}
-.shelf{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border-bottom:8px solid #c9a27a;padding-bottom:6px}
-.ware{border:3px solid transparent;background:none;border-radius:18px;padding:4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:4px;min-height:44px;transition:transform .2s,opacity .2s}
-.ware .thing{width:100%;aspect-ratio:1;display:grid;place-items:center}.ware .thing .art{width:86%;height:86%}
-.ware .tag{min-width:58px;min-height:46px;padding:3px 8px;display:grid;place-items:center;background:#fff7d6;border:3px dashed var(--gold);border-radius:12px;transform:rotate(-4deg)}
-.ware .tag .num{font-size:clamp(20px,6vw,30px)}.ware .tagdie,.ware .tagobjs{width:min(60px,17vw);height:min(60px,17vw)}
-.shelf:has(.chosen) .ware:not(.chosen){opacity:.45;transform:scale(.92)}
-.ware.chosen{border-color:var(--gold);background:var(--gold-soft,#fff7d6);transform:translateY(-4px)}
-.ware.sold{animation:popSoft .6s}
+.basket .slot{width:32px;height:32px;border-radius:9px;background:rgba(255,255,255,.55);border:2px dashed var(--lilac);display:grid;place-items:center}.basket .slot .art{width:90%;height:90%;animation:cardIn .35s}
+.basket .bag{width:46px;height:44px;object-fit:contain;margin-inline-start:4px}
+.stand{position:relative;width:min(100%,420px,50vh);aspect-ratio:360/347;background:center/100% 100% no-repeat;flex:none}
+.wares{position:absolute;left:8%;right:15%;top:20%;bottom:3%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2%}
+.ware{border:0;background:none;padding:0;cursor:pointer;display:grid;grid-template-rows:65% 35%;justify-items:center;min-height:44px;min-width:0;transition:transform .2s,opacity .2s}
+.ware .thing{width:100%;height:100%;display:flex;align-items:flex-end;justify-content:center;transition:transform .2s,filter .2s}
+.ware .thing .art{width:96%;height:88%;object-fit:contain;object-position:50% 100%}
+.ware .tag{align-self:center;min-width:52px;min-height:44px;padding:2px 6px;display:grid;place-items:center;background:#fff7d6;border:3px dashed var(--gold);border-radius:12px;transform:rotate(-4deg);box-shadow:0 3px 0 rgba(0,0,0,.18)}
+.ware .tag .num{font-size:clamp(18px,5.4vw,28px)}.ware .tagdie,.ware .tagobjs{width:min(56px,15vw);height:min(56px,15vw)}
+.wares:has(.chosen) .ware:not(.chosen){opacity:.5}
+.ware.chosen .thing{transform:translateY(-6px) scale(1.06);filter:drop-shadow(0 0 6px var(--gold)) drop-shadow(0 0 3px #fff)}
+.ware.chosen .tag{background:var(--gold);border-style:solid;border-color:#fff}
+.ware.sold .thing{animation:popSoft .6s}
 .seller{display:flex;align-items:center;gap:10px;width:min(100%,420px);justify-content:center}
-.seller .who{width:clamp(76px,23vw,108px);aspect-ratio:1;flex:none}.seller .who .art{width:100%;height:100%}
+.seller .who{width:clamp(100px,30vw,150px);aspect-ratio:1;flex:none;transform:scaleX(-1)}.seller .who .art{width:100%;height:100%;object-fit:contain;object-position:50% 100%}
 .bubble{position:relative;background:#fff;border:3px solid var(--lilac);border-radius:20px;padding:8px 14px;min-height:56px;min-width:120px;display:grid;place-items:center;cursor:pointer;
   font:700 clamp(17px,4.8vw,22px)/1.3 var(--body);color:var(--plum);box-shadow:0 4px 0 rgba(78,31,99,.12)}
 .bubble::before{content:"";position:absolute;inset-inline-start:-12px;top:50%;margin-top:-9px;border:9px solid transparent;border-inline-end-color:var(--lilac);border-inline-start:0}
@@ -613,6 +612,8 @@ html[data-kid="yam"] .ltr{color:#24358f}
 .bubble .tag.small .num{font-size:clamp(24px,7vw,34px)}.bubble .tagdie,.bubble .tagobjs{width:68px;height:68px}
 .shop .counter{min-height:clamp(60px,16vw,84px)}
 .shop .purse:empty{display:none}
+.shop .coin,.shop .coin.mid,.shop .coin.big{background:var(--ci) center/contain no-repeat;border:0;border-radius:0;box-shadow:none;filter:drop-shadow(0 2px 1px rgba(0,0,0,.25))}
+.shop .coin b{transform:translateX(-5%);color:#6b4300;text-shadow:0 0 3px #fff,0 0 2px #fff}.shop .coin.mid b{color:#353b48}
 /* frog */
 .pond{position:relative;width:100%;max-width:560px;align-self:center;padding-top:clamp(46px,13vw,64px);direction:ltr}
 .pads{display:grid;grid-template-columns:repeat(11,1fr);gap:2px;background:linear-gradient(180deg,#9fe3ff,#5bc3f0);border-radius:999px;padding:6px 4px;border:3px solid #fff;box-shadow:0 5px 0 rgba(78,31,99,.15)}
@@ -698,9 +699,9 @@ html[data-kid="yam"] .cup{background:linear-gradient(90deg,#3f6fd8,#7fa0ff 40%,#
   .screen:has(> .scale){display:grid;grid-template-columns:auto auto;align-items:center;justify-content:center;column-gap:18px;row-gap:6px}
   .screen:has(> .scale) > .round,.screen:has(> .scale) > .ask{grid-column:1/-1;justify-self:center} .screen:has(> .scale) > .scale{width:min(56vw,380px);margin:0} .site{height:min(40vh,150px)} .board{width:min(100%,380px)} .sq{min-width:36px;min-height:36px} .counter{min-height:56px}
   .screen.shop{display:grid;grid-template-columns:auto minmax(0,300px);grid-template-rows:auto auto auto 1fr;align-items:center;justify-content:center;column-gap:18px;row-gap:6px;align-content:center}
-  .screen.shop > .basket{grid-column:1;justify-self:center} .screen.shop > .stand{grid-column:1;grid-row:2/5;width:min(48vw,360px);align-self:start}
+  .screen.shop > .basket{grid-column:1;justify-self:center} .screen.shop > .stand{grid-column:1;grid-row:2/5;width:min(44vw,72vh);align-self:start}
   .screen.shop > .seller,.screen.shop > .counter,.screen.shop > .purse{grid-column:2} .screen.shop > .seller{grid-row:1/3} .screen.shop .counter{width:100%;min-height:52px}
-  .screen.shop .ware .thing{width:min(100%,15vh + 40px)} .seller .who{width:76px} .pond{padding-top:40px} }
+  .seller .who{width:84px} .shop .counter .coin{width:30px} .shop .counter .coin b{font-size:12px} .shop .coinbtn{min-width:50px;min-height:50px} .shop .coinbtn .coin{width:50px} .shop .coinbtn .coin b{font-size:20px} .shop .purse .undo{width:50px;height:50px} .shop .purse .wand{min-height:54px;padding-block:6px} .pond{padding-top:40px} }
 </style>
 
 <canvas id="sky"></canvas>
@@ -1485,11 +1486,13 @@ const L2={
   gold:line('כוכב זהב! שני כוכבים!','כּוֹכַב זָהָב! שְׁנֵי כּוֹכָבִים!'),
 };
 const cubes=n=>n===1?line('קובייה אחת','קֻבִּיָּה אַחַת'):n===2?line('שתי קוביות','שְׁתֵּי קֻבִּיּוֹת'):P(n,['קוביות','קֻבִּיּוֹת']);
-const FROG_IMG=E+'img/f6bd162e133b.webp';   // the frog from the English app's animals
+const FROG_IMG=E+'img/f6bd162e133b.webp';
+// the shop's own pictures (this app's img/, listed in img/list.json for offline)
+const SHOP_ART={"sellerGirlWave":"img/559d8e4410d1.webp","sellerGirlTalk":"img/bbedce5af592.webp","sellerGirlTake":"img/44427446b1bc.webp","sellerBoyWave":"img/76145bf81429.webp","sellerBoyTalk":"img/33a6392c7188.webp","sellerBoyTake":"img/6ff2eca20f1e.webp","standGirl":"img/792842bbd47f.webp","standBoy":"img/22fd42a15c92.webp","basket":"img/97d3c0a547be.webp","coin1":"img/a9c877aef173.webp","coin5":"img/1eb449aa51cc.webp","coin10":"img/372d3f2ef586.webp"};   // the frog from the English app's animals
 
 /* ---------- Game 5: The shop (pay the price with coins) ---------- */
 const SHOP_ITEMS=['Apple','Ball','Cake','Teddy bear','Ice cream','Kite','Drum','Balloon','Candy','Pizza','Train','Truck','Gift','Book'];
-const coinHTML=v=>`<span class="coin${v>=10?' big':v>=5?' mid':''}"><b>${v}</b></span>`;
+const coinHTML=v=>`<span class="coin${v>=10?' big':v>=5?' mid':''}" style="--ci:url(${SHOP_ART['coin'+(v>=10?10:v>=5?5:1)]})"><b>${v}</b></span>`;
 // what the price tag shows: never the plain answer for a sum
 function tagHTML(it){
   if(it.kind==='dice') return `<span class="tagdie">${dieHTML(it.ans)}</span>`;
@@ -1497,7 +1500,8 @@ function tagHTML(it){
   if(it.kind==='count') return `<span class="tagobjs"><span class="box">${objsHTML(it.ans,it.obj)}</span></span>`;
   return numHTML(it.ans);
 }
-const SELLER='Bunny';
+// the seller and the stand follow the kid's colours; three poses: waving, talking, holding out a hand for the coins
+const SELLER=pose=>SHOP_ART[(BOY?'sellerBoy':'sellerGirl')+pose];
 // three things on the shelf, each with its own price from this level's cards
 function shopWares(g){
   const out=[];
@@ -1512,24 +1516,26 @@ function priceSay(it){
   if(it.kind==='count') return he(L2.costsCount,L.howMany);
   return he(P(L2.costs,it.ans,W.dot));
 }
-function startShop(g){ screenId++; shopRound(g,0,[]) }
+function startShop(g){ screenId++; ['Wave','Talk','Take'].forEach(p=>{ new Image().src=SELLER(p) }); shopRound(g,0,[]) }
 function shopRound(g,r,bought){
   screenId++; homeTo=()=>pickGame(g.cat,g.level); navD=4;
   $home.hidden=false;
   const wares=shopWares(g);
   $main.innerHTML=`<div class="screen shop">
-    <div class="basket" aria-label="הסל">${Array.from({length:ROUNDS},(_,k)=>`<span class="slot">${bought[k]?art(PIC[bought[k]].img):''}</span>`).join('')}<span class="bag">🧺</span></div>
-    <div class="stand"><div class="awning"></div>
-      <div class="shelf">${wares.map((w,k)=>`<button class="ware" data-k="${k}" aria-label="${PIC[w.thing].he}"><span class="thing">${art(PIC[w.thing].img)}</span><span class="tag">${tagHTML(w.it)}</span></button>`).join('')}</div></div>
-    <div class="seller"><span class="who">${art(PIC[SELLER].img)}</span><button class="bubble" id="ask"><span id="bub">${G(L2.buy)}</span></button></div>
+    <div class="basket" aria-label="הסל">${Array.from({length:ROUNDS},(_,k)=>`<span class="slot">${bought[k]?art(PIC[bought[k]].img):''}</span>`).join('')}<img class="bag" src="${SHOP_ART.basket}" alt=""></div>
+    <div class="stand" style="background-image:url(${SHOP_ART[BOY?'standBoy':'standGirl']})">
+      <div class="wares">${wares.map((w,k)=>`<button class="ware" data-k="${k}" aria-label="${PIC[w.thing].he}"><span class="thing">${art(PIC[w.thing].img)}</span><span class="tag">${tagHTML(w.it)}</span></button>`).join('')}</div></div>
+    <div class="seller"><span class="who"><img class="art" id="who" src="${SELLER('Talk')}" alt="" draggable="false"></span><button class="bubble" id="ask"><span id="bub">${G(L2.buy)}</span></button></div>
     <div class="counter" id="tray" data-n=""></div>
     <div class="feed-btns purse" id="purse"></div>
   </div>`;
   const bub=document.getElementById('bub'), tray=document.getElementById('tray'), purse=document.getElementById('purse');
   let pick=null, paid=[], done=false, wrongs=0;
+  const who=document.getElementById('who'), sid=screenId; let poseT=0;
+  const pose=(p,after)=>{ who.src=SELLER(p); clearTimeout(poseT); if(after) poseT=setTimeout(()=>{ if(sid===screenId) who.src=SELLER(after) },2400) };
   const sum=()=>paid.reduce((a,b)=>a+b,0);
   const draw=()=>{ tray.innerHTML=paid.map(coinHTML).join('') };
-  const ask=()=>say(pick?priceSay(pick.it).concat(he(G(L2.pay))):he(G(L2.buy)));
+  const ask=()=>{ pose('Talk',pick?'Take':'Wave'); say(pick?priceSay(pick.it).concat(he(G(L2.pay))):he(G(L2.buy))) };
   ask(); document.getElementById('ask').onclick=ask;
   // choose: the thing goes to the counter and the seller names its price; choosing again starts the payment over
   $main.querySelectorAll('.ware').forEach(b=>b.onclick=()=>{
@@ -1546,17 +1552,17 @@ function shopRound(g,r,bought){
     document.getElementById('undo').onclick=()=>{ if(done||!paid.length) return; paid.pop(); draw(); tick(); if(paid.length) say(he(numHe(sum()))) };
     document.getElementById('fdone').onclick=()=>{
       if(done) return;
-      if(sum()===n){ done=true; b.classList.add('sold'); tone(660,0,.1); tone(990,.1,.2);
+      if(sum()===n){ done=true; b.classList.add('sold'); pose('Talk','Wave'); tone(660,0,.1); tone(990,.1,.2);
         if(!wrongs) gotIt(g.cat,w.it);
         const nb=bought.concat(w.thing);
         const slot=$main.querySelectorAll('.basket .slot')[r]; if(slot) slot.innerHTML=art(PIC[w.thing].img);
         win(b,w.it,()=>r+1<ROUNDS?shopRound(g,r+1,nb):party(g,()=>startShop(g)),he(L2.thanks).concat(he(P(W.here,n,W.x))));
       } else {
-        wrongs++; boop(); react('oops'); if(wrongs===1) missed(g.cat,w.it);
+        wrongs++; boop(); react('oops'); pose('Talk','Take'); if(wrongs===1) missed(g.cat,w.it);
         say(he(P(W.here,sum(),W.comma),P(W.need,n,W.dot),G(L.again)));
       }
     };
-    say(priceSay(w.it).concat(he(G(L2.pay))));
+    pose('Talk','Take'); say(priceSay(w.it).concat(he(G(L2.pay))));
   });
 }
 
