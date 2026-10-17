@@ -1041,9 +1041,9 @@ function learn(cat,level,i){
   document.getElementById('next').onclick=()=>{ tick(); last ? pickGame(cat,level) : learn(cat,level,i+1) };
 }
 
-// what the voice says on a word card: a letter and its word, a word and its little sentence, or the word twice
+// what the voice says on a word card: a letter once, then its word; a word and its little sentence, or the word twice
 function learnLines(it){
-  if(it.L) return [['en',it.L+'!'],['en',it.L+', '+it.w+'!']].concat(settings.heHelp?[['he',heOf(it)]]:[]);
+  if(it.L) return [['en',it.L+'!'],['en',it.w+'!']].concat(settings.heHelp?[['he',heOf(it)]]:[]);
   return settings.heHelp ? [['en',it.en],['he',heOf(it)],['en',it.ph||it.en]] : [['en',it.en],['en',it.ph||it.en]];
 }
 // "Apple" with its letter marked (X is marked inside "Fox")
@@ -1469,7 +1469,7 @@ function sayRound(g,targets,r,tries){
     ${live?'':`<div class="say-note">אומרים את המילה בקול ולוחצים על הכפתור.${!settings.mic||SR?'':' (בטלפון הזה אין זיהוי דיבור.)'}</div>`}
   </div>`;
   const mic=document.getElementById('mic'), heard=document.getElementById('heard'), card=document.getElementById('card');
-  const model=()=>say(target.L?[['en',target.L+'!'],['en',target.L+', '+target.w+'!']]:[['en',target.en+'!']]);
+  const model=()=>say(target.L?[['en',target.L+'!'],['en',target.w+'!']]:[['en',target.en+'!']]);
   const intro=()=>say((r===0&&!tries?[['he','תקשיבי ותגידי אחריי']]:[]).concat(target.L?[['en',target.L+'!']]:[['en',target.en+'!']]))
     .then(()=>{ if(id===screenId&&!busy&&!done) mic.classList.add('hint') });
   intro();
