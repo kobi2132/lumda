@@ -196,6 +196,10 @@ button:focus-visible{outline:4px solid var(--gold);outline-offset:3px}
 .dress{width:min(58vw,225px);height:auto;max-width:100%;overflow:visible}
 .dress .part{stroke:#7b4592;stroke-width:3;stroke-linejoin:round;transition:fill .6s}
 .dress .part.glow{animation:glow 1s ease-in-out infinite}
+.outfit{position:relative;height:min(40vh,330px);aspect-ratio:var(--ar,.62)}.outfit canvas{position:absolute;inset:0;width:100%;height:100%}
+.outfit-glow{animation:pulse 1s ease-in-out infinite;filter:drop-shadow(0 0 4px #fff3b0)}
+@keyframes pulse{0%,100%{opacity:.15}50%{opacity:.95}}
+.outfit-done{height:min(36vh,300px);width:auto}
 @keyframes glow{50%{stroke:#ffbf2e;stroke-width:7}}
 .palette{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
 .paint{width:clamp(58px,17vw,78px);aspect-ratio:1;border-radius:50%;border:5px solid #fff;cursor:pointer;padding:0;
@@ -437,10 +441,12 @@ html[data-kid="yam"] .buddy{aspect-ratio:320/350}
 .game-btn .pic .emo{font-size:clamp(46px,14vw,72px);line-height:1;display:flex;align-items:center}
 .game-btn.suggest{animation:breathe 1.8s ease-in-out infinite;border-color:var(--gold);box-shadow:0 0 0 4px rgba(255,191,46,.45),0 6px 0 rgba(78,31,99,.2)}
 .dress-row{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;max-width:560px}
-.teddy-wrap{display:flex;justify-content:center;width:100%}.teddy{height:min(36vh,300px);width:auto}
-.teddy-wrap.big .teddy{max-height:40vh;width:auto}
+.teddy-wrap{display:flex;justify-content:center;width:100%}
+.teddy{position:relative;height:min(38vh,330px);aspect-ratio:577/840}.teddy-wrap.big .teddy{height:min(44vh,380px)}
+.teddy img{position:absolute;display:block;pointer-events:none;user-select:none;-webkit-user-drag:none}.teddy .tb{left:0;top:16.667%;width:100%}
 .options.four{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-.opt .cloth{width:80%;height:80%}
+.opt .cloth{width:82%;height:82%;object-fit:contain}
+.opt .pair{display:flex;gap:4%;width:88%;height:82%;align-items:center;justify-content:center}.opt .pair img{width:46%;max-height:100%;object-fit:contain}
 .shelf{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;width:100%;max-width:520px;background:linear-gradient(180deg,#fff7e6,#ffe2b8);
   border-radius:24px;padding:10px;border:4px solid #fff;box-shadow:0 6px 0 rgba(78,31,99,.15)}
 .ware{aspect-ratio:1;border:0;background:none;padding:2px;cursor:pointer;container-type:inline-size;display:grid;place-items:center}
@@ -1081,7 +1087,7 @@ function gamesFor(cat,level){
     {en:"What's this?",emo:'❓',g:GRADS[3],run:()=>startWhats(g())},
     {en:'Say it!',emo:'🎤',g:GRADS[2],run:()=>startSay(g())},
     {en:'Echo',emo:BOY?'🐲':'🌷',g:GRADS[5],opens:2,run:()=>startEcho(g())}];
-  if(cat.id==='colors') games.push({en:BOY?'Magic Armor':'Magic Dress',pic:UI.palette,g:GRADS[5],run:()=>startDress(g())});
+  if(cat.id==='colors') games.push({en:'Magic Colors',pic:UI.palette,g:GRADS[5],run:()=>startDress(g())});
   if(cat.id==='actions') games.push({en:'Do it!',emo:'🤸',g:GRADS[5],run:()=>startDo(g())});
   if(cat.id==='body') games.push({en:'Simon says',emo:'🙋',g:GRADS[0],opens:3,run:()=>startSimon(g())});
   if(cat.id==='clothes'&&canDress(ctx)) games.push({en:'Dress up',emo:'🧸',g:GRADS[3],opens:4,run:()=>startDressUp(g())});
@@ -1268,28 +1274,78 @@ const DRESS_SVG_F=`<svg class="dress" viewBox="0 0 200 262" aria-label="שמלה
 </svg>`;
 const DRESS_PARTS_F=[{p:'top',he:'צבעי את החולצה'},{p:'skirt',he:'צבעי את החצאית'},{p:'bow',he:'צבעי את הפפיון'},{p:'shoes',he:'צבעי את הנעליים'},{p:'crown',he:'צבעי את הכתר'}];
 const DRESS_SVG = BOY ? ARMOR_SVG : DRESS_SVG_F, DRESS_PARTS = BOY ? ARMOR_PARTS : DRESS_PARTS_F;
-function startDress(g){
-  screenId++; homeTo=()=>pickGame(g.cat,g.level);
+// six outfits drawn as real pictures: each part is painted in its own code color (yellow, blue, red, green, purple);
+// the label picture says which part every pixel belongs to, and a part is recolored keeping the picture's own light and shade
+const OUTFITS=[{"id":"princess","img":"img/5afe8a7aa5f8.webp","lab":"img/0483cdf94a88.png","mid":[191.0,118.6,111.7,134.6,98.5],"order":[0,1,2,3,4],"parts":["צבעי את הכתר","צבעי את החולצה","צבעי את הפפיון","צבעי את החצאית","צבעי את הנעליים"],"intro":"בואי נצבע שמלה לנסיכה"},{"id":"knight","img":"img/f067bde463cf.webp","lab":"img/c9b9de925419.png","mid":[193.0,110.0,109.6,72.2,100.0],"order":[0,1,2,3,4],"parts":["צבעי את הקסדה","צבעי את השריון","צבעי את המגן","צבעי את הגלימה","צבעי את המגפיים"],"intro":"בואי נצבע שריון לאביר"},{"id":"fairy","img":"img/83fdea9dcfd1.webp","lab":"img/3261428c67d6.png","mid":[192.1,126.6,115.5,164.8,94.3],"order":[0,3,1,2,4],"parts":["צבעי את זר הפרחים","צבעי את החולצה","צבעי את החצאית","צבעי את הכנפיים","צבעי את הנעליים"],"intro":"בואי נצבע בגדים לפיה"},{"id":"astronaut","img":"img/4823c1e43646.webp","lab":"img/aac43988b3ad.png","mid":[200.8,119.9,89.8,137.3,105.4],"order":[0,3,1,2,4],"parts":["צבעי את הקסדה","צבעי את המעיל","צבעי את המכנסיים","צבעי את התרמיל","צבעי את המגפיים"],"intro":"בואי נצבע חליפה לאסטרונאוט"},{"id":"superhero","img":"img/241dba92d33c.webp","lab":"img/b9ad8c39df7c.png","mid":[199.3,118.0,72.4,116.6,102.6],"order":[0,1,2,3,4],"parts":["צבעי את המסכה","צבעי את החולצה","צבעי את הגלימה","צבעי את המכנסיים","צבעי את המגפיים"],"intro":"בואי נצבע בגדים לגיבור העל"},{"id":"pirate","img":"img/e9dd5d1ce805.webp","lab":"img/1855b72dd277.png","mid":[186.8,124.8,97.9,112.6,97.1],"order":[0,1,2,3,4],"parts":["צבעי את הכובע","צבעי את האפוד","צבעי את החגורה","צבעי את המכנסיים","צבעי את המגפיים"],"intro":"בואי נצבע בגדים לפיראט"}];
+Object.assign(MASC,{"צבעי את הכתר": "צבע את הכתר", "צבעי את החולצה": "צבע את החולצה", "צבעי את הפפיון": "צבע את הפפיון", "צבעי את החצאית": "צבע את החצאית", "צבעי את הנעליים": "צבע את הנעליים", "בואי נצבע שמלה לנסיכה": "בוא נצבע שמלה לנסיכה", "צבעי את הקסדה": "צבע את הקסדה", "צבעי את השריון": "צבע את השריון", "צבעי את המגן": "צבע את המגן", "צבעי את הגלימה": "צבע את הגלימה", "צבעי את המגפיים": "צבע את המגפיים", "בואי נצבע שריון לאביר": "בוא נצבע שריון לאביר", "צבעי את זר הפרחים": "צבע את זר הפרחים", "צבעי את הכנפיים": "צבע את הכנפיים", "בואי נצבע בגדים לפיה": "בוא נצבע בגדים לפיה", "צבעי את המעיל": "צבע את המעיל", "צבעי את המכנסיים": "צבע את המכנסיים", "צבעי את התרמיל": "צבע את התרמיל", "בואי נצבע חליפה לאסטרונאוט": "בוא נצבע חליפה לאסטרונאוט", "צבעי את המסכה": "צבע את המסכה", "בואי נצבע בגדים לגיבור העל": "בוא נצבע בגדים לגיבור העל", "צבעי את הכובע": "צבע את הכובע", "צבעי את האפוד": "צבע את האפוד", "צבעי את החגורה": "צבע את החגורה", "בואי נצבע בגדים לפיראט": "בוא נצבע בגדים לפיראט"});
+Object.assign(HE_SAY,{"צבעי את הכתר": "צִבְעִי אֶת הַכֶּתֶר", "צבעי את החולצה": "צִבְעִי אֶת הַחֻלְצָה", "צבעי את הפפיון": "צִבְעִי אֶת הַפַּפְּיוֹן", "צבעי את החצאית": "צִבְעִי אֶת הַחֲצָאִית", "צבעי את הנעליים": "צִבְעִי אֶת הַנַּעֲלַיִם", "בואי נצבע שמלה לנסיכה": "בּוֹאִי נִצְבַּע שִׂמְלָה לַנְּסִיכָה", "צבעי את הקסדה": "צִבְעִי אֶת הַקַּסְדָּה", "צבעי את השריון": "צִבְעִי אֶת הַשִּׁרְיוֹן", "צבעי את המגן": "צִבְעִי אֶת הַמָּגֵן", "צבעי את הגלימה": "צִבְעִי אֶת הַגְּלִימָה", "צבעי את המגפיים": "צִבְעִי אֶת הַמַּגָּפַיִם", "בואי נצבע שריון לאביר": "בּוֹאִי נִצְבַּע שִׁרְיוֹן לָאַבִּיר", "צבעי את זר הפרחים": "צִבְעִי אֶת זֵר הַפְּרָחִים", "צבעי את הכנפיים": "צִבְעִי אֶת הַכְּנָפַיִם", "בואי נצבע בגדים לפיה": "בּוֹאִי נִצְבַּע בְּגָדִים לַפֵיָה", "צבעי את המעיל": "צִבְעִי אֶת הַמְּעִיל", "צבעי את המכנסיים": "צִבְעִי אֶת הַמִּכְנָסַיִם", "צבעי את התרמיל": "צִבְעִי אֶת הַתַּרְמִיל", "בואי נצבע חליפה לאסטרונאוט": "בּוֹאִי נִצְבַּע חֲלִיפָה לָאַסְטְרוֹנָאוּט", "צבעי את המסכה": "צִבְעִי אֶת הַמַּסֵּכָה", "בואי נצבע בגדים לגיבור העל": "בּוֹאִי נִצְבַּע בְּגָדִים לְגִבּוֹר הָעַל", "צבעי את הכובע": "צִבְעִי אֶת הַכּוֹבַע", "צבעי את האפוד": "צִבְעִי אֶת הָאֵפוֹד", "צבעי את החגורה": "צִבְעִי אֶת הַחֲגוֹרָה", "בואי נצבע בגדים לפיראט": "בּוֹאִי נִצְבַּע בְּגָדִים לַפִּירָאט"});
+Object.assign(HE_SAY_M,{"צבע את הכתר": "צְבַע אֶת הַכֶּתֶר", "צבע את החולצה": "צְבַע אֶת הַחֻלְצָה", "צבע את הפפיון": "צְבַע אֶת הַפַּפְּיוֹן", "צבע את החצאית": "צְבַע אֶת הַחֲצָאִית", "צבע את הנעליים": "צְבַע אֶת הַנַּעֲלַיִם", "בוא נצבע שמלה לנסיכה": "בּוֹא נִצְבַּע שִׂמְלָה לַנְּסִיכָה", "צבע את הקסדה": "צְבַע אֶת הַקַּסְדָּה", "צבע את השריון": "צְבַע אֶת הַשִּׁרְיוֹן", "צבע את המגן": "צְבַע אֶת הַמָּגֵן", "צבע את הגלימה": "צְבַע אֶת הַגְּלִימָה", "צבע את המגפיים": "צְבַע אֶת הַמַּגָּפַיִם", "בוא נצבע שריון לאביר": "בּוֹא נִצְבַּע שִׁרְיוֹן לָאַבִּיר", "צבע את זר הפרחים": "צְבַע אֶת זֵר הַפְּרָחִים", "צבע את הכנפיים": "צְבַע אֶת הַכְּנָפַיִם", "בוא נצבע בגדים לפיה": "בּוֹא נִצְבַּע בְּגָדִים לַפֵיָה", "צבע את המעיל": "צְבַע אֶת הַמְּעִיל", "צבע את המכנסיים": "צְבַע אֶת הַמִּכְנָסַיִם", "צבע את התרמיל": "צְבַע אֶת הַתַּרְמִיל", "בוא נצבע חליפה לאסטרונאוט": "בּוֹא נִצְבַּע חֲלִיפָה לָאַסְטְרוֹנָאוּט", "צבע את המסכה": "צְבַע אֶת הַמַּסֵּכָה", "בוא נצבע בגדים לגיבור העל": "בּוֹא נִצְבַּע בְּגָדִים לְגִבּוֹר הָעַל", "צבע את הכובע": "צְבַע אֶת הַכּוֹבַע", "צבע את האפוד": "צְבַע אֶת הָאֵפוֹד", "צבע את החגורה": "צְבַע אֶת הַחֲגוֹרָה", "בוא נצבע בגדים לפיראט": "בּוֹא נִצְבַּע בְּגָדִים לַפִּירָאט"});
+const loadPic=src=>new Promise((ok,no)=>{ const i=new Image(); i.onload=()=>ok(i); i.onerror=no; i.src=src });
+const hexRGB=h=>[1,3,5].map(k=>parseInt(h.slice(k,k+2),16));
+// a drawing of one outfit: paint(part,color) recolors a part, glow(part) makes it pulse, png() is the finished picture
+async function outfitPic(o){
+  const [im,lb]=await Promise.all([loadPic(o.img),loadPic(o.lab)]);
+  const w=im.naturalWidth, h=im.naturalHeight, mk=()=>{ const c=document.createElement('canvas'); c.width=w; c.height=h; return c };
+  const cv=mk(), gl=mk(); cv.className='outfit-cv'; gl.className='outfit-glow';
+  const x=cv.getContext('2d',{willReadFrequently:true}); x.drawImage(im,0,0); const src=x.getImageData(0,0,w,h);
+  const t=mk().getContext('2d',{willReadFrequently:true}); t.drawImage(lb,0,0,w,h); const L=t.getImageData(0,0,w,h).data;
+  const lab=new Uint8Array(w*h), ring=new Uint8Array(w*h); for(let i=0;i<w*h;i++){ lab[i]=Math.round(L[i*4]/40); ring[i]=Math.round(L[i*4+1]/8) }
+  const cols=[null,null,null,null,null], BLANK=[248,246,252];
+  const draw=()=>{ const out=x.createImageData(w,h), d=out.data, sd=src.data;
+    for(let i=0;i<w*h;i++){ const k=i*4, p=lab[i];
+      if(!p){ d[k]=sd[k]; d[k+1]=sd[k+1]; d[k+2]=sd[k+2]; d[k+3]=sd[k+3]; continue }
+      const c=cols[p-1]||BLANK, sh=(sd[k]*.299+sd[k+1]*.587+sd[k+2]*.114)/o.mid[p-1];
+      for(let j=0;j<3;j++) d[k+j]= sh<=1 ? c[j]*(.3+.7*sh) : c[j]+(255-c[j])*Math.min(1,(sh-1)*1.1);
+      d[k+3]=sd[k+3] }
+    x.putImageData(out,0,0) };
+  draw();
+  const g=gl.getContext('2d');
+  const wrap=document.createElement('div'); wrap.className='outfit'; wrap.append(cv,gl);
+  wrap.style.setProperty('--ar',w/h);
+  return { el:wrap, art:true,
+    paint(p,hex){ cols[p]=hexRGB(hex); draw() },
+    // a glowing ring around the part (drawn ahead of time into the label picture's green channel)
+    glow(p){ g.clearRect(0,0,w,h); if(p<0) return; const m=g.createImageData(w,h), bit=1<<p;
+      for(let i=0;i<w*h;i++) if(ring[i]&bit){ const k=i*4; m.data[k]=255; m.data[k+1]=184; m.data[k+2]=28; m.data[k+3]=255 }
+      g.putImageData(m,0,0) },
+    png:()=>`<img class="outfit-done" src="${cv.toDataURL()}" alt="">` };
+}
+// the old drawn dress and armor, used only if the outfit pictures can't load
+function svgPic(){
+  const box=document.createElement('div'); box.innerHTML=DRESS_SVG; const el=box.firstElementChild, part=k=>el.querySelector(`.part[data-p="${DRESS_PARTS[k].p}"]`);
+  return { el, paint(k,hex){ part(k).setAttribute('fill',hex) }, glow(k){ el.querySelectorAll('.part').forEach((x,j)=>x.classList.toggle('glow',x===(k<0?null:part(k)))) }, png:()=>el.outerHTML };
+}
+async function startDress(g){
+  const sid=++screenId; homeTo=()=>pickGame(g.cat,g.level);
   const colors=g.cat.items.filter(c=>c.en!=='White');
   // this level's colors first (weak ones favored), then the rest, five different colors in all
   const plan=[]; for(const t of pickTargets({cat:g.cat,pool:g.pool.filter(c=>c.en!=='White')},12)){ if(!plan.includes(t)) plan.push(t); if(plan.length===5) break }
   for(const c of shuffle(colors)){ if(plan.length===5) break; if(!plan.includes(c)) plan.push(c) }
+  // a different outfit from last time
+  let last=''; try{ last=localStorage.getItem(KEY+'outfit')||'' }catch(e){}
+  const o=shuffle(OUTFITS.filter(x=>x.id!==last))[0];
+  try{ localStorage.setItem(KEY+'outfit',o.id) }catch(e){}
+  let pic, parts;
+  try{ pic=await outfitPic(o); parts=o.order.map(k=>({k,he:o.parts[k]})) }
+  catch(e){ pic=svgPic(); parts=DRESS_PARTS.map((x,k)=>({k,he:x.he})) }
+  if(sid!==screenId) return;
   $home.hidden=false;
   $main.innerHTML=`<div class="screen" id="dressScreen">
     <div id="rb"></div>
     <div id="askWrap"></div>
-    ${DRESS_SVG}
+    <div id="outfitBox"></div>
     <div class="palette" id="palette"></div>
   </div>`;
-  sayThen([['en',BOY?'Magic armor!':'Magic dress!'],['he','בואי נצבע שמלה לנסיכה']],()=>dressRound(g,colors,plan,0),300);
+  document.getElementById('outfitBox').append(pic.el);
+  sayThen([['en','Magic colors!'],['he',pic.art?o.intro:'בואי נצבע שמלה לנסיכה']],()=>dressRound(g,colors,plan,0,pic,parts),300);
 }
-function dressRound(g,colors,plan,r){
+function dressRound(g,colors,plan,r,pic,parts){
   const id=++screenId;
-  const part=DRESS_PARTS[r], color=plan[r];
+  const part=parts[r], color=plan[r];
   const opts=shuffle([color,...shuffle(colors.filter(c=>c!==color)).slice(0,3)]);
   document.getElementById('rb').innerHTML=roundBar(r);
   document.getElementById('askWrap').innerHTML=askBtn(color.en);
-  $main.querySelectorAll('.dress .part').forEach(x=>x.classList.toggle('glow',x.dataset.p===part.p));
+  pic.glow(part.k);
   fitScreen();
   const pal=document.getElementById('palette');
   pal.innerHTML=opts.map((c,k)=>`<button class="paint" data-k="${k}" aria-label="${c.he}" style="background:${c.c}"></button>`).join('');
@@ -1304,10 +1360,9 @@ function dressRound(g,colors,plan,r){
     const c=opts[+b.dataset.k];
     if(c===color){
       done=true; b.classList.remove('hint');
-      const el=$main.querySelector(`.dress .part[data-p="${part.p}"]`);
-      el.setAttribute('fill',color.c); el.classList.remove('glow');
+      pic.paint(part.k,color.c); pic.glow(-1);
       if(!wrongs) gotIt(g.cat,color);
-      win(el,color.en,()=> r+1<DRESS_PARTS.length ? dressRound(g,colors,plan,r+1) : party(g,()=>startDress(g),$main.querySelector('.dress').outerHTML));
+      win(pic.el,color.en,()=> r+1<parts.length ? dressRound(g,colors,plan,r+1,pic,parts) : party(g,()=>startDress(g),pic.png()));
     } else {
       wrongs++; b.classList.remove('wrong'); void b.offsetWidth; b.classList.add('wrong');
       miss(g,color,c,wrongs,()=>btns[opts.indexOf(color)].classList.add('hint'));
@@ -1501,71 +1556,58 @@ function simonRound(g,targets,r){
 }
 
 /* ---------- Game 9: Dress up the teddy ("Put on the red hat!": a color and a piece of clothing) ---------- */
-const CLOTH_ICON={
-  Hat:'<ellipse cx="50" cy="72" rx="44" ry="11"/><path d="M26 72 Q26 30 50 28 Q74 30 74 72Z"/><path d="M27 62 H73 V70 H27Z" fill="rgba(0,0,0,.18)"/>',
-  Shirt:'<path d="M30 20 L44 14 Q50 22 56 14 L70 20 L90 36 L78 48 L70 42 L70 88 L30 88 L30 42 L22 48 L10 36Z"/>',
-  Pants:'<path d="M26 12 H74 L82 90 H58 L50 40 L42 90 H18Z"/><path d="M26 12 H74 V20 H26Z" fill="rgba(0,0,0,.18)"/>',
-  Shoes:'<path d="M2 74 Q2 36 18 36 L28 36 Q32 54 42 57 Q48 60 48 70 L48 78 H2Z"/><path d="M52 74 Q52 36 68 36 L78 36 Q82 54 92 57 Q98 60 98 70 L98 78 H52Z"/><path d="M2 72 H48 V78 H2Z M52 72 H98 V78 H52Z" fill="rgba(0,0,0,.25)"/><path d="M14 44 H26 M64 44 H76" stroke="#fff" stroke-width="3"/>',
-  Dress:'<path d="M34 6 H41 L44 18 H56 L59 6 H66 L63 30 Q61 36 67 40 L92 92 H8 L33 40 Q39 36 37 30Z"/><path d="M37 38 H63 V44 H37Z" fill="rgba(255,255,255,.45)"/>',
-  Socks:'<path d="M14 10 H34 V56 L46 64 Q52 70 46 78 Q42 84 34 82 L16 74 Q10 70 12 62 L14 56Z"/><path d="M56 10 H76 V56 L88 64 Q94 70 88 78 Q84 84 76 82 L58 74 Q52 70 54 62 L56 56Z"/><path d="M14 10 H34 V18 H14Z M56 10 H76 V18 H56Z" fill="rgba(255,255,255,.5)"/>',
-  Bag:'<path d="M34 40 Q34 14 50 14 Q66 14 66 40" fill="none" stroke="currentColor" stroke-width="7"/><rect x="16" y="36" width="68" height="52" rx="12"/><rect x="42" y="48" width="16" height="10" rx="3" fill="rgba(255,255,255,.6)"/>',
-  Coat:'<path d="M32 12 L46 8 L50 24 L54 8 L68 12 L90 34 L80 48 L72 40 L74 94 L26 94 L28 40 L20 48 L10 34Z"/><path d="M49 26 V94" stroke="rgba(0,0,0,.25)" stroke-width="2"/><g fill="#fff"><circle cx="56" cy="44" r="3.5"/><circle cx="56" cy="60" r="3.5"/><circle cx="56" cy="76" r="3.5"/></g>',
-  Glasses:'<g fill="none" stroke="currentColor" stroke-width="7"><circle cx="28" cy="55" r="18"/><circle cx="72" cy="55" r="18"/><path d="M46 52 Q50 46 54 52"/><path d="M11 50 L4 42 M89 50 L96 42"/></g><g fill="rgba(160,210,255,.35)"><circle cx="28" cy="55" r="15"/><circle cx="72" cy="55" r="15"/></g>',
-  Gloves:'<path d="M8 90 V52 Q8 32 24 32 Q38 32 38 48 V60 L44 52 Q50 48 53 56 L40 80 V90Z"/><path d="M92 90 V52 Q92 32 76 32 Q62 32 62 48 V60 L56 52 Q50 48 47 56 L60 80 V90Z"/>'
-};
-const clothSVG=(en,c)=>`<svg class="cloth" viewBox="0 0 100 100" style="color:${c}" fill="${c}" stroke="rgba(0,0,0,.18)" stroke-width="1.5">${CLOTH_ICON[en]}</svg>`;
-// where each piece sits on the teddy (teddy coordinates); torso pieces stack in the order they were put on
-const WEAR={
-  Pants:c=>`<path d="M56 184 Q100 172 144 184 L144 236 L104 236 L100 204 L96 236 L56 236Z" fill="${c}"/>`,
-  Socks:c=>`<g fill="${c}"><rect x="58" y="224" width="38" height="18" rx="7"/><rect x="104" y="224" width="38" height="18" rx="7"/></g>`,
-  Shoes:c=>`<g fill="${c}"><ellipse cx="76" cy="244" rx="26" ry="13"/><ellipse cx="124" cy="244" rx="26" ry="13"/></g>`,
-  Shirt:c=>`<svg x="44" y="94" width="112" height="112" viewBox="0 0 100 100" fill="${c}">${CLOTH_ICON.Shirt}</svg>`,
-  Coat:c=>`<svg x="40" y="92" width="120" height="124" viewBox="0 0 100 100" fill="${c}">${CLOTH_ICON.Coat}</svg>`,
-  Dress:c=>`<svg x="36" y="96" width="128" height="132" viewBox="0 0 100 100" fill="${c}">${CLOTH_ICON.Dress}</svg>`,
-  Gloves:c=>`<g fill="${c}"><circle cx="36" cy="182" r="16"/><circle cx="164" cy="182" r="16"/></g>`,
-  Bag:c=>`<svg x="146" y="150" width="54" height="54" viewBox="0 0 100 100" fill="${c}" style="color:${c}">${CLOTH_ICON.Bag}</svg>`,
-  Glasses:c=>`<g fill="none" stroke="${c}" stroke-width="5"><circle cx="84" cy="58" r="13"/><circle cx="116" cy="58" r="13"/><path d="M97 56 Q100 52 103 56"/></g>`,
-  Hat:c=>`<svg x="52" y="-26" width="96" height="70" viewBox="0 10 100 72" fill="${c}">${CLOTH_ICON.Hat}</svg>`
-};
-const WEAR_ORDER=['Pants','Socks','Shoes','Shirt','Dress','Coat','Gloves','Bag','Glasses','Hat'];
-const TEDDY=worn=>`<svg class="teddy" viewBox="0 -28 200 290" aria-label="דובי">
-  <g fill="#c98a52"><ellipse cx="52" cy="150" rx="15" ry="34" transform="rotate(28 52 150)"/><ellipse cx="148" cy="150" rx="15" ry="34" transform="rotate(-28 148 150)"/>
-    <ellipse cx="78" cy="218" rx="20" ry="26"/><ellipse cx="122" cy="218" rx="20" ry="26"/><ellipse cx="76" cy="242" rx="22" ry="12"/><ellipse cx="124" cy="242" rx="22" ry="12"/>
-    <ellipse cx="100" cy="160" rx="48" ry="56"/></g>
-  <ellipse cx="100" cy="166" rx="28" ry="34" fill="#e9b886"/>
-  ${WEAR_ORDER.filter(k=>worn[k]&&k!=='Hat'&&k!=='Glasses').map(k=>WEAR[k](worn[k])).join('')}
-  <g fill="#c98a52"><circle cx="64" cy="28" r="17"/><circle cx="136" cy="28" r="17"/><circle cx="100" cy="64" r="42"/></g>
-  <g fill="#e9b886"><circle cx="64" cy="28" r="9"/><circle cx="136" cy="28" r="9"/><ellipse cx="100" cy="80" rx="19" ry="14"/></g>
-  <g fill="#4a2c1a"><circle cx="84" cy="58" r="5.5"/><circle cx="116" cy="58" r="5.5"/><ellipse cx="100" cy="73" rx="7.5" ry="5.5"/></g>
-  <path d="M92 84 Q100 91 108 84" fill="none" stroke="#4a2c1a" stroke-width="3" stroke-linecap="round"/>
-  <g fill="#ff9aa8" opacity=".55"><circle cx="74" cy="76" r="6"/><circle cx="126" cy="76" r="6"/></g>
-  ${['Glasses','Hat'].filter(k=>worn[k]).map(k=>WEAR[k](worn[k])).join('')}
-</svg>`;
-const WEAR_COLORS=()=>CATS.find(c=>c.id==='colors').items.filter(c=>['Pink','Red','Blue','Yellow','Green','Purple','Orange'].includes(c.en));
-const canDress=g=>g.pool.some(x=>CLOTH_ICON[x.en]);
+// a teddy picture and every piece in all nine colors; pairs (shoes, socks, gloves) are cut into a left and a right piece
+const WEAR_ART={"Shirt":{"Pink":"img/a158e8844b6d.webp","Red":"img/d220fc3e4dd6.webp","Blue":"img/8e15222e5296.webp","Yellow":"img/cd06f6a88ec4.webp","Green":"img/26ab80216d50.webp","Purple":"img/12992363d3d5.webp","Orange":"img/1010a0ccdb24.webp","Black":"img/7ebd61ae3910.webp","White":"img/430167a07419.webp"},"Dress":{"Pink":"img/37b24b850a4a.webp","Red":"img/4cfd0b57b1ed.webp","Blue":"img/01b2883d50aa.webp","Yellow":"img/a45e2bdb633f.webp","Green":"img/5fe5ee8e2847.webp","Purple":"img/6e9a5967e527.webp","Orange":"img/6710ddec5f8b.webp","Black":"img/e37ad1c6b67d.webp","White":"img/6d700efdc996.webp"},"Pants":{"Pink":"img/34dda398bed2.webp","Red":"img/958e81001353.webp","Blue":"img/630e88ee5b39.webp","Yellow":"img/5abd39edc550.webp","Green":"img/252592365701.webp","Purple":"img/2e680cd8d20f.webp","Orange":"img/f888b9deaf1d.webp","Black":"img/822963c10ce9.webp","White":"img/39619877bfc9.webp"},"Coat":{"Pink":"img/c3dcb4a04b4c.webp","Red":"img/4217caedbbd2.webp","Blue":"img/96933d0eaa3c.webp","Yellow":"img/5fec280c0906.webp","Green":"img/d955092e2bd5.webp","Purple":"img/8ce758cc702e.webp","Orange":"img/ca73ce5d13d4.webp","Black":"img/6e1b1ec7778d.webp","White":"img/66658030b389.webp"},"Hat":{"Pink":"img/79b9bf2f7ac7.webp","Red":"img/8505b5c9001c.webp","Blue":"img/7683fe6c758d.webp","Yellow":"img/c824fe81ef66.webp","Green":"img/09a01cd6feb0.webp","Purple":"img/781d2afd824e.webp","Orange":"img/face4b1be98c.webp","Black":"img/a3db3aed5a49.webp","White":"img/841230457b52.webp"},"Glasses":{"Pink":"img/ba9db2dd1e51.webp","Red":"img/9b1187537670.webp","Blue":"img/5b42ce184206.webp","Yellow":"img/ea46ecc1c8dc.webp","Green":"img/284eea08999a.webp","Purple":"img/be536e806ee1.webp","Orange":"img/efc9ba897603.webp","Black":"img/59f5c6c8612b.webp","White":"img/29fe23b33d43.webp"},"Bag":{"Pink":"img/9fefcfe29690.webp","Red":"img/5a18c0b58545.webp","Blue":"img/8aa3b90a01b2.webp","Yellow":"img/1a85642c1cb1.webp","Green":"img/675bb705387d.webp","Purple":"img/8a2fbb54e8e7.webp","Orange":"img/b1d107c6b320.webp","Black":"img/2024f13fb14c.webp","White":"img/d34cd95db587.webp"},"ShoesL":{"Pink":"img/c67f31e29acb.webp","Red":"img/07748ba3ff92.webp","Blue":"img/d3d94e6bab2a.webp","Yellow":"img/a2f3f61a41e5.webp","Green":"img/ef66ac4b0f46.webp","Purple":"img/d497cb3a5965.webp","Orange":"img/965012479b1e.webp","Black":"img/ce1e0765f591.webp","White":"img/f60b9325fe63.webp"},"ShoesR":{"Pink":"img/54d4cfcdcc56.webp","Red":"img/2dcef5f4bdaa.webp","Blue":"img/81adecad8822.webp","Yellow":"img/7ddf2e8d3ad6.webp","Green":"img/0d640a9a598a.webp","Purple":"img/78d2b6ca3a67.webp","Orange":"img/ad5cecf3ace7.webp","Black":"img/3a2038caac95.webp","White":"img/460388b6cff1.webp"},"SocksL":{"Pink":"img/067ecd571d0b.webp","Red":"img/af5cd57fa528.webp","Blue":"img/9736d4554e03.webp","Yellow":"img/e116e42d0d50.webp","Green":"img/2dd39566ab88.webp","Purple":"img/2f82fa52e373.webp","Orange":"img/81d8b8af51f1.webp","Black":"img/9965cdccba16.webp","White":"img/0e35f94e33d2.webp"},"SocksR":{"Pink":"img/72e48026e64a.webp","Red":"img/a2193650cc40.webp","Blue":"img/c7be7e61ae63.webp","Yellow":"img/239f4da510de.webp","Green":"img/4e3e0d377c5a.webp","Purple":"img/e9a454fa4cac.webp","Orange":"img/dd83032de034.webp","Black":"img/20a70e070f04.webp","White":"img/fd0fe276f824.webp"},"GlovesL":{"Pink":"img/df756bb79e54.webp","Red":"img/f7b1c794a909.webp","Blue":"img/8a81d9281673.webp","Yellow":"img/b6a5cf314caf.webp","Green":"img/ca0e6fb23e7b.webp","Purple":"img/beebd6c661a9.webp","Orange":"img/a6a1a2b8d7b8.webp","Black":"img/ada124baaf60.webp","White":"img/ee70f7208e3c.webp"},"GlovesR":{"Pink":"img/b07f247da3b8.webp","Red":"img/8c1e18d19682.webp","Blue":"img/7917082edb6a.webp","Yellow":"img/1fc7c7961d81.webp","Green":"img/36659afd36ac.webp","Purple":"img/66e081ed3206.webp","Orange":"img/bf07635843a9.webp","Black":"img/010675294cdf.webp","White":"img/389374ae6ca7.webp"},"teddy":"img/fd4a9099731e.webp"};
+// where each piece sits, in % of the teddy picture: x = center, y = top, w = width, h = height when squashed, r = turn
+const WEAR_FIT={Shirt:{x:50,y:39,w:64},Dress:{x:50,y:39,w:62},Pants:{x:50,y:68,w:49,h:25},Coat:{x:50,y:35,w:92},
+  Hat:{x:50,y:-17,w:50},Glasses:{x:50,y:21,w:42},Bag:{x:72,y:47,w:27},
+  ShoesL:{x:36,y:89,w:25},ShoesR:{x:64,y:89,w:25},SocksL:{x:36.5,y:86,w:17},SocksR:{x:63.5,y:86,w:17},
+  GlovesL:{x:9,y:51,w:16,r:50},GlovesR:{x:91,y:51,w:16,r:-50}};
+// the order a child gets dressed in, and the order the pieces are drawn (later ones on top)
+const WEAR_ORDER=['Shirt','Dress','Pants','Socks','Shoes','Coat','Gloves','Hat','Glasses','Bag'];
+const WEAR_LAYERS=['Socks','Pants','Shoes','Shirt','Dress','Coat','Gloves','Bag','Glasses','Hat'];
+// a dress takes the place of both the shirt and the pants; socks go on before the shoes
+const wearClash=(k,worn)=>(k==='Dress'&&(worn.Shirt||worn.Pants))||((k==='Shirt'||k==='Pants')&&worn.Dress);
+const wearOK=(k,worn)=>!worn[k]&&!wearClash(k,worn)&&!(k==='Socks'&&worn.Shoes);
+const wearParts=k=>WEAR_ART[k]?[k]:[k+'L',k+'R'];
+const WEAR_TOP=20; // room above the teddy for the hat, in % of the teddy's height
+const wearImg=(p,col)=>{ const f=WEAR_FIT[p];
+  return `<img class="wear" src="${WEAR_ART[p][col]}" alt="" draggable="false" style="left:${f.x-f.w/2}%;top:${(f.y+WEAR_TOP)/1.2}%;width:${f.w}%;${f.h?`height:${f.h/1.2}%;`:''}${f.r?`transform:rotate(${f.r}deg);`:''}">` };
+const TEDDY=worn=>`<div class="teddy" role="img" aria-label="דובי"><img class="tb" src="${WEAR_ART.teddy}" alt="" draggable="false">${
+  WEAR_LAYERS.filter(k=>worn[k]).map(k=>wearParts(k).map(p=>wearImg(p,worn[k])).join('')).join('')}</div>`;
+const clothPic=(en,col)=>{ const ps=wearParts(en);
+  return ps.length===1 ? `<img class="cloth" src="${WEAR_ART[en][col]}" alt="" draggable="false">`
+    : `<span class="pair">${ps.map(p=>`<img src="${WEAR_ART[p][col]}" alt="" draggable="false">`).join('')}</span>` };
+const WEAR_COLORS=()=>CATS.find(c=>c.id==='colors').items.filter(c=>WEAR_ART.Shirt[c.en]);
+const canDress=g=>g.pool.some(x=>WEAR_ORDER.includes(x.en));
 function startDressUp(g){
   screenId++;
-  const clothes=g.cat.items.filter(x=>CLOTH_ICON[x.en]);
-  // this level's clothes first, then others, five different pieces in all, each in its own color
-  const plan=[]; for(const t of pickTargets({cat:g.cat,pool:g.pool.filter(x=>CLOTH_ICON[x.en])},12)){ if(!plan.includes(t)) plan.push(t); if(plan.length===5) break }
-  for(const c of shuffle(clothes)){ if(plan.length===5) break; if(!plan.includes(c)) plan.push(c) }
+  const clothes=g.cat.items.filter(x=>WEAR_ORDER.includes(x.en));
+  // this level's clothes first, then the others; always a shirt or a dress, then pieces that go with it, five in all
+  const pref=[]; for(const t of pickTargets({cat:g.cat,pool:g.pool.filter(x=>WEAR_ORDER.includes(x.en))},12)) if(!pref.includes(t)) pref.push(t);
+  for(const x of shuffle(clothes)) if(!pref.includes(x)) pref.push(x);
+  const body=pref.find(x=>x.en==='Shirt'||x.en==='Dress'), plan=[body], on={[body.en]:1};
+  for(const x of pref){ if(plan.length===5) break; if(plan.includes(x)||wearClash(x.en,on)) continue; plan.push(x); on[x.en]=1 }
+  plan.sort((a,b)=>WEAR_ORDER.indexOf(a.en)-WEAR_ORDER.indexOf(b.en));
   const cols=shuffle(WEAR_COLORS());
-  const steps=plan.map((item,k)=>({item,color:cols[k%cols.length]}));
+  const steps=plan.map((item,k)=>({item,color:cols[k]}));
+  // fetch this game's pictures now so each piece appears at once
+  steps.forEach(st=>wearParts(st.item.en).forEach(p=>{ new Image().src=WEAR_ART[p][st.color.en] }));
   sayThen([['en','Dress up!'],['he','בואי נלביש את הדובי!']],()=>dressUpRound(g,steps,0,{}),300);
 }
 function dressUpRound(g,steps,r,worn){
   const id=++screenId; homeTo=()=>pickGame(g.cat,g.level);
   $home.hidden=false;
   const {item,color}=steps[r], name=x=>(x.color.en+' '+x.item.en).toLowerCase();
-  const clothes=g.cat.items.filter(x=>CLOTH_ICON[x.en]), cols=WEAR_COLORS();
-  const otherItem=shuffle(clothes.filter(x=>x!==item)), otherCol=shuffle(cols.filter(x=>x!==color));
-  const opts=shuffle([{item,color},{item,color:otherCol[0]},{item:otherItem[0],color},{item:otherItem[1],color:otherCol[1]}]);
+  // wrong answers are only pieces that could go on the teddy now
+  const fits=shuffle(g.cat.items.filter(x=>x!==item&&WEAR_ORDER.includes(x.en)&&wearOK(x.en,worn))), otherCol=shuffle(WEAR_COLORS().filter(x=>x!==color));
+  const opts=shuffle([{item,color},{item,color:otherCol[0]},{item:fits[0],color},{item:fits[1]||fits[0],color:otherCol[1]}]);
   const right=opts.find(o=>o.item===item&&o.color===color);
   $main.innerHTML=`<div class="screen dressup">
     ${roundBar(r)}
     ${askBtn('?')}
     <div class="dress-row"><div class="teddy-wrap" id="teddy">${TEDDY(worn)}</div>
-      <div class="options four">${opts.map((o,k)=>`<button class="opt" data-k="${k}" aria-label="${o.color.he} ${o.item.he}">${clothSVG(o.item.en,o.color.c)}</button>`).join('')}</div></div>
+      <div class="options four">${opts.map((o,k)=>`<button class="opt" data-k="${k}" aria-label="${o.color.he} ${o.item.he}">${clothPic(o.item.en,o.color.en)}</button>`).join('')}</div></div>
   </div>`;
   const line='Put on the '+name({item,color})+'!';
   const ask=()=>say([['en',line]]);
@@ -1578,7 +1620,7 @@ function dressUpRound(g,steps,r,worn){
     const o=opts[+b.dataset.k];
     if(o===right){
       done=true; b.classList.remove('hint'); b.classList.add('right');
-      worn[item.en]=color.c; document.getElementById('teddy').innerHTML=TEDDY(worn);
+      worn[item.en]=color.en; document.getElementById('teddy').innerHTML=TEDDY(worn);
       if(!wrongs) gotIt(g.cat,item);
       const t=document.getElementById('teddy');
       win(t,name(o),()=> r+1<steps.length ? dressUpRound(g,steps,r+1,worn) : party(g,()=>startDressUp(g),`<div class="teddy-wrap big">${TEDDY(worn)}</div>`),[['en','Yes! The '+name(o)+'!']]);
