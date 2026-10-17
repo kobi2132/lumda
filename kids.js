@@ -1,16 +1,41 @@
-/* The children who play. Every app can read the current child with LUMDA_KID() and adapt name, wording, voice and look. */
-window.LUMDA_KIDS = {
-  melody: {
-    id: 'melody', name: 'מלודי', nameEn: 'Melody', gender: 'f', age: 4,
-    img: 'assets/kids/melody.webp',
-    welcome: 'ברוכה הבאה מלודי!', welcomeSay: 'בְּרוּכָה הַבָּאָה מֶלוֹדִי!',
-    voice: 'female', theme: { bg: 'linear-gradient(170deg,#ffc6e3 0%,#f3c4ff 55%,#d7c0ff 100%)', accent: '#ff4f9a', ink: '#4e1f63' }
-  },
-  yam: {
-    id: 'yam', name: 'ים', nameEn: 'Yam', nameEnSay: 'Yahm', /* how the English voice should pronounce it ('Yam' sounds like the vegetable) */ gender: 'm', age: 6,
-    img: 'assets/kids/yam.webp',
-    welcome: 'ברוך הבא ים!', welcomeSay: 'בָּרוּךְ הַבָּא יָם!',
-    voice: 'male', theme: { bg: 'linear-gradient(170deg,#2b3a67 0%,#3d2f6b 55%,#1e2748 100%)', accent: '#f2b632', ink: '#ffffff' }
+/* The children who play. Every app can read the current child with LUMDA_KID() and adapt name, wording, voice and look.
+   The list lives on the phone (localStorage 'lumda-kids', edited in the hub's hidden kids page); Melody and Yam are the default.
+   Each saved kid: {id, name, nameEn, nameSay (Hebrew with nikud, for the voice), nameEnSay (how the English voice should say it), gender 'f'|'m', level 'kg'|'g1'}.
+   gender picks the character, colors, wording and voice; level picks the content (kindergarten or first grade). */
+(function(){
+  const DEFAULTS = [
+    { id: 'melody', name: 'מלודי', nameEn: 'Melody', nameSay: 'מֶלוֹדִי', nameEnSay: 'Melody', gender: 'f', level: 'kg' },
+    /* 'Yam' sounds like the vegetable, so the English voice says 'Yahm' */
+    { id: 'yam', name: 'ים', nameEn: 'Yam', nameSay: 'יָם', nameEnSay: 'Yahm', gender: 'm', level: 'g1' }
+  ];
+  const LOOKS = {
+    melody: { img: 'assets/kids/melody.webp', voice: 'female', theme: { bg: 'linear-gradient(170deg,#ffc6e3 0%,#f3c4ff 55%,#d7c0ff 100%)', accent: '#ff4f9a', ink: '#4e1f63' } },
+    yam:    { img: 'assets/kids/yam.webp', voice: 'male', theme: { bg: 'linear-gradient(170deg,#2b3a67 0%,#3d2f6b 55%,#1e2748 100%)', accent: '#f2b632', ink: '#ffffff' } }
+  };
+  window.LUMDA_LEVELS = { kg: { he: 'גן', ages: '3 עד 5', age: 4 }, g1: { he: "כיתה א'", ages: '6 עד 7', age: 6 } };
+  window.LUMDA_DEFAULT_KIDS = DEFAULTS;
+  // the full kid as apps use it: the saved fields plus what follows from gender and level
+  function full(k){
+    const look = k.gender === 'm' ? 'yam' : 'melody', L = LOOKS[look], say = k.nameSay || k.name;
+    return Object.assign({}, k, {
+      look, img: L.img, voice: L.voice, theme: L.theme,
+      nameEnSay: k.nameEnSay || k.nameEn, nameSay: say,
+      age: (window.LUMDA_LEVELS[k.level] || window.LUMDA_LEVELS.kg).age,
+      welcome: (k.gender === 'm' ? 'ברוך הבא ' : 'ברוכה הבאה ') + k.name + '!',
+      welcomeSay: (k.gender === 'm' ? 'בָּרוּךְ הַבָּא ' : 'בְּרוּכָה הַבָּאָה ') + say + '!'
+    });
   }
-};
+  window.LUMDA_KIDS_LIST = function(){
+    try { const s = JSON.parse(localStorage.getItem('lumda-kids')); if (Array.isArray(s)) return s.filter(k => k && k.id && k.name) } catch(e){}
+    return DEFAULTS.map(k => Object.assign({}, k));
+  };
+  window.LUMDA_SAVE_KIDS = function(list){
+    try { localStorage.setItem('lumda-kids', JSON.stringify(list)) } catch(e){}
+    build();
+  };
+  function build(){
+    const o = {}; window.LUMDA_KIDS_LIST().forEach(k => { o[k.id] = full(k) }); window.LUMDA_KIDS = o;
+  }
+  build();
+})();
 window.LUMDA_KID = function(){ try { return window.LUMDA_KIDS[localStorage.getItem('lumda-kid')] || null } catch(e){ return null } };

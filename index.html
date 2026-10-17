@@ -26,16 +26,16 @@ button{font:inherit;color:inherit}
 
 /* Picker */
 #pick:not([hidden]){flex:1;display:flex;flex-direction:column}
-.kids{flex:1;display:grid;grid-template-columns:1fr 1fr;align-content:center;padding-bottom:8vh;gap:clamp(12px,4vw,40px);align-items:end;max-width:760px;width:100%;margin:0 auto}
+.kids{flex:1;display:grid;align-content:center;padding-bottom:8vh;gap:clamp(12px,4vw,40px);align-items:end;max-width:760px;width:100%;margin:0 auto}
 .kid{border:0;background:none;padding:0;cursor:pointer;min-width:0;display:flex;flex-direction:column;align-items:center;gap:10px}
 .kid .fig{width:100%;height:min(52vh,72vw,520px);display:flex;align-items:flex-end;justify-content:center;
   animation:idle 3.4s ease-in-out infinite}
 .kid:nth-child(2) .fig{animation-delay:-1.7s}
-.kid img{height:100%;width:auto;max-width:none;filter:drop-shadow(0 10px 14px rgba(40,10,60,.3));-webkit-user-drag:none}
+.kid img{filter:drop-shadow(0 10px 14px rgba(40,10,60,.3));-webkit-user-drag:none}
 .kid .name{font-family:var(--display);font-weight:700;font-size:clamp(28px,8vw,48px);color:#fff;border-radius:999px;padding:6px 30px;
   border:4px solid #fff;box-shadow:0 6px 0 rgba(40,10,60,.25)}
-.kid[data-k="melody"] .name{background:linear-gradient(180deg,#ff8fc0,#e0307f)}
-.kid[data-k="yam"] .name{background:linear-gradient(180deg,#5b7bd6,#2b3a8f);border-color:var(--gold)}
+.kid .name[data-look="melody"]{background:linear-gradient(180deg,#ff8fc0,#e0307f)}
+.kid .name[data-look="yam"]{background:linear-gradient(180deg,#5b7bd6,#2b3a8f);border-color:var(--gold)}
 .kid:active .fig{transform:scale(.97)}
 .kid.chosen .fig{animation:jump .9s ease-out}
 .kids.picked .kid:not(.chosen){opacity:.35;transition:opacity .4s}
@@ -58,15 +58,110 @@ button{font:inherit;color:inherit}
 .empty{text-align:center;color:#fff;font-size:22px;line-height:1.6;padding:30px 10px;font-family:var(--display)}
 .empty .big{font-size:70px;display:block}
 [hidden]{display:none!important}
-@media (orientation:landscape) and (max-height:520px){ .kid .fig{height:min(60vh,300px)} h1{margin:4px 0 8px;font-size:30px} }
+.kids{grid-template-columns:repeat(var(--cols,2),minmax(0,1fr))}
+.kids.rows2 .kid .fig{height:min(30vh,56vw,360px)}
+.kid img{width:100%;height:100%;object-fit:contain;object-position:50% 100%}
+.kids.many .kid .name{font-size:clamp(18px,5.4vw,34px);padding:4px 14px;max-width:100%;overflow-wrap:anywhere}
+.nokids{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;color:#fff;text-align:center;font-family:var(--display);font-size:24px;padding-bottom:10vh}
+h1.hold{transition:transform 2s linear;transform:scale(1.06)}
+
+/* Kids page (hidden: hold the title for 2 seconds). Everything here is for parents. */
+.page{max-width:620px;width:100%;margin:0 auto;background:#fff;border-radius:26px;padding:18px 16px 22px;box-shadow:0 8px 0 rgba(40,10,60,.18);color:#4e1f63}
+.page h2{margin:0 0 4px;font-family:var(--display);font-size:28px;display:flex;align-items:center;gap:10px}
+.page h2 span{flex:1}
+.page .note{margin:0 0 14px;font-size:15px;line-height:1.5;opacity:.8}
+.x{width:48px;height:48px;border-radius:50%;border:0;background:#f4e6fb;font-size:22px;cursor:pointer;flex:none}
+.row{display:flex;align-items:center;gap:12px;padding:10px;border-radius:18px;background:#faf3fd;margin-bottom:10px}
+.row img{width:56px;height:64px;object-fit:contain;flex:none}
+.row .who{flex:1;min-width:0}
+.row .who b{display:block;font-size:22px;font-family:var(--display);overflow-wrap:anywhere}
+.row .who small{font-size:14px;opacity:.75}
+.ib{width:48px;height:48px;border-radius:14px;border:0;background:#fff;box-shadow:0 3px 0 rgba(40,10,60,.15);font-size:22px;cursor:pointer;flex:none}
+.ib:active,.btn:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(40,10,60,.15)}
+.btn{display:block;width:100%;min-height:52px;margin-top:12px;border:0;border-radius:999px;font-size:19px;cursor:pointer;
+  background:linear-gradient(180deg,#ff8fc0,#e0307f);color:#fff;box-shadow:0 5px 0 #a8226a}
+.btn.soft{background:#f4e6fb;color:#4e1f63;box-shadow:0 4px 0 #d9c2e8}
+.btn.red{background:linear-gradient(180deg,#ff8a7a,#d8362a);box-shadow:0 5px 0 #8f2017}
+.f{margin:16px 0 0}
+.f>label,.f>.lb{display:block;font-weight:700;font-size:17px;margin-bottom:6px}
+.f input[type=text]{width:100%;min-height:50px;border:3px solid #ead6f5;border-radius:16px;padding:8px 14px;font:inherit;font-size:20px;color:inherit;background:#fff;user-select:text;-webkit-user-select:text}
+.f input[type=text]:focus{outline:0;border-color:#c48ae6}
+.f .help{margin:6px 0 0;font-size:14px;line-height:1.5;opacity:.85}
+.f .help a{color:#b0208a;font-weight:700}
+.say{display:flex;gap:8px}
+.say input{flex:1;min-width:0}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.seg button{min-height:56px;border:3px solid #ead6f5;border-radius:18px;background:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;padding:6px}
+.seg button img{height:54px;width:auto}
+.seg button small{display:block;font-size:14px;font-weight:400;opacity:.8}
+.seg button[aria-pressed=true]{border-color:#e0307f;background:#ffe9f4;font-weight:700}
+.voicebox{margin-top:18px;padding:12px;border-radius:18px;background:#faf3fd}
+.voicebox>p{margin:0;font-size:14px;line-height:1.5}
+.err{color:#d8362a;font-weight:700;margin:12px 0 0;min-height:1em}
+.two{display:flex;gap:10px}.two .btn{flex:1}
+.shade{position:fixed;inset:0;background:rgba(30,10,45,.55);display:grid;place-items:center;padding:16px;z-index:9}
+.shade .page{max-width:420px}
+.chk{display:flex;gap:10px;align-items:flex-start;font-size:16px;margin-top:12px;line-height:1.4;cursor:pointer}
+.chk input{width:24px;height:24px;flex:none;margin:0}
+@media (orientation:landscape){ .kids{grid-template-columns:repeat(var(--n,2),minmax(0,1fr))} .kid .fig,.kids.rows2 .kid .fig{height:min(52vh,520px)}
+  .kids.many .kid .fig{height:min(44vh,440px)} .kids.many .kid .name{font-size:clamp(18px,3vw,34px)} }
+@media (orientation:landscape) and (max-height:520px){ .kid .fig{height:min(60vh,300px)} h1{margin:4px 0 8px;font-size:30px}
+  .kids.many .kid .fig{height:min(54vh,300px)} .kids.many .kid .name{font-size:18px;padding:3px 12px} }
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <section id="pick">
-    <h1>מי משחק היום?</h1>
+    <h1 id="pickTitle">מי משחק היום?</h1>
     <div class="kids" id="kids"></div>
+    <div class="nokids" id="nokids" hidden><span>עוד אין ילדים בלומדות</span><button class="btn" id="firstKid" style="max-width:320px">➕ הוספת ילד</button></div>
+  </section>
+  <section id="manage" hidden>
+    <div class="page">
+      <h2><span>הילדים בלומדות</span><button class="x" id="manageX" aria-label="סגירה">✕</button></h2>
+      <p class="note">כאן מוסיפים, עורכים ומסירים ילדים. הרשימה וההתקדמות שמורות רק בטלפון הזה.</p>
+      <div id="rows"></div>
+      <button class="btn" id="addKid">➕ הוספת ילד</button>
+      <button class="btn soft" id="restoreKids" hidden>החזרת מלודי וים</button>
+      <button class="btn soft" id="backupKids">💾 שמירת גיבוי (כל הילדים וההתקדמות)</button>
+      <button class="btn soft" id="loadKids">📂 שחזור מגיבוי</button>
+      <input type="file" id="loadFile" accept="application/json,.json" hidden>
+    </div>
+  </section>
+  <section id="edit" hidden>
+    <div class="page">
+      <h2><span id="editTitle">ילד חדש</span><button class="x" id="editX" aria-label="סגירה">✕</button></h2>
+      <div class="f"><div class="lb">בן או בת?</div>
+        <div class="seg" id="gender">
+          <button type="button" data-g="f" aria-pressed="false"><img src="assets/kids/melody.webp" alt="">בת</button>
+          <button type="button" data-g="m" aria-pressed="false"><img src="assets/kids/yam.webp" alt="">בן</button>
+        </div>
+        <p class="help">הבחירה קובעת את הדמות, את הצבעים ואת לשון הפנייה.</p>
+      </div>
+      <div class="f"><label for="kName">השם בעברית</label><input type="text" id="kName" autocomplete="off" maxlength="20" dir="rtl"></div>
+      <div class="f"><label for="kNameEn">השם באנגלית</label><input type="text" id="kNameEn" autocomplete="off" maxlength="20" dir="ltr"></div>
+      <div class="voicebox">
+        <p><b>איך הקול אומר את השם.</b> שני השדות האלה לא מופיעים בלומדות. הם רק עוזרים לקול לבטא את השם נכון.</p>
+        <div class="f"><label for="kSay">בעברית, עם ניקוד</label>
+          <div class="say"><input type="text" id="kSay" autocomplete="off" maxlength="30" dir="rtl"><button type="button" class="ib" id="kSayPlay" aria-label="השמעה">🔊</button></div>
+          <p class="help">כדאי לכתוב את השם עם ניקוד, אחרת הקול עלול לטעות. אפשר לנקד באתר <a href="https://www.nakdan.com/Default.aspx" target="_blank" rel="noopener">נקדן</a>, להעתיק ולהדביק כאן. לחצו 🔊 ובדקו. אם זה לא נשמע נכון, שנו את הניקוד.</p>
+        </div>
+        <div class="f"><label for="kSayEn">באנגלית, כמו שהשם נשמע</label>
+          <div class="say"><input type="text" id="kSayEn" autocomplete="off" maxlength="30" dir="ltr"><button type="button" class="ib" id="kSayEnPlay" aria-label="השמעה">🔊</button></div>
+          <p class="help">כתבו את השם כמו שהוא נשמע. למשל את ים כותבים Yahm, כי Yam נשמע כמו בטטה.</p>
+        </div>
+      </div>
+      <div class="f"><div class="lb">רמה</div>
+        <div class="seg" id="level">
+          <button type="button" data-l="kg" aria-pressed="false"><span>גן<small>גילאי 3 עד 5</small></span></button>
+          <button type="button" data-l="g1" aria-pressed="false"><span>כיתה א'<small>גילאי 6 עד 7</small></span></button>
+        </div>
+        <p class="help">הרמה קובעת את התוכן. ילד גן שמסיים את כל הנושאים שלו מקבל גם את הנושאים של כיתה א'. לומדת האנגלית זהה לכולם.</p>
+      </div>
+      <p class="err" id="editErr"></p>
+      <div class="two"><button class="btn" id="saveKid">שמירה</button><button class="btn soft" id="cancelKid">ביטול</button></div>
+    </div>
   </section>
   <section id="list" hidden>
     <div class="top">
@@ -76,10 +171,16 @@ button{font:inherit;color:inherit}
     <div class="grid" id="grid"></div>
   </section>
 </div>
+<div class="shade" id="ask" hidden><div class="page"><h2><span id="askTitle"></span></h2><p class="note" id="askText"></p>
+  <label class="chk" id="askChkRow"><input type="checkbox" id="askChk"><span id="askChkText"></span></label>
+  <div class="two"><button class="btn" id="askYes"></button><button class="btn soft" id="askNo">ביטול</button></div></div></div>
 <script src="kids.js"></script>
 <script src="apps/catalog.js"></script>
 <script>
-const KIDS = window.LUMDA_KIDS || {}, APPS = window.LUMDA_APPS || [];
+let KIDS = window.LUMDA_KIDS || {};
+const APPS = window.LUMDA_APPS || [], SUBJECTS = window.LUMDA_SUBJECTS || {}, LEVELS = window.LUMDA_LEVELS || {};
+const DEFAULT_IDS = (window.LUMDA_DEFAULT_KIDS || []).map(k => k.id);
+const esc = t => String(t).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const $ = id => document.getElementById(id);
 const store = (k,v) => { try { v===null ? localStorage.removeItem(k) : localStorage.setItem(k,v) } catch(e){} };
 
@@ -110,17 +211,24 @@ function theme(kid){
   document.querySelector('meta[name=theme-color]').content = kid ? kid.theme.accent : '#ff4f9a';
 }
 
+let view = 'pick';
+function only(id){ ['pick','list','manage','edit'].forEach(s => $(s).hidden = s !== id); view = id; scrollTo(0, 0) }
 function showPick(){
-  theme(null); $('list').hidden = true; $('pick').hidden = false;
+  theme(null); only('pick');
   const box = $('kids'); box.classList.remove('picked');
   if(history.state && history.state.list) try { history.replaceState(null, '') } catch(e){}
-  box.innerHTML = Object.values(KIDS).map(k =>
-    `<button class="kid" data-k="${k.id}" aria-label="${k.name}"><span class="fig"><img src="${k.img}" alt="" draggable="false"></span><span class="name">${k.name}</span></button>`).join('');
+  const kids = Object.values(KIDS), n = kids.length;
+  // up to two in a row on a phone (more children go to more rows); all in one row when the phone is sideways
+  box.style.setProperty('--n', n); box.style.setProperty('--cols', Math.min(n, 2));
+  box.classList.toggle('many', n > 2); box.classList.toggle('rows2', n > 2);
+  box.hidden = !n; $('nokids').hidden = !!n;
+  box.innerHTML = kids.map(k =>
+    `<button class="kid" data-k="${esc(k.id)}" aria-label="${esc(k.name)}"><span class="fig"><img src="${k.img}" alt="" draggable="false"></span><span class="name" data-look="${k.look}">${esc(k.name)}</span></button>`).join('');
   box.querySelectorAll('.kid').forEach(b => b.onclick = async () => {
     if(box.classList.contains('picked')) return;
     const kid = KIDS[b.dataset.k];
     box.classList.add('picked'); b.classList.add('chosen');
-    store('lumda-kid', kid.id); try { sessionStorage.setItem('lumda-kid', kid.id) } catch(e){}
+    store('lumda-kid', kid.id); store('lumda-look', kid.look); try { sessionStorage.setItem('lumda-kid', kid.id) } catch(e){}
     theme(kid);
     await welcome(kid);
     showList(kid);
@@ -128,10 +236,11 @@ function showPick(){
 }
 
 function showList(kid){
-  theme(kid); $('pick').hidden = true; $('list').hidden = false;
+  theme(kid); only('list');
   if(!(history.state && history.state.list)) try { history.pushState({list:1}, '') } catch(e){}
   $('meImg').src = kid.img; $('hi').textContent = 'שלום ' + kid.name;
-  const list = APPS.filter(a => !a.kids || a.kids.includes(kid.id));
+  // a catalog entry's kids list names Melody and Yam; children added on the phone get every app
+  const list = APPS.filter(a => !a.kids || a.kids.includes(kid.id) || !DEFAULT_IDS.includes(kid.id));
   const grid = $('grid');
   grid.innerHTML = list.length ? '' : `<div class="empty"><span class="big">⚔️🐉</span>${kid.gender==='m' ? 'הלומדות שלך בדרך, אביר!' : 'הלומדות שלך בדרך!'}</div>`;
   list.forEach(a => {
@@ -140,14 +249,148 @@ function showList(kid){
     el.onclick = () => { try { sessionStorage.setItem('lumda-from-hub', '1') } catch(e){} };
     el.innerHTML = '<div class="icon"></div><h2></h2><p></p>';
     el.querySelector('.icon').textContent = a.icon;
-    el.querySelector('h2').textContent = (a.titles && a.titles[kid.id]) || a.title;
+    const subj = SUBJECTS[a.subject];
+    el.querySelector('h2').textContent = subj ? kid.name + (kid.gender==='m' ? ' לומד ' : ' לומדת ') + subj.he : ((a.titles && a.titles[kid.id]) || a.title);
     el.querySelector('p').textContent = a.description;
     grid.appendChild(el);
   });
 }
 $('switch').onclick = () => { try { sessionStorage.removeItem('lumda-kid') } catch(e){} showPick() };
-// the phone's Back button on a child's list goes back to "who's playing?"
-addEventListener('popstate', () => { if(!$('list').hidden){ try { sessionStorage.removeItem('lumda-kid') } catch(e){} showPick() } });
+// the phone's Back button: a child's list or the kids page goes back to "who's playing?", the kid form goes back to the kids page
+addEventListener('popstate', () => {
+  if(view === 'list'){ try { sessionStorage.removeItem('lumda-kid') } catch(e){} showPick() }
+  else if(view === 'manage') showPick();
+  else if(view === 'edit') editDone();
+});
+
+/* ---------- Kids page: hold the title for 2 seconds (like the parents corner in the apps) ---------- */
+const title = $('pickTitle');
+let holdT = null, held = false;
+title.addEventListener('pointerdown', () => { held = false; title.classList.add('hold'); holdT = setTimeout(() => { held = true; try { navigator.vibrate && navigator.vibrate(30) } catch(e){} }, 2000) });
+const unhold = () => { clearTimeout(holdT); title.classList.remove('hold') };
+['pointerleave','pointercancel'].forEach(ev => title.addEventListener(ev, () => { unhold(); held = false }));
+// the step is added right after the finger lifts, so the phone's Back button keeps it
+title.addEventListener('pointerup', () => { unhold(); if(held){ held = false; try { history.pushState({kids:1}, '') } catch(e){} showManage() } });
+title.addEventListener('contextmenu', e => e.preventDefault());
+
+const levelName = l => (LEVELS[l] || LEVELS.kg || {he:''}).he;
+function showManage(){
+  theme(null); only('manage');
+  const kids = Object.values(KIDS);
+  $('rows').innerHTML = kids.length ? kids.map(k => `<div class="row"><img src="${k.img}" alt=""><div class="who"><b>${esc(k.name)}</b><small dir="auto">${k.gender==='m'?'בן':'בת'} · ${levelName(k.level)} · <span dir="ltr">${esc(k.nameEn)}</span></small></div>
+    <button class="ib" data-edit="${esc(k.id)}" aria-label="עריכה">✏️</button><button class="ib" data-del="${esc(k.id)}" aria-label="הסרה">🗑️</button></div>`).join('')
+    : '<p class="note">אין ילדים ברשימה.</p>';
+  $('rows').querySelectorAll('[data-edit]').forEach(b => b.onclick = () => { try { history.pushState({kid:1}, '') } catch(e){} showEdit(KIDS[b.dataset.edit]) });
+  $('rows').querySelectorAll('[data-del]').forEach(b => b.onclick = () => askRemove(KIDS[b.dataset.del]));
+  $('restoreKids').hidden = DEFAULT_IDS.every(id => KIDS[id]);
+}
+$('manageX').onclick = () => history.back();
+$('addKid').onclick = () => { try { history.pushState({kid:1}, '') } catch(e){} showEdit(null) };
+// with nobody on the list, "who's playing?" offers to add a child (and Back returns there)
+$('firstKid').onclick = () => { try { history.pushState({kids:1}, '') } catch(e){} fromEmpty = true; showEdit(null) };
+let fromEmpty = false;
+
+function saveList(list){ window.LUMDA_SAVE_KIDS(list); KIDS = window.LUMDA_KIDS }
+$('restoreKids').onclick = () => {
+  const list = window.LUMDA_KIDS_LIST();
+  const missing = (window.LUMDA_DEFAULT_KIDS || []).filter(d => !list.some(k => k.id === d.id)).map(d => Object.assign({}, d));
+  saveList(missing.concat(list)); showManage();
+};
+
+/* A small question card, used for removing a child and for restoring a backup */
+function ask(o){
+  $('askTitle').textContent = o.title; $('askText').textContent = o.text || '';
+  $('askChkRow').hidden = !o.check; $('askChk').checked = false; $('askChkText').textContent = o.check || '';
+  $('askYes').textContent = o.yes; $('askYes').className = 'btn' + (o.danger ? ' red' : '');
+  $('ask').hidden = false;
+  $('askYes').onclick = () => { $('ask').hidden = true; o.then($('askChk').checked) };
+  $('askNo').onclick = () => { $('ask').hidden = true };
+}
+// every app saves a child's progress under keys that start with the child's id (melody-, yam-english-, yam-math-)
+const progressKeys = id => { const out = []; try { for(let i = 0; i < localStorage.length; i++){ const k = localStorage.key(i); if(k && k.startsWith(id + '-')) out.push(k) } } catch(e){} return out };
+function askRemove(kid){
+  ask({ title: 'להסיר את ' + kid.name + '?', text: kid.name + (kid.gender==='m' ? ' לא יופיע' : ' לא תופיע') + ' יותר ב"מי משחק היום?".', check: 'למחוק גם את ההתקדמות (כוכבים, מדבקות ושלבים)', yes: 'הסרה', danger: true,
+    then: wipe => {
+      if(wipe) progressKeys(kid.id).forEach(k => store(k, null));
+      try { if(localStorage.getItem('lumda-kid') === kid.id) store('lumda-kid', null); if(sessionStorage.getItem('lumda-kid') === kid.id) sessionStorage.removeItem('lumda-kid') } catch(e){}
+      saveList(window.LUMDA_KIDS_LIST().filter(k => k.id !== kid.id)); showManage();
+    } });
+}
+
+/* Backup of all children and their progress in one file */
+$('backupKids').onclick = () => {
+  const data = { 'lumda-kids': JSON.stringify(window.LUMDA_KIDS_LIST()) };
+  Object.keys(KIDS).forEach(id => progressKeys(id).forEach(k => { data[k] = localStorage.getItem(k) }));
+  const blob = new Blob([JSON.stringify({ lumda: 'kids', v: 1, saved: new Date().toISOString(), data }, null, 1)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'lumda-kids-backup-' + new Date().toISOString().slice(0,10) + '.json';
+  document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove() }, 1000);
+};
+$('loadKids').onclick = () => $('loadFile').click();
+$('loadFile').onchange = async () => {
+  const f = $('loadFile').files[0]; $('loadFile').value = '';
+  if(!f) return;
+  let d = null; try { d = JSON.parse(await f.text()) } catch(e){}
+  if(!d || d.lumda !== 'kids' || !d.data || !d.data['lumda-kids']){ ask({ title: 'הקובץ לא מתאים', text: 'זה לא קובץ גיבוי של רשימת הילדים.', yes: 'הבנתי', then: () => {} }); return }
+  ask({ title: 'לשחזר מהגיבוי?', text: 'רשימת הילדים וההתקדמות שבקובץ יחליפו את מה ששמור בטלפון.', yes: 'שחזור',
+    then: () => {
+      Object.keys(d.data).forEach(k => { if(k === 'lumda-kids' || /^[\w-]+$/.test(k)) store(k, String(d.data[k])) });
+      window.LUMDA_SAVE_KIDS(JSON.parse(d.data['lumda-kids'])); KIDS = window.LUMDA_KIDS; showManage();
+    } });
+};
+
+/* ---------- Add or edit a child ---------- */
+let editing = null, form = {};
+const NIKUD = /[֑-ׇ]/g;
+function pick(box, attr, val){ form[attr] = val; $('editErr').textContent = ''; $(box).querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.dataset[attr] === val)) }
+$('gender').querySelectorAll('button').forEach(b => b.onclick = () => pick('gender', 'g', b.dataset.g));
+$('level').querySelectorAll('button').forEach(b => b.onclick = () => pick('level', 'l', b.dataset.l));
+function showEdit(kid){
+  editing = kid; form = {}; only('edit'); $('editErr').textContent = '';
+  $('editTitle').textContent = kid ? 'עריכת ' + kid.name : 'ילד חדש';
+  $('kName').value = kid ? kid.name : ''; $('kNameEn').value = kid ? kid.nameEn : '';
+  $('kSay').value = kid ? kid.nameSay : ''; $('kSayEn').value = kid ? kid.nameEnSay : '';
+  // the voice fields follow the name until the parent changes them
+  $('kSay').dataset.auto = !kid || kid.nameSay === kid.name ? '1' : '';
+  $('kSayEn').dataset.auto = !kid || kid.nameEnSay === kid.nameEn ? '1' : '';
+  pick('gender', 'g', kid ? kid.gender : ''); pick('level', 'l', kid ? kid.level : '');
+}
+$('edit').addEventListener('input', () => { $('editErr').textContent = '' });
+$('kName').oninput = () => { if($('kSay').dataset.auto) $('kSay').value = $('kName').value.trim() };
+$('kNameEn').oninput = () => { if($('kSayEn').dataset.auto) $('kSayEn').value = $('kNameEn').value.trim() };
+$('kSay').oninput = () => { $('kSay').dataset.auto = '' };
+$('kSayEn').oninput = () => { $('kSayEn').dataset.auto = '' };
+function editDone(){ if(fromEmpty){ fromEmpty = false; showPick() } else showManage() }
+$('editX').onclick = $('cancelKid').onclick = () => history.back();
+$('saveKid').onclick = () => {
+  // a name pasted with nikud is shown without it, and its nikud is kept for the voice
+  const raw = $('kName').value.trim(), name = raw.replace(NIKUD, ''), nameEn = $('kNameEn').value.trim();
+  const err = !form.g ? 'בחרו בן או בת' : !name ? 'כתבו את השם בעברית' : !/[א-ת]/.test(name) ? 'השם בעברית צריך להיות באותיות עבריות'
+    : !nameEn ? 'כתבו את השם באנגלית' : !/^[A-Za-z][A-Za-z '\-]*$/.test(nameEn) ? 'השם באנגלית צריך להיות באותיות אנגליות' : !form.l ? 'בחרו רמה' : '';
+  if(err){ $('editErr').textContent = err; return }
+  const nameSay = $('kSay').value.trim() || raw, nameEnSay = $('kSayEn').value.trim() || nameEn;
+  const list = window.LUMDA_KIDS_LIST();
+  const kid = { id: editing ? editing.id : 'k' + Date.now().toString(36), name, nameEn, nameSay, nameEnSay, gender: form.g, level: form.l };
+  const i = list.findIndex(k => k.id === kid.id);
+  if(i >= 0) list[i] = Object.assign({}, list[i], kid); else list.push(kid);
+  saveList(list);
+  try { if(localStorage.getItem('lumda-kid') === kid.id) store('lumda-look', KIDS[kid.id].look) } catch(e){}
+  history.back();
+};
+// hear how the voice says the name, in the child's own voice
+$('kSayPlay').onclick = () => speak($('kSay').value.trim() || $('kName').value.trim(), 'he');
+$('kSayEnPlay').onclick = () => speak($('kSayEn').value.trim() || $('kNameEn').value.trim(), 'en');
+function speak(text, lang){
+  if(!synth || !text) return;
+  try { synth.cancel() } catch(e){}
+  const u = new SpeechSynthesisUtterance(text), male = form.g === 'm';
+  if(lang === 'he'){ const v = heVoice(male ? 'male' : 'female'); u.lang = v ? v.lang : 'he-IL'; if(v) u.voice = v; u.rate = .95 }
+  else {
+    const en = (synth.getVoices() || []).filter(v => /^en/i.test(v.lang));
+    const v = (male && en.find(v => /\bmale|daniel|alex|fred|david|guy|tom|aaron|arthur/i.test(v.name) && !/female/i.test(v.name))) || en.find(v => /en.us/i.test(v.lang)) || en[0];
+    u.lang = v ? v.lang : 'en-US'; if(v) u.voice = v; u.rate = .78;
+  }
+  synth.speak(u);
+}
 
 // coming back from an app in the same visit: stay with the same child
 let back = null; try { back = KIDS[sessionStorage.getItem('lumda-kid')] } catch(e){}
