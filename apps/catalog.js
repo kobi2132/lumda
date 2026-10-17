@@ -17,5 +17,16 @@ window.LUMDA_APPS = [
     titles: { melody: 'מלודי לומדת אנגלית', yam: 'ים לומד אנגלית' },
     icon: '👑',
     path: 'apps/melody-english/index.html'
+  },
+  {
+    id: 'numbers',
+    title: 'מספרים וחשבון',
+    description: 'ספירה, ספרות, קוביות, יותר ופחות, ולים גם חיבור וחיסור, עשרות ויחידות וסיפורי חשבון. עם משחקים ומדבקות.',
+    subject: 'math',
+    ages: [4, 7],
+    kids: ['melody', 'yam'],
+    titles: { melody: 'מלודי לומדת חשבון', yam: 'ים לומד חשבון' },
+    icon: '🔢',
+    path: 'apps/numbers/index.html'
   }
 ];

@@ -1,8 +1,8 @@
 // Offline support and speed.
 // Pages and scripts: network first, so a new version shows up right away; the saved copy is used offline.
 // Pictures: saved copy first (their names never change), so they load instantly after the first time.
-const CACHE = 'lumda-v13', IMG = 'lumda-img-v1';
-const FILES = ['./', 'index.html', 'apps/catalog.js', 'kids.js', 'manifest.webmanifest', 'apps/melody-english/index.html'];
+const CACHE = 'lumda-v14', IMG = 'lumda-img-v1';
+const FILES = ['./', 'index.html', 'apps/catalog.js', 'kids.js', 'manifest.webmanifest', 'apps/melody-english/index.html', 'apps/numbers/index.html'];
 const PICS = ['assets/kids/melody.webp', 'assets/kids/yam.webp', 'assets/kids/yam-bust.webp', 'icon-192.png?v=2', 'icon-512.png?v=2'];
 
 self.addEventListener('install', e => {
