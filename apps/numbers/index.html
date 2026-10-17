@@ -722,6 +722,7 @@ html[data-kid="yam"] .cup{background:linear-gradient(90deg,#3f6fd8,#7fa0ff 40%,#
 </div>
 <canvas id="fx"></canvas>
 
+<script src="../../chars.js"></script>
 <script src="../../kids.js"></script>
 <script>
 /* ---------- Who is playing ---------- */
@@ -908,8 +909,12 @@ const PER_REWARD=5, ROUNDS=5;
 const CHAR_FULL=E+'img/025da1c10968.webp', CHAR_BUST=E+'img/5c09e6dbfcf3.webp';
 const MOUTH={"closed": E+"img/491cd6f1fc69.webp", "half": E+"img/e11a5134e240.webp", "wide": E+"img/ac15db3b46f3.webp"};
 const MOUTH_POS={big:'left:41.922%;top:25.184%;width:19.061%;height:7.462%',bust:'left:36.214%;top:50.478%;width:26.210%;height:14.957%'};
-const CHAR_IMG = BOY ? {big:'../../assets/kids/yam.webp', bust:'../../assets/kids/yam-bust.webp'} : {big:CHAR_FULL, bust:CHAR_BUST};
-const charHTML=(kind,cls)=>`<div class="pm ${kind} ${cls||''}"><span class="pm-in"><span class="pm-pic"><img class="pm-img" src="${kind==='big'?CHAR_IMG.big:CHAR_IMG.bust}" alt="${NAME}" draggable="false">${BOY?'':`<img class="mouth" src="${MOUTH.closed}" alt="" hidden style="${MOUTH_POS[kind==='big'?'big':'bust']}">`}</span></span><span class="pm-spark" aria-hidden="true"></span></div>`;
+// the child's character (picked on the hub's kids page); only the princess has the talking-mouth pictures
+const CHAR_IMG = KID.charBust ? {big:'../../'+KID.charBig, bust:'../../'+KID.charBust} : BOY ? {big:'../../assets/kids/yam.webp', bust:'../../assets/kids/yam-bust.webp'} : {big:CHAR_FULL, bust:CHAR_BUST};
+const TALKS = KID.charBust ? KID.mouth : !BOY;
+// each character has its own shape
+if(KID.bigAr){ const st=document.createElement('style'); st.textContent=`.pm.big{aspect-ratio:${KID.bigAr}!important}.buddy{aspect-ratio:${KID.bustAr}!important}`; document.head.appendChild(st) }
+const charHTML=(kind,cls)=>`<div class="pm ${kind} ${cls||''}"><span class="pm-in"><span class="pm-pic"><img class="pm-img" src="${kind==='big'?CHAR_IMG.big:CHAR_IMG.bust}" alt="${NAME}" draggable="false">${!TALKS?'':`<img class="mouth" src="${MOUTH.closed}" alt="" hidden style="${MOUTH_POS[kind==='big'?'big':'bust']}">`}</span></span><span class="pm-spark" aria-hidden="true"></span></div>`;
 const MOUTH_SEQ=['closed','half','wide','orig','half','closed','wide','orig','closed','half'];
 let mouthTimer=null, mouthI=0;
 function setMouth(k){ document.querySelectorAll('.pm .mouth').forEach(m=>{ if(k==='orig') m.hidden=true; else { m.src=MOUTH[k]; m.hidden=false } }) }
