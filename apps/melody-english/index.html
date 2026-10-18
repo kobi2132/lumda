@@ -465,7 +465,8 @@ html[data-kid="yam"] .buddy{aspect-ratio:320/350}
 .grow{font-size:clamp(70px,24vw,130px);line-height:1;position:relative;transition:transform .4s}
 .grow.s0{transform:scale(.6)}.grow.s1{transform:scale(.7)}.grow.s2{transform:scale(.8)}.grow.s3{transform:scale(.9)}.grow.s4,.grow.s5{transform:scale(1)}
 .grow.up{animation:pop .6s}.grow.big{font-size:clamp(110px,34vw,180px)}
-.grow .zz{position:absolute;top:-10%;right:-30%;font-size:40%;font-style:normal;animation:bob 2s ease-in-out infinite}
+.grow img{height:1.5em;width:auto;display:block;filter:drop-shadow(0 6px 10px rgba(0,0,0,.15))}.grow.s0,.grow.s1,.grow.s2,.grow.s3{transform:none}
+.grow .zz{position:absolute;top:8%;right:-30%;font-size:40%;font-style:normal;animation:bob 2s ease-in-out infinite}
 .echo .ask .mini{width:clamp(48px,14vw,64px);height:clamp(48px,14vw,64px);display:grid;place-items:center;container-type:inline-size}
 .echo .ask .mini .art{width:100%;height:100%}.echo .ask .mini .emoji{font-size:70cqw}.echo .ask .mini .blob{width:80%;box-shadow:inset -4px -6px 0 rgba(0,0,0,.12),0 3px 6px rgba(0,0,0,.15)}
 .game-btn.locked{filter:grayscale(.9);opacity:.55}.game-btn.wrong{animation:shake .45s}
@@ -1698,7 +1699,8 @@ function shopRound(g,targets,ns,r){
 }
 
 /* ---------- Game 11: Echo (hear it, say it back: a flower grows, a dragon wakes up) ---------- */
-const ECHO_STAGES = BOY ? ['🥚','🥚','🐣','🐲','🐉'] : ['🌱','🌿','🌷','🌸','💐'];
+const ECHO_STAGES = (BOY ? ["img/5497294420a9.webp", "img/21bda3338539.webp", "img/f04827e6d63a.webp", "img/bce7a1792c95.webp", "img/b5f60339d458.webp"] : ["img/10530983e704.webp", "img/481c6265bf4c.webp", "img/31938bccd4ee.webp", "img/2fa81275a9bb.webp", "img/7a7733b5e395.webp"]).map(src=>`<img src="${src}" alt="" draggable="false">`);
+ECHO_STAGES.forEach(t=>{ new Image().src=t.match(/src="([^"]+)/)[1] });
 function startEcho(g){ screenId++; echoRound(g,pickTargets(g,ROUNDS),0,0) }
 function echoRound(g,targets,r,tries){
   const id=++screenId; homeTo=()=>pickGame(g.cat,g.level);
