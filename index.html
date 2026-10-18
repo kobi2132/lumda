@@ -143,6 +143,12 @@ h1#pickTitle{margin:6px 0 0;font-size:clamp(28px,7.5vw,48px)}
 .btn{display:block;width:100%;min-height:52px;margin-top:12px;border:0;border-radius:999px;font-size:19px;cursor:pointer;
   background:linear-gradient(180deg,#ff8fc0,#e0307f);color:#fff;box-shadow:0 5px 0 #a8226a}
 .btn.soft{background:#f4e6fb;color:#4e1f63;box-shadow:0 4px 0 #d9c2e8}
+.coffee{background:#fff4e2;text-align:center}
+.coffee .cup{position:relative;font-size:46px;line-height:1;padding-top:18px}
+.coffee .cup i{position:absolute;top:0;width:6px;height:16px;border-radius:6px;background:#e9c9a3;opacity:0;animation:steam 2.4s ease-in-out infinite}
+.coffee .cup i:nth-child(1){left:calc(50% - 14px)}.coffee .cup i:nth-child(2){left:calc(50% - 3px);animation-delay:.8s}.coffee .cup i:nth-child(3){left:calc(50% + 8px);animation-delay:1.6s}
+@keyframes steam{0%{transform:translateY(10px) scaleY(.6);opacity:0}40%{opacity:.9}100%{transform:translateY(-8px) scaleY(1.1);opacity:0}}
+.btn.bmc{display:flex;align-items:center;justify-content:center;text-decoration:none;background:linear-gradient(180deg,#ffe066,#ffc400);color:#3d2b1f;font-family:var(--display);font-weight:700;box-shadow:0 5px 0 #c99400}
 .btn.red{background:linear-gradient(180deg,#ff8a7a,#d8362a);box-shadow:0 5px 0 #8f2017}
 .f{margin:16px 0 0}
 .f>label,.f>.lb{display:block;font-weight:700;font-size:17px;margin-bottom:6px}
@@ -255,6 +261,9 @@ h1#pickTitle{margin:6px 0 0;font-size:clamp(28px,7.5vw,48px)}
         <button class="btn soft" id="pPin"></button><button class="btn soft" id="pPinOff" hidden>ביטול הקוד</button></div>
       <div class="pcard"><h3>🗑️ איפוס</h3><p class="note">מוחק את כל הילדים, ההתקדמות וההגדרות. כדאי לשמור גיבוי לפני.</p>
         <button class="btn red" id="pReset">איפוס של הכול</button></div>
+      <div class="pcard coffee"><div class="cup" aria-hidden="true"><i></i><i></i><i></i>☕</div><h3>אהבתם את לומדלי?</h3>
+        <p class="note">לומדלי נבנתה באהבה בשביל מלודי וים, והיא חינמית לכולם. אם היא משמחת גם את הילדים שלכם, אפשר לפנק אותי בכוס קפה 💛</p>
+        <a class="btn bmc" href="https://buymeacoffee.com/jacobyamin" target="_blank" rel="noopener">☕ תקנו לי קפה</a></div>
       <button class="btn soft" id="pDev">🔧 מפתח</button>
     </div>
   </section>
